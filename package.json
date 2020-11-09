@@ -1,0 +1,29 @@
+{
+  "name": "nightwind",
+  "version": "1.0.0",
+  "description": "Tailwindcss dark mode",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jjranalli/nightwind.git"
+  },
+  "keywords": [
+    "tailwind",
+    "tailwindcss",
+    "tailwindcss-plugin",
+    "dark-mode",
+    "dark-theme",
+    "postcss",
+    "css",
+    "javascript"
+  ],
+  "author": "Jacopo Ranalli",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jjranalli/nightwind/issues"
+  },
+  "homepage": "https://github.com/jjranalli/nightwind#readme"
+}
