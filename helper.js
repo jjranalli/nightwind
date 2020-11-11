@@ -10,17 +10,28 @@ module.exports = {
 
   addNightModeSelector: () => {
     if (module.exports.checkNightMode()) {
-      document.documentElement.classList.add('night-mode');
+      document.documentElement.classList.add('dark');
     } else {
-      document.documentElement.classList.remove('night-mode');
+      document.documentElement.classList.remove('dark');
     }
   },
 
+  addNightTransitions: () => {
+    if (!document.documentElement.classList.contains('nightwind')) {
+      document.documentElement.classList.add('nightwind');
+    }
+  },
+
+  initNightMode: () => {
+    module.exports.watchNightMode();
+    module.exports.addNightModeSelector();
+  },
+
   toggleNightMode: () => {
-    if (document.documentElement.classList != "night-mode") {
-      document.documentElement.classList.add('night-mode');
+    if (!document.documentElement.classList.contains('dark')) {
+      document.documentElement.classList.add('dark');
     } else {
-      document.documentElement.classList.remove('night-mode');
+      document.documentElement.classList.remove('dark');
     }
   }
 }

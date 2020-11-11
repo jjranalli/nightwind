@@ -1,16 +1,16 @@
-const selectorParser = require('postcss-selector-parser');
 const plugin = require('tailwindcss/plugin')
 
 const nightwind = plugin(
-  function({ addComponents, theme, variants, e, prefix, addVariant }) {
+  function({ addComponents, theme, variants, e, prefix }) {
         
-    const darkSelector = theme('darkSelector', '.night-mode')
+    const darkSelector = theme('darkSelector', '.dark')
 
     const colorClasses = []
+    const transitionClasses = []
     
     const colors = theme('colors')
     const colorVariants = variants('nightwind')
-    const prefixes = ["text", "bg", "border", "placeholder"]
+    const prefixes = ['text', 'bg', 'border', 'placeholder']
     const weights = [100, 200, 300, 400, 500, 600, 700, 800, 900]
 
     Object.keys(colors).forEach(color => {
@@ -20,8 +20,13 @@ const nightwind = plugin(
           colorClasses.push(base);
 
           colorVariants.forEach(variant => {
-            let baseVar = variant+'\\:'+prefix+'-'+color
-            colorClasses.push(baseVar);
+            if (variant == 'last') {
+              let baseVar = prefix+'-'+color+'\\:'+variant
+              colorClasses.push(baseVar);
+            } else {
+              let baseVar = variant+'\\:'+prefix+'-'+color
+              colorClasses.push(baseVar);
+            }
           })
         } else {
           return false
@@ -37,14 +42,45 @@ const nightwind = plugin(
           weights.forEach(weight => {
             let base = prefix+'-'+color+'-'+weight
             colorClasses.push(base); 
-
-            colorVariants.forEach(variant => {
-              let baseVar = variant+'\\:'+prefix+'-'+color+'-'+weight
-              colorClasses.push(baseVar);
+              colorVariants.forEach(variant => {
+                let baseVar = variant+'\\:'+prefix+'-'+color+'-'+weight
+                colorClasses.push(baseVar);
             })
-          })   
-        })
+          })
+        })   
       }
+    })
+    
+    Object.keys(colors).forEach( color  => {
+      prefixes.forEach(prefix => {
+        if (color == 'transparent' || color == 'current' || color == 'white' || color == 'black') {
+          const transitionClass = {
+            [`.nightwind .${prefix}-${color}`]: {
+              transitionDuration: theme('transitionDuration.nightwind'), 
+              transitionProperty: theme('transitionProperty.colors')
+            },
+            [`.nightwind .dark\\:${prefix}-${color}`]: {
+              transitionDuration: theme('transitionDuration.nightwind'), 
+              transitionProperty: theme('transitionProperty.colors')
+            }
+          }
+          transitionClasses.push(transitionClass)
+        } else {
+          weights.forEach( weight => {
+            const transitionClass = {
+              [`.nightwind .${prefix}-${color}-${weight}`]: {
+                transitionDuration: theme('transitionDuration.nightwind'), 
+                transitionProperty: theme('transitionProperty.colors')
+              },
+              [`.nightwind .dark\\:${prefix}-${color}-${weight}`]: {
+                transitionDuration: theme('transitionDuration.nightwind'), 
+                transitionProperty: theme('transitionProperty.colors')
+              }
+            }
+            transitionClasses.push(transitionClass)
+          })
+        }
+      })
     })
 
     const nightwindClasses = colorClasses.map((colorClass) => {
@@ -114,71 +150,23 @@ const nightwind = plugin(
     })
 
     addComponents(nightwindClasses, { variants: ['responsive'] });
-
-    addVariant('dark', ({modifySelectors, separator}) => {
-      modifySelectors(({selector}) => {
-        return selectorParser((selectors) => {
-          selectors.walkClasses((sel) => {
-            sel.value = `dark${separator}${sel.value}`;
-            sel.parent.insertBefore(sel, selectorParser().astSync(prefix(`${darkSelector} `)));
-          });
-        }).processSync(selector);
-      });
-    });
-
-    addVariant('dark-hover', ({modifySelectors, separator}) => {
-      modifySelectors(({className}) => {
-        return `${darkSelector} .${e(`dark-hover${separator}${className}`)}:hover, ${darkSelector}.${e(`dark-hover${separator}${className}`)}:hover`;
-      });
-    });
-
-    addVariant('dark-focus', ({modifySelectors, separator}) => {
-      modifySelectors(({className}) => {
-        return `${darkSelector} .${e(`dark-focus${separator}${className}`)}:focus, ${darkSelector}.${e(`dark-focus${separator}${className}`)}:focus`;
-      });
-    });
-
-    addVariant('dark-active', ({modifySelectors, separator}) => {
-      modifySelectors(({className}) => {
-        return `${darkSelector} .${e(`dark-active${separator}${className}`)}:active, ${darkSelector}.${e(`dark-active${separator}${className}`)}:active`;
-      });
-    });
-
-    addVariant('dark-disabled', ({modifySelectors, separator}) => {
-      modifySelectors(({className}) => {
-        return `${darkSelector} .${e(`dark-disabled${separator}${className}`)}:disabled, ${darkSelector}.${e(`dark-disabled${separator}${className}`)}:disabled`;
-      });
-    });
-
-    addVariant('dark-group-hover', ({modifySelectors, separator}) => {
-      modifySelectors(({className}) => {
-        return `${darkSelector} .group:hover .${e(`dark-group-hover${separator}${className}`)}, ${darkSelector}.group:hover .${e(`dark-group-hover${separator}${className}`)}`;
-      });
-    });
-
-    addVariant('dark-focus-within', ({modifySelectors, separator}) => {
-      modifySelectors(({className}) => {
-        return `${darkSelector} .${e(`dark-focus-within${separator}${className}`)}:focus-within, ${darkSelector}.${e(`dark-focus-within${separator}${className}`)}:focus-within`;
-      });
-    });
-
-    addVariant('dark-even', ({modifySelectors, separator}) => {
-      modifySelectors(({className}) => {
-        return `${darkSelector} .${e(`dark-even${separator}${className}`)}:nth-child(even), ${darkSelector}.${e(`dark-even${separator}${className}`)}:nth-child(even)`;
-      });
-    });
-
-    addVariant('dark-odd', ({modifySelectors, separator}) => {
-      modifySelectors(({className}) => {
-        return `${darkSelector} .${e(`dark-odd${separator}${className}`)}:nth-child(odd), ${darkSelector}.${e(`dark-odd${separator}${className}`)}:nth-child(odd)`;
-      });
-    });
-
-    addVariant('dark-placeholder', ({modifySelectors, separator}) => {
-      modifySelectors(({className}) => {
-        return `${darkSelector} .${e(`dark-placeholder${separator}${className}`)}::placeholder, ${darkSelector}.${e(`dark-placeholder${separator}${className}`)}::placeholder`;
-      });
-    });
+    addComponents(transitionClasses, { variants: ['responsive'] });
+  },
+  {
+    theme: {
+      extend: {
+        transitionDuration: {
+          '0': '0ms',
+          'nightwind': '300ms'
+        }
+      }
+    }
+  },
+  {
+    purge: [
+      './node_modules/nightwind/**/*.js',
+      './node_modules/nightwind/**/*.jsx',
+    ],
   }
 );
 

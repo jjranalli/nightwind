@@ -2,19 +2,29 @@
 
 A plugin that gives you an out-of-the-box, customisable, overrideable dark mode for tailwindcss.
 
-## Installation
+change -> This approach is different than tailwind as it doesn't generate a screen but uses new variants. It is not tied to the prefers-colors-scheme property, thus allowing toggling between light and night mode. 
 
-Install the plugin from npm:
+It is currently therefore not compatible with the experimental tailwind feature, but it has a very similar syntax and usage.
+
+## Installation
 
 ```sh
 npm install nightwind
 ```
 
-Then add the plugin to your `tailwind.config.js` file, as well as the variants you want for nightwind to automatically generate classes:
+In your `tailwind.config.js` file:
+- Add the 'src/index.js' nightwind path to the purge list
+- Specify the variants you want for nightwind to automatically generate classes
+- Require 'nightwind' in the plugin list
 
 ```js
 // tailwind.config.js
 module.exports = {
+  experimental: {
+    applyComplexClasses: true,
+    darkModeVariant: true
+  },
+  dark: 'class',
   theme: {
     // ...
   },
@@ -33,7 +43,7 @@ module.exports = {
 
 Nightwind styles are applied to an element whenever 
 
-- The element has an inline class that sets the color of a text, background, border or placeholder;
+- The element has an inline class that sets the color of a text, background, border or placeholder; and
 - A parent element has a 'night-mode' class.
 
 One way to have your whole website immediately support night mode, is to apply the 'night-mode' class to the `<html>` element.
@@ -55,7 +65,7 @@ export default function Layout({children}) {
   useEffect(() => {
       nightwind.watchNightMode()
       nightwind.addNightModeSelector()
-  });
+  }, []);
 
   return (
     // ...
@@ -71,9 +81,48 @@ import nightwind from 'nightwind/helper'
 export default function Navbar() {  
   return (
     // ...
-    <Button onClick={ () => nightwind.toggleNightMode() } />
+    <button onClick={ nightwind.toggleNightMode }></button>
     // ...
   )
+```
+
+#### React toggle
+
+You can also import the Nightwind button component, and customising it by passing it one of the following props:
+
+```js
+import Nightwind from 'nightwind/components/toggle'
+
+export default function Navbar() {  
+  return (
+    // ...
+    <Nightwind 
+      size="w-16 h-16 md:w-20 md:h-20" // default 'w-10 h-10'
+      sunColor="text-red-300 group-hover:text-teal-300" // default 'text-orange-300 group-hover:text-indigo-300'
+      sunColorNight="dark:text-purple-500 dark-group-hover:text-yellow-300" // default 'dark:text-indigo-400 dark-group-hover:text-orange-400'
+      moonColor="text-gray-700" // default 'text-indigo-600'
+      moonColorNight="dark:text-red-300" // default 'dark:text-yellow-300'
+      transition="duration-150" // default 'duration-300'
+    />
+    // ...
+  )
+```
+
+The Nightwind toggle uses the 'group-hover' and 'dark-group-hover' textColor variants, so make sure to enable them in tailwind.config.js.
+
+```js
+// tailwind.config.js
+module.exports = {
+  // ...
+  variants: {
+  // ...
+    textColor: ({ after }) => after(['group-hover', 'dark', 'dark-hover', 'dark-focus', 'dark-group-hover', 'dark-placeholder']),
+  // ...
+  },
+  plugins: [
+    require('nightwind')
+  ]
+}
 ```
 
 ## Usage
@@ -84,15 +133,16 @@ The nightwind classes are generated automatically whenever you use a tailwind cl
 
 Some examples:
 
-- 'bg-white', in night mode becomes 'bg-black'
-- 'bg-red-100', in night mode becomes 'bg-red-900'
-- 'hover:text-indigo-200', in night mode becomes 'hover:text-indigo-800'
-- 'sm:border-blue-300', in night mode becomes 'sm:border-blue-700'
-- 'xl:hover:bg-purple-400', in night mode becomes 'xl:hover:bg-purple-600
+- 'bg-white' in night mode becomes 'bg-black'
+- 'bg-red-100' in night mode becomes 'bg-red-900'
+- 'placeholder-gray-200' in night mode becomes 'placeholder-gray-800'
+- 'hover:text-indigo-300' in night mode becomes 'hover:text-indigo-700'
+- 'sm:border-blue-400' in night mode becomes 'sm:border-blue-600'
+- 'xl:hover:bg-purple-500' in night mode remains 'xl:hover:bg-purple-500'
 
 Note: As a reminder, the sum between classes is always 1000. That also means that the '-500' colors will not change when switching into night-mode.
 
-Nightwind is responsive by default, so it supports tailwind breakpoints. But in order to allow pseudo-variants make sure to configure up the 'nightwind' variant, as described in the installation section.
+Nightwind is responsive by default, so it supports tailwind breakpoints. But in order to allow pseudo-variants make sure to configure the 'nightwind' variant, as described in the installation section.
 
 ### Configuration
 
@@ -143,6 +193,75 @@ module.exports = {
 }
 ```
 
+### Custom classes
+
+Enable the applyComplexClasses experimental feature
+
+```js
+// tailwind.config.js
+module.exports = {
+  experimental: {
+    applyComplexClasses: true,
+  },
+  // ...
+}
+```
+
+
+
+### Custom transitions
+
+Nightwind applies a default 'transition-property' and 'transition-duration' classes to all elements that have color classes. This allows to automatically manage the transition to night mode all across your website. The default duration is '200ms' but you can also customise the transition by extending the default theme:
+
+```js
+// tailwind.config.js
+module.exports = {
+  theme: {
+    extend: {
+      // ...
+      transitionDuration: {
+        '0': '0ms',
+        'nightwind': '500ms' // deafult '200ms'
+      },
+    },
+  },
+
+  // ...
+
+  plugins: [
+    require('nightwind')
+  ]
+}
+```
+
+To deactivate night mode transition, set 'nightwind' to '0ms'
+
+For this reason, if you have an element such as
+
+```html
+<a class="text-red-800 hover:text-red-600">I change color on hover</a>
+```
+
+The transition would not be instantaneous as you'd expect, but it would take either the default or extended value for the transition.
+
+Alternatively, if you specify the duration in the element:
+
+```html
+<a class="text-red-800 hover:text-red-600 duration-150">I change color on hover</a>
+```
+
+You'd also change the duration of the transition of that element while switching between night and light mode, making it asynchronized with respect to the rest of the elements.
+
+In such cases where you need to specify the duration for a specific action, while keeping the night transition synchronised with the site, you should do something like this.
+
+```html
+<div class="text-red-800">
+  <a class="hover:text-red-600 duration-150 transition-colors">I change color on hover</a>
+</div>
+```
+
+Transition in overrides should also be treated differently, as described in the following section.
+
 ### Overrides
 
 You can also use overrides to manually decide the color you want to apply to 
@@ -175,9 +294,9 @@ module.exports = {
     'nightwind': ['hover', 'focus'],
 
     // Enable overrides
-    textColor: ({ after }) => after(['dark', 'dark-hover', 'dark-focus', 'dark-placeholder']),
-    backgroundColor: ({ after }) => after(['dark', 'dark-hover', 'dark-focus']),
-    borderColor: ({ after }) => after(['dark', 'dark-hover', 'dark-focus']),
+    textColor: ({ after }) => after(['group-hover', 'dark', 'dark-hover', 'dark-focus', 'dark-group-hover', 'dark-placeholder']),
+    backgroundColor: ({ after }) => after(['dark', 'dark-hover', 'dark-focus', 'dark-placeholder']),
+    borderColor: ({ after }) => after(['dark', 'dark-hover', 'dark-focus', 'dark-placeholder']),
   },
 
   plugins: [
