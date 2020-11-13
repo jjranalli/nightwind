@@ -13,6 +13,18 @@ const nightwind = plugin(
     const prefixes = ['text', 'bg', 'border', 'placeholder']
     const weights = [100, 200, 300, 400, 500, 600, 700, 800, 900]
 
+    function hexToRGB(hex, alpha) {
+      var r = parseInt(hex.slice(1, 3), 16),
+          g = parseInt(hex.slice(3, 5), 16),
+          b = parseInt(hex.slice(5, 7), 16);
+  
+      if (alpha) {
+          return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
+      } else {
+          return "rgb(" + r + ", " + g + ", " + b + ")";
+      }
+    }
+
     Object.keys(colors).forEach(color => {
       prefixes.forEach(prefix => {
         if (color == 'white' || color == 'black') {
@@ -94,25 +106,29 @@ const nightwind = plugin(
         if (colorClass.includes('text-')) {
           return {
             [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-              color: colorClass.includes('white') ? theme('colors.black') : theme('colors.white')
+              color: colorClass.includes('white') ? theme('colors.black') : theme('colors.white'),
+              color: hexToRGB( `${colorClass.includes('white') ? '#000000' : '#ffffff'}` , 'var(--text-opacity)')
             }
           }
         } else if (colorClass.includes('bg-')) {
           return {
             [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-              backgroundColor: colorClass.includes('white') ? theme('colors.black') : theme('colors.white')
+              backgroundColor: colorClass.includes('white') ? theme('colors.black') : theme('colors.white'),
+              backgroundColor: hexToRGB( `${colorClass.includes('white') ? '#000000' : '#ffffff'}` , 'var(--bg-opacity)')
             }
           }
         } else if (colorClass.includes('border-')) {
           return {
             [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-              borderColor: colorClass.includes('white') ? theme('colors.black') : theme('colors.white')
+              borderColor: colorClass.includes('white') ? theme('colors.black') : theme('colors.white'),
+              borderColor: hexToRGB( `${colorClass.includes('white') ? '#000000' : '#ffffff'}` , 'var(--border-opacity)')
             }
           }
         } else if (colorClass.includes('placeholder-')) {
           return {
             [`${darkSelector} .${colorClass}::placeholder`]: {
-              color: colorClass.includes('white') ? theme('colors.black') : theme('colors.white')
+              color: colorClass.includes('white') ? theme('colors.black') : theme('colors.white'),
+              color: hexToRGB( `${colorClass.includes('white') ? '#000000' : '#ffffff'}` , 'var(--text-opacity)')
             }
           }
         }
@@ -123,26 +139,30 @@ const nightwind = plugin(
         if (colorClass.includes('text-')) {
           return {
             [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-              color: theme(`colors.${getColor}.${invertWeight}`)
+              color: theme(`colors.${getColor}.${invertWeight}`),
+              color: hexToRGB( `${theme(`colors.${getColor}.${invertWeight}`)}` , 'var(--text-opacity)')
             }
           }  
         }
         else if (colorClass.includes('bg-')) {
           return {
             [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-              backgroundColor: theme(`colors.${getColor}.${invertWeight}`)
+              backgroundColor: theme(`colors.${getColor}.${invertWeight}`),
+              backgroundColor: hexToRGB( `${theme(`colors.${getColor}.${invertWeight}`)}` , 'var(--bg-opacity)')
             }
           }
         } else if (colorClass.includes('border-')) {
           return {
             [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-              borderColor: theme(`colors.${getColor}.${invertWeight}`)
+              borderColor: theme(`colors.${getColor}.${invertWeight}`),
+              borderColor: hexToRGB( `${theme(`colors.${getColor}.${invertWeight}`)}` , 'var(--border-opacity)')
             }
           }
         } else if (colorClass.includes('placeholder-')) {
           return {
             [`${darkSelector} .${colorClass}::placeholder`]: {
-              color: theme(`colors.${getColor}.${invertWeight}`)
+              color: theme(`colors.${getColor}.${invertWeight}`),
+              color: hexToRGB( `${theme(`colors.${getColor}.${invertWeight}`)}` , 'var(--text-opacity)')
             }
           }
         }
