@@ -22,9 +22,10 @@ module.exports = {
     }
   },
 
-  initNightMode: () => {
+  initNightwind: () => {
     module.exports.watchNightMode();
     module.exports.addNightModeSelector();
+    module.exports.addNightTransitions();
   },
 
   toggleNightMode: () => {
