@@ -10,7 +10,7 @@ const nightwind = plugin(
     
     const colors = theme('colors')
     const colorVariants = variants('nightwind')
-    const prefixes = ['text', 'bg', 'border', 'placeholder']
+    const prefixes = ['text', 'bg', 'border', 'placeholder', 'ring', 'ring-offset']
     const weights = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
 
     function hexToRGB(hex, alpha) {
@@ -131,40 +131,70 @@ const nightwind = plugin(
               color: hexToRGB( `${colorClass.includes('white') ? '#000000' : '#ffffff'}` , 'var(--text-opacity)')
             }
           }
+        // } else if (colorClass.includes('ring-')) {
+        //   return {
+        //     [`${darkSelector} .${colorClass}::placeholder`]: {
+        //       color: colorClass.includes('white') ? theme('colors.black') : theme('colors.white'),
+        //       color: hexToRGB( `${colorClass.includes('white') ? '#000000' : '#ffffff'}` , 'var(--text-opacity)')
+        //     }
+        //   }
+        // } else if (colorClass.includes('ring-offset-')) {
+        //   return {
+        //     [`${darkSelector} .${colorClass}::placeholder`]: {
+        //       color: colorClass.includes('white') ? theme('colors.black') : theme('colors.white'),
+        //       color: hexToRGB( `${colorClass.includes('white') ? '#000000' : '#ffffff'}` , 'var(--text-opacity)')
+        //     }
+        //   }
         }
       } else {
-        const getColor = colorClass.split('-')[1]
-        const invertWeight = String(Math.floor((1000 - Number(colorClass.split('-')[2]))/100)*100) 
+        const colorValues = colorClass.split('-')
+        const weight = colorValues.pop()
+        const color = colorValues.pop()
+        const invertWeight = String(Math.floor((1000 - Number(weight))/100)*100) 
 
         if (colorClass.includes('text-')) {
           return {
             [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-              color: theme(`colors.${getColor}.${invertWeight}`),
-              color: hexToRGB( `${theme(`colors.${getColor}.${invertWeight}`)}` , 'var(--text-opacity)')
+              color: theme(`colors.${color}.${invertWeight}`),
+              color: hexToRGB( `${theme(`colors.${color}.${invertWeight}`)}` , 'var(--text-opacity)')
             }
           }  
         }
         else if (colorClass.includes('bg-')) {
           return {
             [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-              backgroundColor: theme(`colors.${getColor}.${invertWeight}`),
-              backgroundColor: hexToRGB( `${theme(`colors.${getColor}.${invertWeight}`)}` , 'var(--bg-opacity)')
+              backgroundColor: theme(`colors.${color}.${invertWeight}`),
+              backgroundColor: hexToRGB( `${theme(`colors.${color}.${invertWeight}`)}` , 'var(--bg-opacity)')
             }
           }
         } else if (colorClass.includes('border-')) {
           return {
             [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-              borderColor: theme(`colors.${getColor}.${invertWeight}`),
-              borderColor: hexToRGB( `${theme(`colors.${getColor}.${invertWeight}`)}` , 'var(--border-opacity)')
+              borderColor: theme(`colors.${color}.${invertWeight}`),
+              borderColor: hexToRGB( `${theme(`colors.${color}.${invertWeight}`)}` , 'var(--border-opacity)')
             }
           }
         } else if (colorClass.includes('placeholder-')) {
           return {
             [`${darkSelector} .${colorClass}::placeholder`]: {
-              color: theme(`colors.${getColor}.${invertWeight}`),
-              color: hexToRGB( `${theme(`colors.${getColor}.${invertWeight}`)}` , 'var(--text-opacity)')
+              color: theme(`colors.${color}.${invertWeight}`),
+              color: hexToRGB( `${theme(`colors.${color}.${invertWeight}`)}` , 'var(--text-opacity)')
             }
           }
+        // } else if (colorClass.includes('ring-')) {
+        //   return {
+        //     [`${darkSelector} .${colorClass}::placeholder`]: {
+        //       color: colorClass.includes('white') ? theme('colors.black') : theme('colors.white'),
+        //       color: hexToRGB( `${colorClass.includes('white') ? '#000000' : '#ffffff'}` , 'var(--text-opacity)')
+        //     }
+        //   }
+        // } else if (colorClass.includes('ring-offset-')) {
+        //   return {
+        //     [`${darkSelector} .${colorClass}::placeholder`]: {
+        //       color: colorClass.includes('white') ? theme('colors.black') : theme('colors.white'),
+        //       color: hexToRGB( `${colorClass.includes('white') ? '#000000' : '#ffffff'}` , 'var(--text-opacity)')
+        //     }
+        //   }
         }
       }
     })
@@ -184,8 +214,7 @@ const nightwind = plugin(
   },
   {
     purge: [
-      './node_modules/nightwind/**/*.js',
-      './node_modules/nightwind/**/*.jsx',
+      './node_modules/nightwind/**/*.js'
     ],
   }
 );
