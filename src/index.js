@@ -11,7 +11,7 @@ const nightwind = plugin(
     const colors = theme('colors')
     const colorVariants = variants('nightwind')
     const prefixes = ['text', 'bg', 'border', 'placeholder']
-    const weights = [100, 200, 300, 400, 500, 600, 700, 800, 900]
+    const weights = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
 
     function hexToRGB(hex, alpha) {
       var r = parseInt(hex.slice(1, 3), 16),
@@ -134,7 +134,7 @@ const nightwind = plugin(
         }
       } else {
         const getColor = colorClass.split('-')[1]
-        const invertWeight = String(1000 - Number(colorClass.slice(-3)))
+        const invertWeight = String(Math.floor((1000 - Number(colorClass.split('-')[2]))/100)*100) 
 
         if (colorClass.includes('text-')) {
           return {
