@@ -131,20 +131,18 @@ const nightwind = plugin(
               color: hexToRGB( `${colorClass.includes('white') ? '#000000' : '#ffffff'}` , 'var(--text-opacity)')
             }
           }
-        // } else if (colorClass.includes('ring-')) {
-        //   return {
-        //     [`${darkSelector} .${colorClass}::placeholder`]: {
-        //       color: colorClass.includes('white') ? theme('colors.black') : theme('colors.white'),
-        //       color: hexToRGB( `${colorClass.includes('white') ? '#000000' : '#ffffff'}` , 'var(--text-opacity)')
-        //     }
-        //   }
-        // } else if (colorClass.includes('ring-offset-')) {
-        //   return {
-        //     [`${darkSelector} .${colorClass}::placeholder`]: {
-        //       color: colorClass.includes('white') ? theme('colors.black') : theme('colors.white'),
-        //       color: hexToRGB( `${colorClass.includes('white') ? '#000000' : '#ffffff'}` , 'var(--text-opacity)')
-        //     }
-        //   }
+        } else if (colorClass.includes('ring-')) {
+          return {
+            [`${darkSelector} .${colorClass}::placeholder`]: {
+              ringColor: hexToRGB( `${colorClass.includes('white') ? '#000000' : '#ffffff'}` , 'var(--ring-opacity)')
+            }
+          }
+        } else if (colorClass.includes('ring-offset-')) {
+          return {
+            [`${darkSelector} .${colorClass}::placeholder`]: {
+              ringOffsetColor: hexToRGB( `${colorClass.includes('white') ? '#000000' : '#ffffff'}` , 'var(--ring-offset-opacity)')
+            }
+          }
         }
       } else {
         const colorValues = colorClass.split('-')
@@ -181,20 +179,18 @@ const nightwind = plugin(
               color: hexToRGB( `${theme(`colors.${color}.${invertWeight}`)}` , 'var(--text-opacity)')
             }
           }
-        // } else if (colorClass.includes('ring-')) {
-        //   return {
-        //     [`${darkSelector} .${colorClass}::placeholder`]: {
-        //       color: colorClass.includes('white') ? theme('colors.black') : theme('colors.white'),
-        //       color: hexToRGB( `${colorClass.includes('white') ? '#000000' : '#ffffff'}` , 'var(--text-opacity)')
-        //     }
-        //   }
-        // } else if (colorClass.includes('ring-offset-')) {
-        //   return {
-        //     [`${darkSelector} .${colorClass}::placeholder`]: {
-        //       color: colorClass.includes('white') ? theme('colors.black') : theme('colors.white'),
-        //       color: hexToRGB( `${colorClass.includes('white') ? '#000000' : '#ffffff'}` , 'var(--text-opacity)')
-        //     }
-        //   }
+        } else if (colorClass.includes('ring-')) {
+          return {
+            [`${darkSelector} .${colorClass}::placeholder`]: {
+              ringColor: hexToRGB( `${theme(`colors.${color}.${invertWeight}`)}` , 'var(--ring-opacity)'),
+            }
+          }
+        } else if (colorClass.includes('ring-offset-')) {
+          return {
+            [`${darkSelector} .${colorClass}::placeholder`]: {
+              ringOffsetColor: hexToRGB( `${theme(`colors.${color}.${invertWeight}`)}` , 'var(--ring-offset-opacity)')
+            }
+          }
         }
       }
     })
