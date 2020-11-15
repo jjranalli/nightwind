@@ -131,16 +131,16 @@ const nightwind = plugin(
               color: hexToRGB( `${colorClass.includes('white') ? '#000000' : '#ffffff'}` , 'var(--text-opacity)')
             }
           }
-        } else if (colorClass.includes('ring-')) {
-          return {
-            [`${darkSelector} .${colorClass}::placeholder`]: {
-              ringColor: hexToRGB( `${colorClass.includes('white') ? '#000000' : '#ffffff'}` , 'var(--ring-opacity)')
-            }
-          }
         } else if (colorClass.includes('ring-offset-')) {
           return {
-            [`${darkSelector} .${colorClass}::placeholder`]: {
-              ringOffsetColor: hexToRGB( `${colorClass.includes('white') ? '#000000' : '#ffffff'}` , 'var(--ring-offset-opacity)')
+            [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
+              '--ring-offset-color': `${colorClass.includes('white') ? '#000000' : '#ffffff'}`
+            }
+          }
+        } else if (colorClass.includes('ring-')) {
+          return {
+            [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
+              '--ring-color': hexToRGB( `${colorClass.includes('white') ? '#000000' : '#ffffff'}` , 'var(--ring-opacity)')
             }
           }
         }
@@ -179,19 +179,19 @@ const nightwind = plugin(
               color: hexToRGB( `${theme(`colors.${color}.${invertWeight}`)}` , 'var(--text-opacity)')
             }
           }
-        } else if (colorClass.includes('ring-')) {
-          return {
-            [`${darkSelector} .${colorClass}::placeholder`]: {
-              ringColor: hexToRGB( `${theme(`colors.${color}.${invertWeight}`)}` , 'var(--ring-opacity)'),
-            }
-          }
         } else if (colorClass.includes('ring-offset-')) {
           return {
-            [`${darkSelector} .${colorClass}::placeholder`]: {
-              ringOffsetColor: hexToRGB( `${theme(`colors.${color}.${invertWeight}`)}` , 'var(--ring-offset-opacity)')
+            [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
+              '--ring-offset-color': `${theme(`colors.${color}.${invertWeight}`)}`
             }
           }
-        }
+        } else if (colorClass.includes('ring-')) {
+          return {
+            [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
+              '--ring-color': hexToRGB( `${theme(`colors.${color}.${invertWeight}`)}` , 'var(--ring-opacity)'),
+            }
+          }
+        } 
       }
     })
 
