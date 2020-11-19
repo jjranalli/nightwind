@@ -1,6 +1,6 @@
 {
   "name": "nightwind",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "An automatic, overridable, customisable Tailwind dark mode plugin",
   "main": "src/index.js",
   "repository": {
@@ -18,7 +18,7 @@
     "javascript"
   ],
   "dependencies": {
-    "tailwindcss": "^2.0.0"
+    "tailwindcss": "^2.0.1"
   },
   "author": "Jacopo Ranalli",
   "license": "MIT",
