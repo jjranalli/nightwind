@@ -73,37 +73,39 @@ const nightwind = plugin(
       }
     })
     
-    Object.keys(colors).forEach( color  => {
-      prefixes.forEach(prefix => {
-        if (color == 'transparent' || color == 'current' || color == 'white' || color == 'black') {
-          const transitionClass = {
-            [`.nightwind .${prefix}-${color}`]: {
-              transitionDuration: theme('transitionDuration.nightwind'), 
-              transitionProperty: theme('transitionProperty.colors')
-            },
-            [`.nightwind .dark\\:${prefix}-${color}`]: {
-              transitionDuration: theme('transitionDuration.nightwind'), 
-              transitionProperty: theme('transitionProperty.colors')
-            }
-          }
-          transitionClasses.push(transitionClass)
-        } else {
-          weights.forEach( weight => {
+    if(theme('transitionDuration.nightwind') !== false) {
+      Object.keys(colors).forEach( color  => {
+        prefixes.forEach(prefix => {
+          if (color == 'transparent' || color == 'current' || color == 'white' || color == 'black') {
             const transitionClass = {
-              [`.nightwind .${prefix}-${color}-${weight}`]: {
+              [`.nightwind .${prefix}-${color}`]: {
                 transitionDuration: theme('transitionDuration.nightwind'), 
                 transitionProperty: theme('transitionProperty.colors')
               },
-              [`.nightwind .dark\\:${prefix}-${color}-${weight}`]: {
+              [`.nightwind .dark\\:${prefix}-${color}`]: {
                 transitionDuration: theme('transitionDuration.nightwind'), 
                 transitionProperty: theme('transitionProperty.colors')
               }
             }
             transitionClasses.push(transitionClass)
-          })
-        }
+          } else {
+            weights.forEach( weight => {
+              const transitionClass = {
+                [`.nightwind .${prefix}-${color}-${weight}`]: {
+                  transitionDuration: theme('transitionDuration.nightwind'), 
+                  transitionProperty: theme('transitionProperty.colors')
+                },
+                [`.nightwind .dark\\:${prefix}-${color}-${weight}`]: {
+                  transitionDuration: theme('transitionDuration.nightwind'), 
+                  transitionProperty: theme('transitionProperty.colors')
+                }
+              }
+              transitionClasses.push(transitionClass)
+            })
+          }
+        })
       })
-    })
+    }
 
     const nightwindClasses = colorClasses.map((colorClass) => {
       let pseudoVariant = ''
