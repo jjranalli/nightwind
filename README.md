@@ -180,7 +180,7 @@ module.exports = {
   // ...
   variants: {
   'nightwind': {
-    'variants': ['focus'],
+    'variants': ['focus'], // Add any Tailwind variant
     'colorClasses': ['gradient', 'ring', 'ring-offset', 'divide', 'placeholder']
     },
   },
@@ -189,6 +189,8 @@ module.exports = {
 ```
 
 The 'gradient' color class enables Nightwind for the 'from', 'via' and 'to' classes, allowing automatic dark gradients.
+
+The available values for colorClasses are the ones listed above.
 
 ## Overrides
 
