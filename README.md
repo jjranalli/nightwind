@@ -1,6 +1,6 @@
 # Nightwind
 
-A plugin that gives you an *out-of-the-box, customisable, overridable dark mode* for tailwindcss.
+A plugin that gives you an **out-of-the-box, customisable, overridable dark mode** for tailwindcss.
 
 Nightwind uses the existing Tailwind color palette and your own custom colors to automatically generate the dark mode version of the Tailwind color classes you use.
 
@@ -25,7 +25,7 @@ module.exports = {
 }
 ```
 
-### Older Tailwind versions (< 2.0)
+#### Installation for older Tailwind versions (< 2.0)
 
 ```js
 // tailwind.config.js
@@ -89,7 +89,7 @@ export default function Navbar() {
 
 ### Supported classes
 
-Due to file size considerations, Nightwind is enabled by default only on the *'text'*, *'bg'* and *'border'* color classes, as well as their *'hover'* variants. 
+Due to file size considerations, Nightwind is enabled by default only on the **'text'**, **'bg'** and **'border'** color classes, as well as their **'hover'** variants. 
 
 You can also extend Nightwind to other classes and variants:
 - color classes: 'placeholder', 'ring', 'ring-offset', 'divide', 'gradients'
@@ -204,7 +204,7 @@ The 'dark' variant can be used to override the automatic Nightwind classes.
 
 > Note: The 'dark' variant can also be concatenated with both screens and other variants, so you can write classes like 'sm:dark:hover:text-yellow-200'.
 
-Please refer to the (Tailwind official documentation)[https://tailwindcss.com/docs/dark-mode] to learn more about the 'dark' variant.
+Please refer to the [Tailwind official documentation](https://tailwindcss.com/docs/dark-mode) to learn more about the 'dark' variant.
 
 ### Custom classes
 
