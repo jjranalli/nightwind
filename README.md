@@ -17,11 +17,9 @@ Enable the Dark class variant in your tailwind.config.js file.
 ```js
 // tailwind.config.js - Tailwind ^2.0
 module.exports = {
-  darkMode: 'class',
-  // ...
-  plugins: [
-    require('nightwind')
-  ]
+	darkMode: "class",
+	// ...
+	plugins: [require("nightwind")],
 }
 ```
 
@@ -30,15 +28,13 @@ module.exports = {
 ```js
 // tailwind.config.js
 module.exports = {
-  experimental: {
-    darkModeVariant: true,
-    applyComplexClasses: true
-  },
-  dark: 'class',
-  // ...
-  plugins: [
-    require('nightwind')
-  ]
+	experimental: {
+		darkModeVariant: true,
+		applyComplexClasses: true,
+	},
+	dark: "class",
+	// ...
+	plugins: [require("nightwind")],
 }
 ```
 
@@ -53,7 +49,7 @@ You can define your own functions to manage the dark mode, or use the helper fun
 import nightwind from 'nightwind/helper'
 
 export default function Layout({children}) {
-  
+
   useEffect(() => {
     nightwind.initNightwind()
   }, []);
@@ -66,36 +62,35 @@ export default function Layout({children}) {
 
 ```js
 // React Example
-import nightwind from 'nightwind/helper'
+import nightwind from "nightwind/helper"
 
 export default function Navbar() {
-  return (
-    // ...
-    <button onClick={ () => nightwind.toggleNightMode() }></button>
-    // ...
-  )
+	return (
+		// ...
+		<button onClick={() => nightwind.toggleNightMode()}></button>
+		// ...
+	)
 }
 ```
 
 ### Some examples
 
-- 'bg-white' in dark mode becomes 'bg-black'
-- 'bg-red-50' in dark mode becomes 'bg-red-900'
-- 'ring-amber-100' in dark mode becomes 'ring-amber-900'
-- 'placeholder-gray-200' in dark mode becomes 'placeholder-gray-800'
-- 'hover:text-indigo-300' in dark mode becomes 'hover:text-indigo-700'
-- 'sm:border-lightBlue-400' in dark mode becomes 'sm:border-lightBlue-600'
-- 'xl:hover:bg-purple-500' in dark mode remains 'xl:hover:bg-purple-500'
+-   'bg-white' in dark mode becomes 'bg-black'
+-   'bg-red-50' in dark mode becomes 'bg-red-900'
+-   'ring-amber-100' in dark mode becomes 'ring-amber-900'
+-   'placeholder-gray-200' in dark mode becomes 'placeholder-gray-800'
+-   'hover:text-indigo-300' in dark mode becomes 'hover:text-indigo-700'
+-   'sm:border-lightBlue-400' in dark mode becomes 'sm:border-lightBlue-600'
+-   'xl:hover:bg-purple-500' in dark mode remains 'xl:hover:bg-purple-500'
 
 ### Supported classes
 
-Due to file size considerations, Nightwind is enabled by default only on the **'text'**, **'bg'** and **'border'** color classes, as well as their **'hover'** variants. 
+Due to file size considerations, Nightwind is enabled by default only on the **'text'**, **'bg'** and **'border'** color classes, as well as their **'hover'** variants.
 
 You can also extend Nightwind to other classes and variants:
-- color classes: 'placeholder', 'ring', 'ring-offset', 'divide', 'gradients'
-- variants: all Tailwind variants are supported
 
-Check the following section on how to configure it.
+-   color classes: 'placeholder', 'ring', 'ring-offset', 'divide', 'gradients'
+-   variants: all Tailwind variants are supported
 
 ## Configuration
 
@@ -110,27 +105,27 @@ If you add your custom colors in tailwind.config.js following the same number no
 ```js
 // tailwind.config.js
 module.exports = {
-  // ...
-  theme: {
-    extend: {
-      colors: {
-        'primary': {
-          100: '#caf0f8', // becomes primary-900 in dark mode
-          300: '#90e0ef', // becomes primary-700 in dark mode
-          500: '#00b4d8', // remains the same in dark mode
-          700: '#0077b6', // becomes primary-300 in dark mode
-          900: '#03045e', // becomes primary-100 in dark mode
-        }
-      },
-    },
-  },
-  // ...
+	// ...
+	theme: {
+		extend: {
+			colors: {
+				primary: {
+					100: "#caf0f8", // becomes primary-900 in dark mode
+					300: "#90e0ef", // becomes primary-700 in dark mode
+					500: "#00b4d8", // remains the same in dark mode
+					700: "#0077b6", // becomes primary-300 in dark mode
+					900: "#03045e", // becomes primary-100 in dark mode
+				},
+			},
+		},
+	},
+	// ...
 }
 ```
 
 ### Screens
 
-Nightwind is responsive by default. If you add custom breakpoints they get automatically applied to Nightwind classes. 
+Nightwind is responsive by default. If you add custom breakpoints they get automatically applied to Nightwind classes.
 
 ### Transition Duration
 
@@ -139,34 +134,34 @@ Nightwind by default applies a '300ms' transition to all color classes. You can 
 ```js
 // tailwind.config.js
 module.exports = {
-  // ...
-  theme: {
-    extend: {
-      transitionDuration: {
-        'nightwind': '500ms' // default '300ms'
-      }
-    },
-  },
-  // ...
+	// ...
+	theme: {
+		extend: {
+			transitionDuration: {
+				nightwind: "500ms", // default '300ms'
+			},
+		},
+	},
+	// ...
 }
 ```
 
 If you wish to disable transition for a single class, you can add the 'duration-0' class to the element (it is already included in Nightwind).
 
-If you wish to disable transitions for all nightwind classes, you can set the same value to false.  
+If you wish to disable transitions for all nightwind classes, you can set the same value to false.
 
 ```js
 // tailwind.config.js
 module.exports = {
-  // ...
-  theme: {
-    extend: {
-      transitionDuration: {
-        'nightwind': false // default '300ms'
-      }
-    },
-  },
-  // ...
+	// ...
+	theme: {
+		extend: {
+			transitionDuration: {
+				nightwind: false, // default '300ms'
+			},
+		},
+	},
+	// ...
 }
 ```
 
@@ -177,14 +172,20 @@ Variants and other color classes can be enabled for Nightwind like so:
 ```js
 // tailwind.config.js
 module.exports = {
-  // ...
-  variants: {
-  'nightwind': {
-    'variants': ['focus'], // Add any Tailwind variant
-    'colorClasses': ['gradient', 'ring', 'ring-offset', 'divide', 'placeholder']
-    },
-  },
-  // ...
+	// ...
+	variants: {
+		nightwind: {
+			variants: ["focus"], // Add any Tailwind variant
+			colorClasses: [
+				"gradient",
+				"ring",
+				"ring-offset",
+				"divide",
+				"placeholder",
+			],
+		},
+	},
+	// ...
 }
 ```
 
@@ -212,7 +213,7 @@ Thanks to the support for complex classes added in Tailwind 2.0, no additional s
 
 ```css
 .custom {
-  @apply text-indigo-700 hover:text-indigo-600;
+	@apply text-indigo-700 hover:text-indigo-600;
 }
 ```
 

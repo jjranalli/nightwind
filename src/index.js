@@ -8,6 +8,7 @@ const nightwind = plugin(
     const colorClasses = []
     const transitionClasses = []
     const colors = theme('colors')
+    const darkColors = theme('dark.colors')
     const colorVariants = ['hover']
     const prefixes = ['text', 'bg', 'border']
     const weights = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
@@ -23,11 +24,24 @@ const nightwind = plugin(
       }
     }
 
-    function hexToRGB(hex, alpha) {
-      var r = parseInt(hex.slice(1, 3), 16),
-          g = parseInt(hex.slice(3, 5), 16),
-          b = parseInt(hex.slice(5, 7), 16);
-  
+    function hexToRGB(h, alpha) {
+      // 3 digits
+      if (h.length == 4) {
+        let rh = h[1] + h[1];
+        let gh = h[2] + h[2];
+        let bh = h[3] + h[3];
+        var r = parseInt(rh, 16),
+        g = parseInt(gh, 16),
+        b = parseInt(bh, 16);
+      }
+
+      // 6 digits
+      if (h.length == 7) {
+        var r = parseInt(h.slice(1, 3), 16),
+            g = parseInt(h.slice(3, 5), 16),
+            b = parseInt(h.slice(5, 7), 16);
+      }
+
       if (alpha) {
           return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
       } else {
@@ -107,6 +121,17 @@ const nightwind = plugin(
       })
     }
 
+    let whiteSelector = '#000'
+    let blackSelector = '#fff'
+    if (theme(`dark.colors.white`)) {
+      const colorMap = theme(`dark.colors.white`)
+      whiteSelector = theme(`colors.${colorMap}`) ? theme(`colors.${colorMap}`) : colorMap
+    } 
+    if (theme(`dark.colors.black`)) {
+      const colorMap = theme(`dark.colors.black`)
+      blackSelector = theme(`colors.${colorMap}`) ? theme(`colors.${colorMap}`) : colorMap
+    }
+
     const nightwindClasses = colorClasses.map((colorClass) => {
       let pseudoVariant = ''
 
@@ -115,70 +140,73 @@ const nightwind = plugin(
       })
 
       if ( colorClass.includes('white') || colorClass.includes('black') ) {
+
+        const colorValue = colorClass.includes('white') ? whiteSelector : blackSelector
+
         if (colorClass.includes('text-')) {
           return {
             [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-              color: colorClass.includes('white') ? theme('colors.black') : theme('colors.white'),
-              color: hexToRGB( `${colorClass.includes('white') ? '#000000' : '#ffffff'}` , 'var(--tw-text-opacity)')
+              color: colorValue,
+              color: hexToRGB( `${colorValue}` , 'var(--tw-text-opacity)')
             }
           }
         } else if (colorClass.includes('bg-')) {
           return {
             [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-              backgroundColor: colorClass.includes('white') ? theme('colors.black') : theme('colors.white'),
-              backgroundColor: hexToRGB( `${colorClass.includes('white') ? '#000000' : '#ffffff'}` , 'var(--tw-bg-opacity)')
+              backgroundColor: colorValue,
+              backgroundColor: hexToRGB( `${colorValue}` , 'var(--tw-bg-opacity)')
             }
           }
         } else if (colorClass.includes('border-')) {
           return {
             [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-              borderColor: colorClass.includes('white') ? theme('colors.black') : theme('colors.white'),
-              borderColor: hexToRGB( `${colorClass.includes('white') ? '#000000' : '#ffffff'}` , 'var(--tw-border-opacity)')
+              borderColor: colorValue,
+              borderColor: hexToRGB( `${colorValue}` , 'var(--tw-border-opacity)')
             }
           }
         } else if (colorClass.includes('divide-')) {
           return {
             [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''} > :not([hidden]) ~ :not([hidden])`]: {
-              borderColor: colorClass.includes('white') ? theme('colors.black') : theme('colors.white'),
-              borderColor: hexToRGB( `${colorClass.includes('white') ? '#000000' : '#ffffff'}` , 'var(--tw-divide-opacity)')
+              borderColor: colorValue,
+              borderColor: hexToRGB( `${colorValue}` , 'var(--tw-divide-opacity)')
             }
           }
         } else if (colorClass.includes('placeholder-')) {
           return {
             [`${darkSelector} .${colorClass}::placeholder`]: {
-              color: colorClass.includes('white') ? theme('colors.black') : theme('colors.white'),
-              color: hexToRGB( `${colorClass.includes('white') ? '#000000' : '#ffffff'}` , 'var(--tw-text-opacity)')
+              color: colorValue,
+              color: hexToRGB( `${colorValue}` , 'var(--tw-text-opacity)')
             }
           }
         } else if (colorClass.includes('ring-offset-')) {
           return {
             [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-              '--tw-ring-offset-color': `${colorClass.includes('white') ? '#000000' : '#ffffff'}`
+              '--tw-ring-offset-color': `${colorValue}`
             }
           }
         } else if (colorClass.includes('ring-')) {
           return {
             [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-              '--tw-ring-color': hexToRGB( `${colorClass.includes('white') ? '#000000' : '#ffffff'}` , 'var(--tw-ring-opacity)')
+              '--tw-ring-color': hexToRGB( `${colorValue}` , 'var(--tw-ring-opacity)')
             }
           }
         } else if (colorClass.includes('from-')) {
           return {
             [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-              '--tw-gradient-from': colorClass.includes('white') ? theme('colors.black') : theme('colors.white'),
-              '--tw-gradient-stops': `var(--tw-gradient-from), var(--tw-gradient-to, ${ hexToRGB(`${colorClass.includes('white') ? theme('colors.black') : theme('colors.white')}`, '0') })`,
+              '--tw-gradient-from': colorValue,
+              '--tw-gradient-stops': `var(--tw-gradient-from), var(--tw-gradient-to, ${ hexToRGB(`${colorValue}`, '0') })`,
             }
           }
         } else if (colorClass.includes('via-')) {
           return {
             [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-              '--tw-gradient-stops': `var(--tw-gradient-from), ${colorClass.includes('white') ? theme('colors.black') : theme('colors.white')}, var(--tw-gradient-to, ${hexToRGB(`${colorClass.includes('white') ? theme('colors.black') : theme('colors.white')}`, '0')})`,
+              '--tw-gradient-stops': `var(--tw-gradient-from), ${colorValue}, var(--tw-gradient-to, ${hexToRGB(`${colorValue}`, '0')})`,
             }
           }
         } else if (colorClass.includes('to-')) {
           return {
             [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-              '--tw-gradient-to': `${colorClass.includes('white') ? theme('colors.black') : theme('colors.white')}`,
+              '--tw-gradient-to': `${colorValue}`,
             }
           }
         }
@@ -187,77 +215,97 @@ const nightwind = plugin(
         const weight = colorValues.pop()
         const color = colorValues.pop()
         const invertWeight = String(Math.floor((1000 - Number(weight))/100)*100) 
+        
+        let colorValue = ''
+        
+        if (theme(`dark.colors.${color}.${weight}`)) {
+          colorValue = theme(`dark.colors.${color}.${weight}`)
+        } else if (theme(`dark.colors.${color}`) && typeof(theme(`dark.colors.${color}`)) === 'string') {
+          const colorMap = theme(`dark.colors.${color}`)
+          if (theme(`colors.${colorMap}.${invertWeight}`)) {
+            colorValue = theme(`colors.${colorMap}.${invertWeight}`)
+          } else if (colorMap.split('.').length === 2) {
+            colorValue = theme(`colors.${colorMap}`)
+          } else if (theme(`colors.${colorMap}`) && theme(`colors.${color}.${invertWeight}`)) {
+            colorValue = theme(`colors.${color}.${invertWeight}`)
+          } else {
+            colorValue = colorMap
+          }
+        } else {
+          colorValue = theme(`colors.${color}.${invertWeight}`)
+        }
 
+        
         if (colorClass.includes('text-')) {
           return {
             [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-              color: theme(`colors.${color}.${invertWeight}`),
-              color: hexToRGB( `${theme(`colors.${color}.${invertWeight}`)}` , 'var(--tw-text-opacity)')
+              color: colorValue,
+              color: hexToRGB( `${colorValue}` , 'var(--tw-text-opacity)')
             }
-          }  
+          }
+        } else if (colorClass.includes('bg-')) {
+            return {
+              [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
+                backgroundColor: colorValue,
+                backgroundColor: hexToRGB( `${colorValue}` , 'var(--tw-bg-opacity)')
+              }
+            }
+          } else if (colorClass.includes('border-')) {
+            return {
+              [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
+                borderColor: colorValue,
+                borderColor: hexToRGB( `${colorValue}` , 'var(--tw-border-opacity)')
+              }
+            }
+          } else if (colorClass.includes('divide-')) {
+            return {
+              [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''} > :not([hidden]) ~ :not([hidden])`]: {
+                borderColor: colorValue,
+                borderColor: hexToRGB( `${colorValue}` , 'var(--tw-divide-opacity)')
+              }
+            }
+          } else if (colorClass.includes('placeholder-')) {
+            return {
+              [`${darkSelector} .${colorClass}::placeholder`]: {
+                color: colorValue,
+                color: hexToRGB( `${colorValue}` , 'var(--tw-text-opacity)')
+              }
+            }
+          } else if (colorClass.includes('ring-offset-')) {
+            return {
+              [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
+                '--tw-ring-offset-color': `${colorValue}`
+              }
+            }
+          } else if (colorClass.includes('ring-')) {
+            return {
+              [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
+                '--tw-ring-color': hexToRGB( `${colorValue}` , 'var(--tw-ring-opacity)'),
+              }
+            }
+          } else if (colorClass.includes('from-')) {
+            return {
+              [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
+                '--tw-gradient-from': `${colorValue}`,
+                '--tw-gradient-stops': `var(--tw-gradient-from), var(--tw-gradient-to, ${ hexToRGB(`${colorValue}`, '0') })`,
+              }
+            }
+          } else if (colorClass.includes('via-')) {
+            return {
+              [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
+                '--tw-gradient-stops': `var(--tw-gradient-from), ${colorValue}, var(--tw-gradient-to, ${hexToRGB(`${colorValue}`, '0')})`,
+              }
+            }
+          } else if (colorClass.includes('to-')) {
+            return {
+              [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
+                '--tw-gradient-to': `${colorValue}`,
+              }
+            }
+          } 
         }
-        else if (colorClass.includes('bg-')) {
-          return {
-            [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-              backgroundColor: theme(`colors.${color}.${invertWeight}`),
-              backgroundColor: hexToRGB( `${theme(`colors.${color}.${invertWeight}`)}` , 'var(--tw-bg-opacity)')
-            }
-          }
-        } else if (colorClass.includes('border-')) {
-          return {
-            [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-              borderColor: theme(`colors.${color}.${invertWeight}`),
-              borderColor: hexToRGB( `${theme(`colors.${color}.${invertWeight}`)}` , 'var(--tw-border-opacity)')
-            }
-          }
-        } else if (colorClass.includes('divide-')) {
-          return {
-            [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''} > :not([hidden]) ~ :not([hidden])`]: {
-              borderColor: theme(`colors.${color}.${invertWeight}`),
-              borderColor: hexToRGB( `${theme(`colors.${color}.${invertWeight}`)}` , 'var(--tw-divide-opacity)')
-            }
-          }
-        } else if (colorClass.includes('placeholder-')) {
-          return {
-            [`${darkSelector} .${colorClass}::placeholder`]: {
-              color: theme(`colors.${color}.${invertWeight}`),
-              color: hexToRGB( `${theme(`colors.${color}.${invertWeight}`)}` , 'var(--tw-text-opacity)')
-            }
-          }
-        } else if (colorClass.includes('ring-offset-')) {
-          return {
-            [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-              '--tw-ring-offset-color': `${theme(`colors.${color}.${invertWeight}`)}`
-            }
-          }
-        } else if (colorClass.includes('ring-')) {
-          return {
-            [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-              '--tw-ring-color': hexToRGB( `${theme(`colors.${color}.${invertWeight}`)}` , 'var(--tw-ring-opacity)'),
-            }
-          }
-        } else if (colorClass.includes('from-')) {
-          return {
-            [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-              '--tw-gradient-from': `${theme(`colors.${color}.${invertWeight}`)}`,
-              '--tw-gradient-stops': `var(--tw-gradient-from), var(--tw-gradient-to, ${ hexToRGB(`${theme(`colors.${color}.${invertWeight}`)}`, '0') })`,
-            }
-          }
-        } else if (colorClass.includes('via-')) {
-          return {
-            [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-              '--tw-gradient-stops': `var(--tw-gradient-from), ${theme(`colors.${color}.${invertWeight}`)}, var(--tw-gradient-to, ${hexToRGB(`${theme(`colors.${color}.${invertWeight}`)}`, '0')})`,
-            }
-          }
-        } else if (colorClass.includes('to-')) {
-          return {
-            [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-              '--tw-gradient-to': `${theme(`colors.${color}.${invertWeight}`)}`,
-            }
-          }
-        } 
       }
-    })
+    )
 
     addComponents(nightwindClasses, { variants: ['responsive'] });
     addComponents(transitionClasses, { variants: ['responsive'] });
