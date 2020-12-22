@@ -4,7 +4,7 @@ A plugin that gives you an **out-of-the-box, customisable, overridable dark mode
 
 Nightwind uses the existing Tailwind color palette and your own custom colors to automatically generate the dark mode version of the Tailwind color classes you use.
 
-For example, whenever you use a class like **bg-red-700** it gets automatically switched to **bg-red-300** in dark mode.
+For example, whenever you use a class like **bg-red-600** it gets automatically switched to **bg-red-300** in dark mode.
 
 You can see how it works on https://nightwindcss.com
 
@@ -80,11 +80,11 @@ By default:
 
 -   'bg-white' in dark mode becomes 'bg-black'
 -   'bg-red-50' in dark mode becomes 'bg-red-900'
--   'ring-amber-100' in dark mode becomes 'ring-amber-900'
--   'placeholder-gray-200' in dark mode becomes 'placeholder-gray-800'
--   'hover:text-indigo-300' in dark mode becomes 'hover:text-indigo-700'
--   'sm:border-lightBlue-400' in dark mode becomes 'sm:border-lightBlue-600'
--   'xl:hover:bg-purple-500' in dark mode remains 'xl:hover:bg-purple-500'
+-   'ring-amber-100' in dark mode becomes 'ring-amber-800'
+-   'placeholder-gray-200' in dark mode becomes 'placeholder-gray-700'
+-   'hover:text-indigo-300' in dark mode becomes 'hover:text-indigo-600'
+-   'sm:border-lightBlue-400' in dark mode becomes 'sm:border-lightBlue-500'
+-   'xl:hover:bg-purple-500' in dark mode becomes 'xl:hover:bg-purple-400'
 
 ### Supported classes
 
@@ -99,9 +99,9 @@ You can also extend Nightwind to other classes and variants:
 
 ### Colors
 
-Nightwind switches between opposite color weights when switching to dark mode. So a -100 color gets switched with a -900 color, -200 with -800 and so forth. (The sum is always 1000).
+Nightwind switches between opposite color weights when switching to dark mode. So a -50 color gets switched with a -900 color, -100 with -800 and so forth.
 
-> Note: -50 colors gets switched with -900.
+> Note: Except for the -50 and -900 weights, the sum of opposite weights is always 900.
 
 If you add your custom colors in tailwind.config.js using number notation, Nightwind will treat them the same way as Tailwind's colors when switching into dark mode.
 
@@ -112,11 +112,10 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          100: "#caf0f8", // becomes primary-900 in dark mode
-          300: "#90e0ef", // becomes primary-700 in dark mode
-          500: "#00b4d8", // remains the same in dark mode
-          700: "#0077b6", // becomes primary-300 in dark mode
-          900: "#03045e", // becomes primary-100 in dark mode
+          50: "#caf0f8", // becomes primary-900 in dark mode
+          300: "#90e0ef", // becomes primary-600 in dark mode
+          600: "#0077b6", // becomes primary-300 in dark mode
+          900: "#03045e", // becomes primary-50 in dark mode
         },
       },
     },
@@ -244,7 +243,7 @@ module.exports = {
 }
 ```
 
--   When a mapping is not specified, Nightwind will fallback to the default dark color (red-100 becomes #1E3A8A, while red-200 becomes red-800)
+-   When a mapping is not specified, Nightwind will fallback to the default dark color (red-100 becomes #1E3A8A, while red-200 becomes red-700)
 
 > Note: Contrarily to all other cases, when you individually specify a dark color this way nightwind doesn't automatically invert the color weight. The same is also valid for overrides (see below).
 
@@ -266,10 +265,9 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          100: "#caf0f8",
+          50: "#caf0f8",
           300: "#90e0ef",
-          500: "#00b4d8",
-          700: "#0077b6",
+          600: "#0077b6",
           900: "#03045e"
         },
       },
@@ -278,8 +276,8 @@ module.exports = {
 }
 ```
 
--   All red color classes become blue in dark mode, with inverted weight (red-700 becomes blue-300);
--   Yellow colors in dark mode will switch to the 'primary' custom color with inverted weights, **when available** (yellow-300 becomes primary-700, but yellow-200 becomes yellow-800)
+-   All red color classes become blue in dark mode, with inverted weight (red-600 becomes blue-300);
+-   Yellow colors in dark mode will switch to the 'primary' custom color with inverted weights, **when available** (yellow-300 becomes primary-600, but yellow-200 becomes yellow-700)
 -   Notably, if you map a color class such as 'pink' to an individual color such as 'yellow.500', all pink color classes will become yellow-500 regardless of the color weight.
 
 ### Hybrid mapping
@@ -294,7 +292,7 @@ module.exports = {
       colors: {
         rose: {
           default: 'blue',
-          200: 'yellow.300'
+          100: 'yellow.300'
         },
       },
     },

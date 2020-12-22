@@ -210,7 +210,9 @@ const nightwind = plugin(
         const colorValues = colorClass.split('-')
         const weight = colorValues.pop()
         const color = colorValues.pop()
-        const invertWeight = String(Math.floor((1000 - Number(weight))/100)*100) 
+
+        const invertWeightIndex = 9 - (weights.indexOf(Number(weight)))
+        const invertWeight = String(weights[invertWeightIndex])
         
         let colorValue = ''
         
