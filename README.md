@@ -203,7 +203,7 @@ Color mapping allows you to change colors in batch, as well as fine-tune your da
 // tailwind.config.js
 module.exports = {
   theme: {
-    dark: {
+    nightwind: {
       colors: {
         // Color mappings go here
       },
@@ -229,7 +229,7 @@ You can use this to set individual dark colors, directly from tailwind.config.js
 // tailwind.config.js
 module.exports = {
   theme: {
-    dark: {
+    nightwind: {
       colors: {
         white: "gray.900",
         black: "gray.50",
@@ -256,7 +256,7 @@ This is useful when you want to switch a whole color class in one go. Consider t
 // tailwind.config.js
 module.exports = {
   theme: {
-    dark: {
+    nightwind: {
       colors: {
         red: "blue",
         yellow: "primary",
@@ -281,6 +281,25 @@ module.exports = {
 -   All red color classes become blue in dark mode, with inverted weight (red-700 becomes blue-300);
 -   Yellow colors in dark mode will switch to the 'primary' custom color with inverted weights, **when available** (yellow-300 becomes primary-700, but yellow-200 becomes yellow-800)
 -   Notably, if you map a color class such as 'pink' to an individual color such as 'yellow.500', all pink color classes will become yellow-500 regardless of the color weight.
+
+### Hybrid mapping
+
+You can even specify a default dark color for a color class, as well as individual colors for specific weights. You can do so by specifying a default value for a color class.
+
+```js
+// tailwind.config.js
+module.exports = {
+  theme: {
+    nightwind: {
+      colors: {
+        rose: {
+          default: 'blue',
+          200: 'yellow.300'
+        },
+      },
+    },
+  },
+}
 
 ## Overrides
 

@@ -8,7 +8,6 @@ const nightwind = plugin(
     const colorClasses = []
     const transitionClasses = []
     const colors = theme('colors')
-    const darkColors = theme('dark.colors')
     const colorVariants = ['hover']
     const prefixes = ['text', 'bg', 'border']
     const weights = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
@@ -120,12 +119,12 @@ const nightwind = plugin(
 
     let whiteSelector = '#000'
     let blackSelector = '#fff'
-    if (theme(`dark.colors.white`)) {
-      const colorMap = theme(`dark.colors.white`)
+    if (theme(`nightwind.colors.white`)) {
+      const colorMap = theme(`nightwind.colors.white`)
       whiteSelector = theme(`colors.${colorMap}`) ? theme(`colors.${colorMap}`) : colorMap
     } 
-    if (theme(`dark.colors.black`)) {
-      const colorMap = theme(`dark.colors.black`)
+    if (theme(`nightwind.colors.black`)) {
+      const colorMap = theme(`nightwind.colors.black`)
       blackSelector = theme(`colors.${colorMap}`) ? theme(`colors.${colorMap}`) : colorMap
     }
 
@@ -215,10 +214,11 @@ const nightwind = plugin(
         
         let colorValue = ''
         
-        if (theme(`dark.colors.${color}.${weight}`)) {
-          colorValue = theme(`dark.colors.${color}.${weight}`)
-        } else if (theme(`dark.colors.${color}`) && typeof(theme(`dark.colors.${color}`)) === 'string') {
-          const colorMap = theme(`dark.colors.${color}`)
+        if (theme(`nightwind.colors.${color}.${weight}`)) {
+          const colorMap = theme(`nightwind.colors.${color}.${weight}`)
+          colorValue = theme(`colors.${colorMap}`) ? theme(`colors.${colorMap}`) : colorMap
+        } else if (theme(`nightwind.colors.${color}`) && typeof(theme(`nightwind.colors.${color}`)) === 'string') {
+          const colorMap = theme(`nightwind.colors.${color}`);
           if (theme(`colors.${colorMap}.${invertWeight}`)) {
             colorValue = theme(`colors.${colorMap}.${invertWeight}`)
           } else if (colorMap.split('.').length === 2) {
@@ -228,6 +228,9 @@ const nightwind = plugin(
           } else {
             colorValue = colorMap
           }
+        } else if (theme(`nightwind.colors.${color}.default`)) {
+          const colorMap = theme(`nightwind.colors.${color}.default`);
+          colorValue = theme(`colors.${colorMap}.${invertWeight}`)
         } else {
           colorValue = theme(`colors.${color}.${invertWeight}`)
         }
