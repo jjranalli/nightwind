@@ -300,6 +300,7 @@ module.exports = {
     },
   },
 }
+```
 
 ## Overrides
 
