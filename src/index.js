@@ -25,7 +25,6 @@ const nightwind = plugin(
     }
 
     function hexToRGB(h, alpha) {
-      // 3 digits
       if (h.length == 4) {
         let rh = h[1] + h[1];
         let gh = h[2] + h[2];
@@ -34,8 +33,6 @@ const nightwind = plugin(
         g = parseInt(gh, 16),
         b = parseInt(bh, 16);
       }
-
-      // 6 digits
       if (h.length == 7) {
         var r = parseInt(h.slice(1, 3), 16),
             g = parseInt(h.slice(3, 5), 16),

@@ -4,6 +4,8 @@ A plugin that gives you an **out-of-the-box, customisable, overridable dark mode
 
 Nightwind uses the existing Tailwind color palette and your own custom colors to automatically generate the dark mode version of the Tailwind color classes you use.
 
+For example, whenever you use a class like **bg-red-700** it gets automatically switched to **bg-red-300** in dark mode.
+
 You can see how it works on https://nightwindcss.com
 
 ## Installation
@@ -23,7 +25,7 @@ module.exports = {
 }
 ```
 
-#### Installation for older Tailwind versions (< 2.0)
+#### In older Tailwind versions (< 2.0)
 
 ```js
 // tailwind.config.js
@@ -40,7 +42,7 @@ module.exports = {
 
 ## Usage
 
-Nightwind relies on a fixed 'nightwind' class and a toggled 'dark' class applied on a top level element in the DOM, typically the <html> element.
+Nightwind relies on a fixed 'nightwind' class and a toggled 'dark' class applied on a top level element in the DOM, typically the root element.
 
 You can define your own functions to manage the dark mode, or use the helper functions included in 'nightwind/helper.js' to get started right away.
 
@@ -49,7 +51,6 @@ You can define your own functions to manage the dark mode, or use the helper fun
 import nightwind from 'nightwind/helper'
 
 export default function Layout({children}) {
-
   useEffect(() => {
     nightwind.initNightwind()
   }, []);
@@ -75,6 +76,8 @@ export default function Navbar() {
 
 ### Some examples
 
+By default:
+
 -   'bg-white' in dark mode becomes 'bg-black'
 -   'bg-red-50' in dark mode becomes 'bg-red-900'
 -   'ring-amber-100' in dark mode becomes 'ring-amber-900'
@@ -89,7 +92,7 @@ Due to file size considerations, Nightwind is enabled by default only on the **'
 
 You can also extend Nightwind to other classes and variants:
 
--   color classes: 'placeholder', 'ring', 'ring-offset', 'divide', 'gradients'
+-   color classes: 'placeholder', 'ring', 'ring-offset', 'divide', 'gradient'
 -   variants: all Tailwind variants are supported
 
 ## Configuration
@@ -100,12 +103,11 @@ Nightwind switches between opposite color weights when switching to dark mode. S
 
 > Note: -50 colors gets switched with -900.
 
-If you add your custom colors in tailwind.config.js following the same number notation, Nightwind is smart enough to treat them the same way as Tailwind's when switching into dark mode.
+If you add your custom colors in tailwind.config.js using number notation, Nightwind will treat them the same way as Tailwind's colors when switching into dark mode.
 
 ```js
 // tailwind.config.js
 module.exports = {
-	// ...
 	theme: {
 		extend: {
 			colors: {
@@ -123,6 +125,8 @@ module.exports = {
 }
 ```
 
+You can also use **color mappings** to further customise your dark theme. Check out the next section to see how it works.
+
 ### Screens
 
 Nightwind is responsive by default. If you add custom breakpoints they get automatically applied to Nightwind classes.
@@ -134,7 +138,6 @@ Nightwind by default applies a '300ms' transition to all color classes. You can 
 ```js
 // tailwind.config.js
 module.exports = {
-	// ...
 	theme: {
 		extend: {
 			transitionDuration: {
@@ -148,12 +151,11 @@ module.exports = {
 
 If you wish to disable transition for a single class, you can add the 'duration-0' class to the element (it is already included in Nightwind).
 
-If you wish to disable transitions for all nightwind classes, you can set the same value to false.
+If you wish to disable transitions for all nightwind classes, you can do so by setting the same value to false.
 
 ```js
 // tailwind.config.js
 module.exports = {
-	// ...
 	theme: {
 		extend: {
 			transitionDuration: {
@@ -193,9 +195,96 @@ The 'gradient' color class enables Nightwind for the 'from', 'via' and 'to' clas
 
 The available values for colorClasses are the ones listed above.
 
+## Color mappings
+
+Color mapping allows you to change colors in batch, as well as fine-tune your dark theme and how Nightwind behaves in dark mode. You set them up like this:
+
+```js
+// tailwind.config.js
+module.exports = {
+	theme: {
+		dark: {
+			colors: {
+				// Color mappings go here
+			},
+		},
+	},
+}
+```
+
+There are two main ways to map colors in Nightwind: using **individual colors** or **color classes**.
+
+### Syntax
+
+You can use the following syntax to specify colors:
+
+-   Individual colors: in hex '#fff' or Tailwind-inspired color codes 'red.100'
+-   Color classes: such as 'red' or 'gray'
+
+### Individual colors
+
+You can use this to set individual dark colors, directly from tailwind.config.js
+
+```js
+// tailwind.config.js
+module.exports = {
+	theme: {
+		dark: {
+			colors: {
+				red: {
+					100: "#1E3A8A", // or 'blue.900'
+					500: "#3B82F6", // or 'blue.500'
+					900: "#DBEAFE", // or 'blue.100'
+				},
+				white: "gray.900",
+				black: "white.50",
+			},
+		},
+	},
+}
+```
+
+-   When a mapping is not specified, Nightwind will fallback to the default dark color (red-100 becomes #1E3A8A, while red-200 becomes red-800)
+
+> Note: Contrarily to all other cases, when you individually specify a dark color this way nightwind doesn't automatically invert the color weight. The same is also valid for overrides (see below).
+
+### Color classes
+
+This is useful when you want to switch a whole color class in one go. Consider the following example:
+
+```js
+// tailwind.config.js
+module.exports = {
+	theme: {
+		dark: {
+			colors: {
+				red: "blue",
+				yellow: "primary",
+				pink: "yellow.500",
+			},
+		},
+		extend: {
+			colors: {
+				primary: {
+					100: "#caf0f8",
+					300: "#90e0ef",
+					500: "#00b4d8",
+					700: "#0077b6",
+					900: "#03045e",
+				},
+			},
+		},
+	},
+}
+```
+
+-   All red color classes become blue in dark mode, with inverted weight (red-700 becomes blue-300);
+-   Yellow colors in dark mode will switch to the 'primary' custom color with inverted weights, **when available** (yellow-300 becomes primary-700, but yellow-200 becomes yellow-800)
+-   Notably, if you map a color class such as 'pink' to an individual color such as 'yellow.500', all pink color classes will become yellow-500 regardless of the color weight.
+
 ## Overrides
 
-The default dark variant allows you to write classes like 'dark:bg-gray-800' (not necessarily related to color classes) that only gets applied when you switch into dark mode.
+The default dark variant allows you to write classes like 'dark:bg-gray-200' (not necessarily related to color classes) that only gets applied when you switch into dark mode.
 
 The 'dark' variant can be used to override the automatic Nightwind classes.
 
