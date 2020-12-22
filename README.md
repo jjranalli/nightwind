@@ -231,13 +231,13 @@ module.exports = {
   theme: {
     dark: {
       colors: {
+        white: "gray.900",
+        black: "gray.50",
         red: {
           100: "#1E3A8A", // or 'blue.900'
           500: "#3B82F6", // or 'blue.500'
           900: "#DBEAFE", // or 'blue.100'
-        },
-        white: "gray.900",
-        black: "white.50",
+        }
       },
     },
   },
