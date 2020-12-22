@@ -19,9 +19,9 @@ Enable the Dark class variant in your tailwind.config.js file.
 ```js
 // tailwind.config.js - Tailwind ^2.0
 module.exports = {
-	darkMode: "class",
-	// ...
-	plugins: [require("nightwind")],
+  darkMode: "class",
+  // ...
+  plugins: [require("nightwind")],
 }
 ```
 
@@ -30,13 +30,13 @@ module.exports = {
 ```js
 // tailwind.config.js
 module.exports = {
-	experimental: {
-		darkModeVariant: true,
-		applyComplexClasses: true,
-	},
-	dark: "class",
-	// ...
-	plugins: [require("nightwind")],
+  experimental: {
+    darkModeVariant: true,
+    applyComplexClasses: true,
+  },
+  dark: "class",
+  // ...
+  plugins: [require("nightwind")],
 }
 ```
 
@@ -66,11 +66,11 @@ export default function Layout({children}) {
 import nightwind from "nightwind/helper"
 
 export default function Navbar() {
-	return (
-		// ...
-		<button onClick={() => nightwind.toggleNightMode()}></button>
-		// ...
-	)
+  return (
+    // ...
+    <button onClick={() => nightwind.toggleNightMode()}></button>
+    // ...
+  )
 }
 ```
 
@@ -108,20 +108,20 @@ If you add your custom colors in tailwind.config.js using number notation, Night
 ```js
 // tailwind.config.js
 module.exports = {
-	theme: {
-		extend: {
-			colors: {
-				primary: {
-					100: "#caf0f8", // becomes primary-900 in dark mode
-					300: "#90e0ef", // becomes primary-700 in dark mode
-					500: "#00b4d8", // remains the same in dark mode
-					700: "#0077b6", // becomes primary-300 in dark mode
-					900: "#03045e", // becomes primary-100 in dark mode
-				},
-			},
-		},
-	},
-	// ...
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          100: "#caf0f8", // becomes primary-900 in dark mode
+          300: "#90e0ef", // becomes primary-700 in dark mode
+          500: "#00b4d8", // remains the same in dark mode
+          700: "#0077b6", // becomes primary-300 in dark mode
+          900: "#03045e", // becomes primary-100 in dark mode
+        },
+      },
+    },
+  },
+  // ...
 }
 ```
 
@@ -138,14 +138,14 @@ Nightwind by default applies a '300ms' transition to all color classes. You can 
 ```js
 // tailwind.config.js
 module.exports = {
-	theme: {
-		extend: {
-			transitionDuration: {
-				nightwind: "500ms", // default '300ms'
-			},
-		},
-	},
-	// ...
+  theme: {
+    extend: {
+      transitionDuration: {
+        nightwind: "500ms", // default '300ms'
+      },
+    },
+  },
+  // ...
 }
 ```
 
@@ -156,14 +156,14 @@ If you wish to disable transitions for all nightwind classes, you can do so by s
 ```js
 // tailwind.config.js
 module.exports = {
-	theme: {
-		extend: {
-			transitionDuration: {
-				nightwind: false, // default '300ms'
-			},
-		},
-	},
-	// ...
+  theme: {
+    extend: {
+      transitionDuration: {
+        nightwind: false, // default '300ms'
+      },
+    },
+  },
+  // ...
 }
 ```
 
@@ -174,20 +174,20 @@ Variants and other color classes can be enabled for Nightwind like so:
 ```js
 // tailwind.config.js
 module.exports = {
-	// ...
-	variants: {
-		nightwind: {
-			variants: ["focus"], // Add any Tailwind variant
-			colorClasses: [
-				"gradient",
-				"ring",
-				"ring-offset",
-				"divide",
-				"placeholder",
-			],
-		},
-	},
-	// ...
+  // ...
+  variants: {
+    nightwind: {
+      variants: ["focus"], // Add any Tailwind variant
+      colorClasses: [
+        "gradient",
+        "ring",
+        "ring-offset",
+        "divide",
+        "placeholder",
+      ],
+    },
+  },
+  // ...
 }
 ```
 
@@ -202,13 +202,13 @@ Color mapping allows you to change colors in batch, as well as fine-tune your da
 ```js
 // tailwind.config.js
 module.exports = {
-	theme: {
-		dark: {
-			colors: {
-				// Color mappings go here
-			},
-		},
-	},
+  theme: {
+    dark: {
+      colors: {
+        // Color mappings go here
+      },
+    },
+  },
 }
 ```
 
@@ -228,19 +228,19 @@ You can use this to set individual dark colors, directly from tailwind.config.js
 ```js
 // tailwind.config.js
 module.exports = {
-	theme: {
-		dark: {
-			colors: {
-				red: {
-					100: "#1E3A8A", // or 'blue.900'
-					500: "#3B82F6", // or 'blue.500'
-					900: "#DBEAFE", // or 'blue.100'
-				},
-				white: "gray.900",
-				black: "white.50",
-			},
-		},
-	},
+  theme: {
+    dark: {
+      colors: {
+        red: {
+          100: "#1E3A8A", // or 'blue.900'
+          500: "#3B82F6", // or 'blue.500'
+          900: "#DBEAFE", // or 'blue.100'
+        },
+        white: "gray.900",
+        black: "white.50",
+      },
+    },
+  },
 }
 ```
 
@@ -255,26 +255,26 @@ This is useful when you want to switch a whole color class in one go. Consider t
 ```js
 // tailwind.config.js
 module.exports = {
-	theme: {
-		dark: {
-			colors: {
-				red: "blue",
-				yellow: "primary",
-				pink: "yellow.500",
-			},
-		},
-		extend: {
-			colors: {
-				primary: {
-					100: "#caf0f8",
-					300: "#90e0ef",
-					500: "#00b4d8",
-					700: "#0077b6",
-					900: "#03045e",
-				},
-			},
-		},
-	},
+  theme: {
+    dark: {
+      colors: {
+        red: "blue",
+        yellow: "primary",
+        pink: "yellow.500"
+      },
+    },
+    extend: {
+      colors: {
+        primary: {
+          100: "#caf0f8",
+          300: "#90e0ef",
+          500: "#00b4d8",
+          700: "#0077b6",
+          900: "#03045e"
+        },
+      },
+    },
+  },
 }
 ```
 
@@ -302,8 +302,8 @@ Thanks to the support for complex classes added in Tailwind 2.0, no additional s
 
 ```css
 .custom {
-	@apply text-indigo-700 hover:text-indigo-600;
+  @apply text-indigo-700 hover:text-indigo-600;
 }
 ```
 
-and Nightwind will still work as expected when you switch into dark mode.
+and Nightwind still works as expected when you switch into dark mode.
