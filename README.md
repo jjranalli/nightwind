@@ -40,26 +40,41 @@ module.exports = {
 }
 ```
 
-## Usage
+## Helper functions
 
-Nightwind relies on a fixed 'nightwind' class and a toggled 'dark' class applied on a top level element in the DOM, typically the root element.
+Nightwind relies on a fixed 'nightwind' class to manage transitions, and a toggled 'dark' class applied on a top level element in the DOM, typically the root element.
 
 You can define your own functions to manage the dark mode, or use the helper functions included in 'nightwind/helper.js' to get started right away.
 
+By default, the helper functions provided prevent [the dreaded flicker of light mode](https://www.joshwcomeau.com/react/dark-mode/#our-first-hurdle) and allow the chosen color mode to persist on update.
+
+### Initialization
+
+To initialize nightwind, append the following script tag **before your main body content**.
+
 ```js
-// React Example
-import nightwind from 'nightwind/helper'
+// React example
+import nightwind from "nightwind/helper"
 
-export default function Layout({children}) {
-  useEffect(() => {
-    nightwind.initNightwind()
-  }, []);
-
-  return (
-    // ...
-  )
+class MyDocument extends Document {
+  // ...
+  render() {
+    return (
+      <Html>
+        <Head />
+        <body>
+          <script dangerouslySetInnerHTML={{ __html: nightwind.init() }} />
+          <Main />
+        </body>
+      </Html>
+    )
+  }
 }
 ```
+
+### Toggle
+
+Similarly, you can use the toggle function to switch between dark and light mode.
 
 ```js
 // React Example
@@ -68,15 +83,17 @@ import nightwind from "nightwind/helper"
 export default function Navbar() {
   return (
     // ...
-    <button onClick={() => nightwind.toggleNightMode()}></button>
+    <button onClick={() => nightwind.toggle()}></button>
     // ...
   )
 }
 ```
 
-### Some examples
+## Getting started
 
-By default:
+### Examples
+
+This is an example of what nightwind does by default:
 
 -   'bg-white' in dark mode becomes 'bg-black'
 -   'bg-red-50' in dark mode becomes 'bg-red-900'
@@ -190,9 +207,19 @@ module.exports = {
 }
 ```
 
-The 'gradient' color class enables Nightwind for the 'from', 'via' and 'to' classes, allowing automatic dark gradients.
+The 'gradient' color class enables Nightwind for the 'from', 'via' and 'to' classes, allowing **automatic dark gradients**.
 
-The available values for colorClasses are the ones listed above.
+### Custom classes
+
+Thanks to the support for complex classes added in Tailwind 2.0, no additional setup is needed for custom classes. That means you can write things like
+
+```css
+.custom {
+  @apply text-indigo-700 hover:text-indigo-600;
+}
+```
+
+and Nightwind still works as expected when you switch into dark mode.
 
 ## Color mappings
 
@@ -236,7 +263,7 @@ module.exports = {
           100: "#1E3A8A", // or 'blue.900'
           500: "#3B82F6", // or 'blue.500'
           900: "#DBEAFE", // or 'blue.100'
-        }
+        },
       },
     },
   },
@@ -259,7 +286,7 @@ module.exports = {
       colors: {
         red: "blue",
         yellow: "primary",
-        pink: "yellow.500"
+        pink: "yellow.500",
       },
     },
     extend: {
@@ -268,7 +295,7 @@ module.exports = {
           50: "#caf0f8",
           300: "#90e0ef",
           600: "#0077b6",
-          900: "#03045e"
+          900: "#03045e",
         },
       },
     },
@@ -291,8 +318,8 @@ module.exports = {
     nightwind: {
       colors: {
         rose: {
-          default: 'blue',
-          100: 'yellow.300'
+          default: "blue",
+          100: "yellow.300",
         },
       },
     },
@@ -313,15 +340,3 @@ The 'dark' variant can be used to override the automatic Nightwind classes.
 > Note: The 'dark' variant can also be concatenated with both screens and other variants, so you can write classes like 'sm:dark:hover:text-yellow-200'.
 
 Please refer to the [Tailwind official documentation](https://tailwindcss.com/docs/dark-mode) to learn more about the 'dark' variant.
-
-### Custom classes
-
-Thanks to the support for complex classes added in Tailwind 2.0, no additional setup is needed for custom classes. That means you can write things like
-
-```css
-.custom {
-  @apply text-indigo-700 hover:text-indigo-600;
-}
-```
-
-and Nightwind still works as expected when you switch into dark mode.
