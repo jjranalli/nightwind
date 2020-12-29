@@ -42,33 +42,29 @@ module.exports = {
 
 ## Helper functions
 
-Nightwind relies on a fixed 'nightwind' class to manage transitions, and a toggled 'dark' class applied on a top level element in the DOM, typically the root element.
+Nightwind relies on a fixed **'nightwind' class** to manage transitions, and a toggled **'dark' class** applied on a top level element in the DOM, typically the root element.
 
 You can define your own functions to manage the dark mode, or use the helper functions included in 'nightwind/helper.js' to get started right away.
 
-By default, the helper functions provided prevent [the dreaded flicker of light mode](https://www.joshwcomeau.com/react/dark-mode/#our-first-hurdle) and allow the chosen color mode to persist on update.
+By default, the helper functions prevent [the dreaded flicker of light mode](https://www.joshwcomeau.com/react/dark-mode/#our-first-hurdle) and allow the chosen color mode to persist on update.
 
 ### Initialization
 
-To initialize nightwind, append the following script tag **before your main body content**.
+To initialize nightwind, **add the following script tag to the head element of your pages**.
 
 ```js
-// React example
+// React Example
 import nightwind from "nightwind/helper"
 
-class MyDocument extends Document {
-  // ...
-  render() {
-    return (
-      <Html>
-        <Head />
-        <body>
-          <script dangerouslySetInnerHTML={{ __html: nightwind.init() }} />
-          <Main />
-        </body>
-      </Html>
-    )
-  }
+export default function Layout() {
+  return(
+    <>
+      <Head>
+        <script dangerouslySetInnerHTML={{ __html: nightwind.init() }} />
+      </Head>
+      // ...
+    </>
+  )
 }
 ```
 
