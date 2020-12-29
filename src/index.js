@@ -52,13 +52,8 @@ const nightwind = plugin(
           colorClasses.push(base);
 
           colorVariants.forEach(variant => {
-            if (variant == 'last') {
-              let baseVar = prefix+'-'+color+'\\:'+variant
-              colorClasses.push(baseVar);
-            } else {
               let baseVar = variant+'\\:'+prefix+'-'+color
               colorClasses.push(baseVar);
-            }
           })
         } else {
           return false
@@ -132,7 +127,17 @@ const nightwind = plugin(
       let pseudoVariant = ''
 
       colorVariants.forEach(variant => {
-        if (colorClass.includes(variant)) { pseudoVariant = variant }
+        if (colorClass.includes(variant)) { 
+          if (variant == 'last' || variant == 'first') {
+            pseudoVariant = variant+'-child'
+          } else if (variant == 'odd') {
+            pseudoVariant = 'nth-child(odd)'
+          } else if (variant == 'even') {
+            pseudoVariant = 'nth-child(2n)'
+          } else {
+            pseudoVariant = variant 
+          }
+        }
       })
 
       if ( colorClass.includes('white') || colorClass.includes('black') ) {
