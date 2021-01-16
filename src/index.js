@@ -1,337 +1,347 @@
-const plugin = require('tailwindcss/plugin')
+const plugin = require("tailwindcss/plugin")
 
 const nightwind = plugin(
-  function({ addComponents, theme, variants }) {
-        
-    const darkSelector = theme('darkSelector', '.dark')
+	function ({ addComponents, theme, variants }) {
+		const darkSelector = "dark"
+		const fixedClass = theme("nightwind.fixedClass", "nightwind-prevent")
 
-    const colorClasses = []
-    const transitionClasses = []
-    const colors = theme('colors')
-    const colorVariants = ['hover']
-    const prefixes = ['text', 'bg', 'border']
-    const weights = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
-    
-    if (variants('nightwind.variants')) {
-      colorVariants.push(...variants('nightwind.variants'))
-    }
+		const colorClasses = []
+		const transitionClasses = []
+		const colors = theme("colors")
+		const colorVariants = ["hover"]
+		const prefixes = ["text", "bg", "border"]
+		const weights = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
 
-    if (variants('nightwind.colorClasses')) {
-      prefixes.push(...variants('nightwind.colorClasses'))
-      if (variants('nightwind.colorClasses').includes('gradient')) {
-        prefixes.push(...['from', 'via', 'to'])
-      }
-    }
+		if (variants("nightwind.variants")) {
+			colorVariants.push(...variants("nightwind.variants"))
+		}
 
-    function hexToRGB(h, alpha) {
-      if (h.length == 4) {
-        let rh = h[1] + h[1];
-        let gh = h[2] + h[2];
-        let bh = h[3] + h[3];
-        var r = parseInt(rh, 16),
-        g = parseInt(gh, 16),
-        b = parseInt(bh, 16);
-      }
-      if (h.length == 7) {
-        var r = parseInt(h.slice(1, 3), 16),
-            g = parseInt(h.slice(3, 5), 16),
-            b = parseInt(h.slice(5, 7), 16);
-      }
+		if (variants("nightwind.colorClasses")) {
+			prefixes.push(...variants("nightwind.colorClasses"))
+			if (variants("nightwind.colorClasses").includes("gradient")) {
+				prefixes.push(...["from", "via", "to"])
+			}
+		}
 
-      if (alpha) {
-          return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
-      } else {
-          return "rgb(" + r + ", " + g + ", " + b + ")";
-      }
-    }
+		function hexToRGB(h, alpha) {
+			if (h.length == 4) {
+				let rh = h[1] + h[1]
+				let gh = h[2] + h[2]
+				let bh = h[3] + h[3]
+				var r = parseInt(rh, 16),
+					g = parseInt(gh, 16),
+					b = parseInt(bh, 16)
+			}
+			if (h.length == 7) {
+				var r = parseInt(h.slice(1, 3), 16),
+					g = parseInt(h.slice(3, 5), 16),
+					b = parseInt(h.slice(5, 7), 16)
+			}
 
-    Object.keys(colors).forEach(color => {
-      prefixes.forEach(prefix => {
-        if (color == 'white' || color == 'black') {
-          let base = prefix+'-'+color
-          colorClasses.push(base);
+			if (alpha) {
+				return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")"
+			} else {
+				return "rgb(" + r + ", " + g + ", " + b + ")"
+			}
+		}
 
-          colorVariants.forEach(variant => {
-              let baseVar = variant+'\\:'+prefix+'-'+color
-              colorClasses.push(baseVar);
-          })
-        } else {
-          return false
-        }
-      })
-    })
-    
-    Object.keys(colors).forEach(color => {
-      if (color == 'transparent' || color == 'current' || color == 'white' || color == 'black') {
-        return false
-      } else {
-        prefixes.forEach(prefix => {
-          weights.forEach(weight => {
-            let base = prefix+'-'+color+'-'+weight
-            colorClasses.push(base); 
-              colorVariants.forEach(variant => {
-                let baseVar = variant+'\\:'+prefix+'-'+color+'-'+weight
-                colorClasses.push(baseVar);
-            })
-          })
-        })   
-      }
-    })
-    
-    if(theme('transitionDuration.nightwind') !== false) {
-      Object.keys(colors).forEach( color  => {
-        prefixes.forEach(prefix => {
-          if (color == 'transparent' || color == 'current' || color == 'white' || color == 'black') {
-            const transitionClass = {
-              [`.nightwind .${prefix}-${color}`]: {
-                transitionDuration: theme('transitionDuration.nightwind'), 
-                transitionProperty: theme('transitionProperty.colors')
-              },
-              [`.nightwind .dark\\:${prefix}-${color}`]: {
-                transitionDuration: theme('transitionDuration.nightwind'), 
-                transitionProperty: theme('transitionProperty.colors')
-              }
-            }
-            transitionClasses.push(transitionClass)
-          } else {
-            weights.forEach( weight => {
-              const transitionClass = {
-                [`.nightwind .${prefix}-${color}-${weight}`]: {
-                  transitionDuration: theme('transitionDuration.nightwind'), 
-                  transitionProperty: theme('transitionProperty.colors')
-                },
-                [`.nightwind .dark\\:${prefix}-${color}-${weight}`]: {
-                  transitionDuration: theme('transitionDuration.nightwind'), 
-                  transitionProperty: theme('transitionProperty.colors')
-                }
-              }
-              transitionClasses.push(transitionClass)
-            })
-          }
-        })
-      })
-    }
+		Object.keys(colors).forEach((color) => {
+			prefixes.forEach((prefix) => {
+				if (color == "white" || color == "black") {
+					let base = prefix + "-" + color
+					colorClasses.push(base)
 
-    let whiteSelector = '#000'
-    let blackSelector = '#fff'
-    if (theme(`nightwind.colors.white`)) {
-      const colorMap = theme(`nightwind.colors.white`)
-      whiteSelector = theme(`colors.${colorMap}`) ? theme(`colors.${colorMap}`) : colorMap
-    } 
-    if (theme(`nightwind.colors.black`)) {
-      const colorMap = theme(`nightwind.colors.black`)
-      blackSelector = theme(`colors.${colorMap}`) ? theme(`colors.${colorMap}`) : colorMap
-    }
+					colorVariants.forEach((variant) => {
+						let baseVar = variant + "\\:" + prefix + "-" + color
+						colorClasses.push(baseVar)
+					})
+				} else {
+					return false
+				}
+			})
+		})
 
-    const nightwindClasses = colorClasses.map((colorClass) => {
-      let pseudoVariant = ''
+		Object.keys(colors).forEach((color) => {
+			if (
+				color == "transparent" ||
+				color == "current" ||
+				color == "white" ||
+				color == "black"
+			) {
+				return false
+			} else {
+				prefixes.forEach((prefix) => {
+					weights.forEach((weight) => {
+						let base = prefix + "-" + color + "-" + weight
+						colorClasses.push(base)
+						colorVariants.forEach((variant) => {
+							let baseVar =
+								variant +
+								"\\:" +
+								prefix +
+								"-" +
+								color +
+								"-" +
+								weight
+							colorClasses.push(baseVar)
+						})
+					})
+				})
+			}
+		})
 
-      colorVariants.forEach(variant => {
-        if (colorClass.includes(variant)) { 
-          if (variant == 'last' || variant == 'first') {
-            pseudoVariant = variant+'-child'
-          } else if (variant == 'odd') {
-            pseudoVariant = 'nth-child(odd)'
-          } else if (variant == 'even') {
-            pseudoVariant = 'nth-child(2n)'
-          } else {
-            pseudoVariant = variant 
-          }
-        }
-      })
+		if (theme("transitionDuration.nightwind") !== false) {
+			Object.keys(colors).forEach((color) => {
+				prefixes.forEach((prefix) => {
+					if (
+						color == "transparent" ||
+						color == "current" ||
+						color == "white" ||
+						color == "black"
+					) {
+						const transitionClass = {
+							[`.nightwind .${prefix}-${color}`]: {
+								transitionDuration: theme(
+									"transitionDuration.nightwind"
+								),
+								transitionProperty: theme(
+									"transitionProperty.colors"
+								),
+							},
+							[`.nightwind .dark\\:${prefix}-${color}`]: {
+								transitionDuration: theme(
+									"transitionDuration.nightwind"
+								),
+								transitionProperty: theme(
+									"transitionProperty.colors"
+								),
+							},
+						}
+						transitionClasses.push(transitionClass)
+					} else {
+						weights.forEach((weight) => {
+							const transitionClass = {
+								[`.nightwind .${prefix}-${color}-${weight}`]: {
+									transitionDuration: theme(
+										"transitionDuration.nightwind"
+									),
+									transitionProperty: theme(
+										"transitionProperty.colors"
+									),
+								},
+								[`.nightwind .dark\\:${prefix}-${color}-${weight}`]: {
+									transitionDuration: theme(
+										"transitionDuration.nightwind"
+									),
+									transitionProperty: theme(
+										"transitionProperty.colors"
+									),
+								},
+							}
+							transitionClasses.push(transitionClass)
+						})
+					}
+				})
+			})
+		}
 
-      if ( colorClass.includes('white') || colorClass.includes('black') ) {
+		let whiteSelector = "#000"
+		let blackSelector = "#fff"
+		if (theme(`nightwind.colors.white`)) {
+			const colorMap = theme(`nightwind.colors.white`)
+			whiteSelector = theme(`colors.${colorMap}`)
+				? theme(`colors.${colorMap}`)
+				: colorMap
+		}
+		if (theme(`nightwind.colors.black`)) {
+			const colorMap = theme(`nightwind.colors.black`)
+			blackSelector = theme(`colors.${colorMap}`)
+				? theme(`colors.${colorMap}`)
+				: colorMap
+		}
 
-        const colorValue = colorClass.includes('white') ? whiteSelector : blackSelector
+		const nightwindClasses = colorClasses.map((colorClass) => {
+			let pseudoVariant = ""
 
-        if (colorClass.includes('text-')) {
-          return {
-            [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-              color: colorValue,
-              color: hexToRGB( `${colorValue}` , 'var(--tw-text-opacity)')
-            }
-          }
-        } else if (colorClass.includes('bg-')) {
-          return {
-            [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-              backgroundColor: colorValue,
-              backgroundColor: hexToRGB( `${colorValue}` , 'var(--tw-bg-opacity)')
-            }
-          }
-        } else if (colorClass.includes('border-')) {
-          return {
-            [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-              borderColor: colorValue,
-              borderColor: hexToRGB( `${colorValue}` , 'var(--tw-border-opacity)')
-            }
-          }
-        } else if (colorClass.includes('divide-')) {
-          return {
-            [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''} > :not([hidden]) ~ :not([hidden])`]: {
-              borderColor: colorValue,
-              borderColor: hexToRGB( `${colorValue}` , 'var(--tw-divide-opacity)')
-            }
-          }
-        } else if (colorClass.includes('placeholder-')) {
-          return {
-            [`${darkSelector} .${colorClass}::placeholder`]: {
-              color: colorValue,
-              color: hexToRGB( `${colorValue}` , 'var(--tw-text-opacity)')
-            }
-          }
-        } else if (colorClass.includes('ring-offset-')) {
-          return {
-            [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-              '--tw-ring-offset-color': `${colorValue}`
-            }
-          }
-        } else if (colorClass.includes('ring-')) {
-          return {
-            [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-              '--tw-ring-color': hexToRGB( `${colorValue}` , 'var(--tw-ring-opacity)')
-            }
-          }
-        } else if (colorClass.includes('from-')) {
-          return {
-            [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-              '--tw-gradient-from': colorValue,
-              '--tw-gradient-stops': `var(--tw-gradient-from), var(--tw-gradient-to, ${ hexToRGB(`${colorValue}`, '0') })`,
-            }
-          }
-        } else if (colorClass.includes('via-')) {
-          return {
-            [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-              '--tw-gradient-stops': `var(--tw-gradient-from), ${colorValue}, var(--tw-gradient-to, ${hexToRGB(`${colorValue}`, '0')})`,
-            }
-          }
-        } else if (colorClass.includes('to-')) {
-          return {
-            [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-              '--tw-gradient-to': `${colorValue}`,
-            }
-          }
-        }
-      } else {
-        const colorValues = colorClass.split('-')
-        const weight = colorValues.pop()
-        const color = colorValues.pop()
+			colorVariants.forEach((variant) => {
+				if (colorClass.includes(variant)) {
+					if (variant == "last" || variant == "first") {
+						pseudoVariant = variant + "-child"
+					} else if (variant == "odd") {
+						pseudoVariant = "nth-child(odd)"
+					} else if (variant == "even") {
+						pseudoVariant = "nth-child(2n)"
+					} else {
+						pseudoVariant = variant
+					}
+				}
+			})
 
-        const invertWeightIndex = 9 - (weights.indexOf(Number(weight)))
-        const invertWeight = String(weights[invertWeightIndex])
-        
-        let colorValue = ''
-        
-        if (theme(`nightwind.colors.${color}.${weight}`)) {
-          const colorMap = theme(`nightwind.colors.${color}.${weight}`)
-          colorValue = theme(`colors.${colorMap}`) ? theme(`colors.${colorMap}`) : colorMap
-        } else if (theme(`nightwind.colors.${color}`) && typeof(theme(`nightwind.colors.${color}`)) === 'string') {
-          const colorMap = theme(`nightwind.colors.${color}`);
-          if (theme(`colors.${colorMap}.${invertWeight}`)) {
-            colorValue = theme(`colors.${colorMap}.${invertWeight}`)
-          } else if (colorMap.split('.').length === 2) {
-            colorValue = theme(`colors.${colorMap}`)
-          } else if (theme(`colors.${colorMap}`) && theme(`colors.${color}.${invertWeight}`)) {
-            colorValue = theme(`colors.${color}.${invertWeight}`)
-          } else {
-            colorValue = colorMap
-          }
-        } else if (theme(`nightwind.colors.${color}.default`)) {
-          const colorMap = theme(`nightwind.colors.${color}.default`);
-          colorValue = theme(`colors.${colorMap}.${invertWeight}`)
-        } else {
-          colorValue = theme(`colors.${color}.${invertWeight}`)
-        }
+			let colorValue = ""
+			let defaultColorValue = ""
+			if (colorClass.includes("white") || colorClass.includes("black")) {
+				colorValue = colorClass.includes("white")
+					? whiteSelector
+					: blackSelector
 
-        
-        if (colorClass.includes('text-')) {
-          return {
-            [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-              color: colorValue,
-              color: hexToRGB( `${colorValue}` , 'var(--tw-text-opacity)')
-            }
-          }
-        } else if (colorClass.includes('bg-')) {
-            return {
-              [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-                backgroundColor: colorValue,
-                backgroundColor: hexToRGB( `${colorValue}` , 'var(--tw-bg-opacity)')
-              }
-            }
-          } else if (colorClass.includes('border-')) {
-            return {
-              [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-                borderColor: colorValue,
-                borderColor: hexToRGB( `${colorValue}` , 'var(--tw-border-opacity)')
-              }
-            }
-          } else if (colorClass.includes('divide-')) {
-            return {
-              [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''} > :not([hidden]) ~ :not([hidden])`]: {
-                borderColor: colorValue,
-                borderColor: hexToRGB( `${colorValue}` , 'var(--tw-divide-opacity)')
-              }
-            }
-          } else if (colorClass.includes('placeholder-')) {
-            return {
-              [`${darkSelector} .${colorClass}::placeholder`]: {
-                color: colorValue,
-                color: hexToRGB( `${colorValue}` , 'var(--tw-text-opacity)')
-              }
-            }
-          } else if (colorClass.includes('ring-offset-')) {
-            return {
-              [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-                '--tw-ring-offset-color': `${colorValue}`
-              }
-            }
-          } else if (colorClass.includes('ring-')) {
-            return {
-              [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-                '--tw-ring-color': hexToRGB( `${colorValue}` , 'var(--tw-ring-opacity)'),
-              }
-            }
-          } else if (colorClass.includes('from-')) {
-            return {
-              [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-                '--tw-gradient-from': `${colorValue}`,
-                '--tw-gradient-stops': `var(--tw-gradient-from), var(--tw-gradient-to, ${ hexToRGB(`${colorValue}`, '0') })`,
-              }
-            }
-          } else if (colorClass.includes('via-')) {
-            return {
-              [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-                '--tw-gradient-stops': `var(--tw-gradient-from), ${colorValue}, var(--tw-gradient-to, ${hexToRGB(`${colorValue}`, '0')})`,
-              }
-            }
-          } else if (colorClass.includes('to-')) {
-            return {
-              [`${darkSelector} .${colorClass}${pseudoVariant ? `:${pseudoVariant}` : ''}`]: {
-                '--tw-gradient-to': `${colorValue}`,
-              }
-            }
-          } 
-        }
-      }
-    )
+				defaultColorValue = colorClass.includes("white")
+					? theme("colors.white")
+					: theme("colors.black")
+			} else {
+				const colorValues = colorClass.split("-")
+				const weight = colorValues.pop()
+				const color = colorValues.pop()
 
-    addComponents(nightwindClasses, { variants: ['responsive'] });
-    addComponents(transitionClasses, { variants: ['responsive'] });
-  },
-  {
-    theme: {
-      extend: {
-        transitionDuration: {
-          '0': '0ms',
-          'nightwind': '300ms'
-        }
-      }
-    }
-  },
-  {
-    purge: [
-      './node_modules/nightwind/**/*.js'
-    ],
-  }
-);
+				defaultColorValue = theme(`colors.${color}.${weight}`)
+				const invertWeightIndex = 9 - weights.indexOf(Number(weight))
+				const invertWeight = String(weights[invertWeightIndex])
+
+				if (theme(`nightwind.colors.${color}.${weight}`)) {
+					const colorMap = theme(
+						`nightwind.colors.${color}.${weight}`
+					)
+					colorValue = theme(`colors.${colorMap}`)
+						? theme(`colors.${colorMap}`)
+						: colorMap
+				} else if (
+					theme(`nightwind.colors.${color}`) &&
+					typeof theme(`nightwind.colors.${color}`) === "string"
+				) {
+					const colorMap = theme(`nightwind.colors.${color}`)
+					if (theme(`colors.${colorMap}.${invertWeight}`)) {
+						colorValue = theme(`colors.${colorMap}.${invertWeight}`)
+					} else if (colorMap.split(".").length === 2) {
+						colorValue = theme(`colors.${colorMap}`)
+					} else if (
+						theme(`colors.${colorMap}`) &&
+						theme(`colors.${color}.${invertWeight}`)
+					) {
+						colorValue = theme(`colors.${color}.${invertWeight}`)
+					} else {
+						colorValue = colorMap
+					}
+				} else if (theme(`nightwind.colors.${color}.default`)) {
+					const colorMap = theme(`nightwind.colors.${color}.default`)
+					colorValue = theme(`colors.${colorMap}.${invertWeight}`)
+				} else {
+					colorValue = theme(`colors.${color}.${invertWeight}`)
+				}
+			}
+
+			const generateClass = (
+				prefix,
+				property,
+				additional = "",
+				variant = pseudoVariant
+			) => {
+				return {
+					[`.${darkSelector} .${colorClass}${variant}${additional}`]: {
+						[`${property}`]: colorValue,
+						[`${property}`]: hexToRGB(
+							`${colorValue}`,
+							`var(--tw-${prefix})`
+						),
+					},
+					[`.${darkSelector} .${fixedClass}.${colorClass}${variant}${additional}`]: {
+						[`${property}`]: defaultColorValue,
+						[`${property}`]: hexToRGB(
+							`${defaultColorValue}`,
+							`var(--tw-${prefix})`
+						),
+					},
+				}
+			}
+
+			if (colorClass.includes("text-")) {
+				return generateClass("text-opacity", "color")
+			} else if (colorClass.includes("bg-")) {
+				return generateClass("bg-opacity", "backgroundColor")
+			} else if (colorClass.includes("border-")) {
+				return generateClass("border-opacity", "borderColor")
+			} else if (colorClass.includes("divide-")) {
+				return generateClass(
+					"divide-opacity",
+					"borderColor",
+					" > :not([hidden]) ~ :not([hidden])"
+				)
+			} else if (colorClass.includes("placeholder-")) {
+				return generateClass(
+					"text-opacity",
+					"color",
+					"::placeholder",
+					""
+				)
+			} else if (colorClass.includes("ring-")) {
+				return generateClass("ring-opacity", "--tw-ring-color")
+			} else if (colorClass.includes("ring-offset-")) {
+				return {
+					[`.${darkSelector} .${colorClass}${pseudoVariant}`]: {
+						"--tw-ring-offset-color": `${colorValue}`,
+					},
+					[`.${darkSelector} .${fixedClass}.${colorClass}${pseudoVariant}`]: {
+						"--tw-ring-offset-color": `${defaultColorValue}`,
+					},
+				}
+			} else if (colorClass.includes("from-")) {
+				return {
+					[`.${darkSelector} .${colorClass}${pseudoVariant}`]: {
+						"--tw-gradient-from": colorValue,
+						"--tw-gradient-stops": `var(--tw-gradient-from), var(--tw-gradient-to, ${hexToRGB(
+							`${colorValue}`,
+							"0"
+						)})`,
+					},
+					[`.${darkSelector} .${fixedClass}.${colorClass}${pseudoVariant}`]: {
+						"--tw-gradient-from": defaultColorValue,
+						"--tw-gradient-stops": `var(--tw-gradient-from), var(--tw-gradient-to, ${hexToRGB(
+							`${defaultColorValue}`,
+							"0"
+						)})`,
+					},
+				}
+			} else if (colorClass.includes("via-")) {
+				return {
+					[`.${darkSelector} .${colorClass}${pseudoVariant}`]: {
+						"--tw-gradient-stops": `var(--tw-gradient-from), ${colorValue}, var(--tw-gradient-to, ${hexToRGB(
+							`${colorValue}`,
+							"0"
+						)})`,
+					},
+					[`.${darkSelector} .${fixedClass}.${colorClass}${pseudoVariant}`]: {
+						"--tw-gradient-stops": `var(--tw-gradient-from), ${defaultColorValue}, var(--tw-gradient-to, ${hexToRGB(
+							`${defaultColorValue}`,
+							"0"
+						)})`,
+					},
+				}
+			} else if (colorClass.includes("to-")) {
+				return {
+					[`.${darkSelector} .${colorClass}${pseudoVariant}`]: {
+						"--tw-gradient-to": `${colorValue}`,
+					},
+					[`.${darkSelector} .${fixedClass}.${colorClass}${pseudoVariant}`]: {
+						"--tw-gradient-to": `${defaultColorValue}`,
+					},
+				}
+			}
+		})
+
+		addComponents(nightwindClasses, { variants: ["responsive"] })
+		addComponents(transitionClasses, { variants: ["responsive"] })
+	},
+	{
+		theme: {
+			extend: {
+				transitionDuration: {
+					0: "0ms",
+					nightwind: "300ms",
+				},
+			},
+		},
+	},
+	{
+		purge: ["./node_modules/nightwind/**/*.js"],
+	}
+)
 
 module.exports = nightwind
