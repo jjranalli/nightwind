@@ -137,13 +137,13 @@ module.exports = {
 }
 ```
 
-You can also use [**color mappings**](https://github.com/jjranalli/nightwind#user-content-color-mappings) to further customise your dark theme.
+You can also use [**color mappings**](#color-mappings) to further customise your dark theme.
 
 ### The 'nightwind-prevent' class
 
 Sometimes you want an element to remain exactly the same in both light and dark modes. You can achieve this in Nightwind by adding a 'nightwind-prevent' class to the element.
 
-> Note: if you only want some of the colors to remain unchanged, consider using [overrides](https://github.com/jjranalli/nightwind#user-content-overrides) (last section).
+> Note: if you only want some of the colors to remain unchanged, consider using [overrides](#overrides).
 
 You can customize the name of the class in your tailwind.config.js file
 
@@ -287,7 +287,7 @@ module.exports = {
 
 - When a mapping is not specified, Nightwind will fallback to the default dark color (red-100 becomes #1E3A8A, while red-200 becomes red-700)
 
-> Note: Contrarily to all other cases, when you individually specify a dark color this way nightwind doesn't automatically invert the color weight. The same is also valid for [overrides](https://github.com/jjranalli/nightwind#user-content-overrides).
+> Note: Contrarily to all other cases, when you individually specify a dark color this way nightwind doesn't automatically invert the color weight. The same is also valid for [overrides](#overrides).
 
 ### Color classes
 
