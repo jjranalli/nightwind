@@ -114,7 +114,7 @@ You can also extend Nightwind to other classes and variants:
 
 Nightwind switches between opposite color weights when switching to dark mode. So a -50 color gets switched with a -900 color, -100 with -800 and so forth.
 
-> Note: Except for the -50 and -900 weights, the sum of opposite weights is always 900.
+> Note: Except for the -50 and -900 weights, the sum of opposite weights is always 900. To customise how Nightwind invert colors by default, see [how to set up a custom color scale](#custom-color-scale)
 
 If you add your custom colors in tailwind.config.js using number notation, Nightwind will treat them the same way as Tailwind's colors when switching into dark mode.
 
@@ -138,6 +138,32 @@ module.exports = {
 ```
 
 You can also use [**color mappings**](#color-mappings) to further customise your dark theme.
+
+### Variants
+
+Variants and other color classes can be enabled for Nightwind like so:
+
+```js
+// tailwind.config.js
+module.exports = {
+  // ...
+  variants: {
+    nightwind: {
+      variants: ["focus"], // Add any Tailwind variant
+      colorClasses: [
+        "gradient",
+        "ring",
+        "ring-offset",
+        "divide",
+        "placeholder",
+      ],
+    },
+  },
+  // ...
+}
+```
+
+The 'gradient' color class enables Nightwind for the 'from', 'via' and 'to' classes, allowing **automatic dark gradients**.
 
 ### The 'nightwind-prevent' class
 
@@ -194,31 +220,68 @@ module.exports = {
 }
 ```
 
-### Variants
+### Custom color scale
 
-Variants and other color classes can be enabled for Nightwind like so:
+This configuration allows you to define how one or more color weights convert in dark-mode. Note that these **affects all color classes**.
+
+For example, you could make all -100 colors convert into -900 colors like so.
 
 ```js
 // tailwind.config.js
 module.exports = {
-  // ...
-  variants: {
+  theme: {
     nightwind: {
-      variants: ["focus"], // Add any Tailwind variant
-      colorClasses: [
-        "gradient",
-        "ring",
-        "ring-offset",
-        "divide",
-        "placeholder",
-      ],
+      colorScale: {
+        100: 900, // default 800
+      },
     },
   },
-  // ...
 }
 ```
 
-The 'gradient' color class enables Nightwind for the 'from', 'via' and 'to' classes, allowing **automatic dark gradients**.
+> Note: These settings can still be overridden for specific colors using [color mappings](#color-mappings), or in specific elements with [overrides](#overrides)
+
+#### Reduced preset
+
+This preset simulates how Nightwind would behave without the -50 color classes. Any -50 color will essentially appear the same as -100 colors (both becomes -900)
+
+This behaviour may be desirable for two main reasons:
+
+- Makes the reversed -800 and -900 colors darker and more different between themselves.
+- -500 colors remain the same in both dark and light mode
+
+```js
+// tailwind.config.js
+module.exports = {
+  theme: {
+    nightwind: {
+      colorScale: {
+        preset: "reduced",
+      },
+    },
+  },
+}
+```
+
+This is the corresponding scale:
+
+```js
+// tailwind.config.js
+colorScale: {
+  50: 900,
+  100: 900,
+  200: 800,
+  300: 700,
+  400: 600,
+  500: 500,
+  600: 400,
+  700: 300,
+  800: 200,
+  900: 100,
+},
+```
+
+> Note: When using a preset, specific weights will be ignored.
 
 ### Custom classes
 
