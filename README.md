@@ -114,7 +114,7 @@ You can also extend Nightwind to other classes and variants:
 
 Nightwind switches between opposite color weights when switching to dark mode. So a -50 color gets switched with a -900 color, -100 with -800 and so forth.
 
-> Note: Except for the -50 and -900 weights, the sum of opposite weights is always 900. To customise how Nightwind invert colors by default, see [how to set up a custom color scale](#custom-color-scale)
+> Note: Except for the -50 and -900 weights, the sum of opposite weights is always 900. To customise how Nightwind inverts colors by default, see [how to set up a custom color scale](#custom-color-scale)
 
 If you add your custom colors in tailwind.config.js using number notation, Nightwind will treat them the same way as Tailwind's colors when switching into dark mode.
 
@@ -224,7 +224,7 @@ module.exports = {
 
 This configuration allows you to define how one or more color weights convert in dark-mode. Note that these **affects all color classes**.
 
-For example, you could make all -100 colors convert into -900 colors like so.
+For example, you could make all -100 colors switch into -900 colors like so.
 
 ```js
 // tailwind.config.js
