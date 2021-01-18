@@ -6,7 +6,7 @@ Nightwind uses the existing Tailwind color palette and your own custom colors to
 
 For example, whenever you use a class like **bg-red-600** it gets automatically switched to **bg-red-300** in dark mode.
 
-You can see how it works on https://nightwindcss.com
+You can see it in action on https://nightwindcss.com
 
 ## Installation
 

@@ -144,13 +144,13 @@ const nightwind = plugin(
       colorVariants.forEach((variant) => {
         if (colorClass.includes(variant)) {
           if (variant == "last" || variant == "first") {
-            pseudoVariant = variant + "-child"
+            pseudoVariant = ":" + variant + "-child"
           } else if (variant == "odd") {
-            pseudoVariant = "nth-child(odd)"
+            pseudoVariant = ":nth-child(odd)"
           } else if (variant == "even") {
-            pseudoVariant = "nth-child(2n)"
+            pseudoVariant = ":nth-child(2n)"
           } else {
-            pseudoVariant = variant
+            pseudoVariant = ":" + variant
           }
         }
       })
