@@ -1,7 +1,7 @@
 const plugin = require("tailwindcss/plugin")
 
 const nightwind = plugin(
-  function ({ addComponents, theme, variants }) {
+  function ({ addComponents, addUtilities, theme, variants }) {
     const darkSelector = "dark"
     const fixedClass = theme("nightwind.fixedClass", "nightwind-prevent")
 
@@ -312,7 +312,7 @@ const nightwind = plugin(
     })
 
     addComponents(nightwindClasses, { variants: ["responsive"] })
-    addComponents(transitionClasses, { variants: ["responsive"] })
+    addUtilities(transitionClasses, { variants: ["responsive"] })
   },
   {
     theme: {
