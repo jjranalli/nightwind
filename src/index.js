@@ -45,8 +45,8 @@ const nightwind = plugin(
       }
     }
 
-    Object.keys(colors).forEach((color) => {
-      prefixes.forEach((prefix) => {
+    prefixes.forEach((prefix) => {
+      Object.keys(colors).forEach((color) => {
         if (color == "white" || color == "black") {
           let base = prefix + "-" + color
           colorClasses.push(base)
@@ -61,16 +61,16 @@ const nightwind = plugin(
       })
     })
 
-    Object.keys(colors).forEach((color) => {
-      if (
-        color == "transparent" ||
-        color == "current" ||
-        color == "white" ||
-        color == "black"
-      ) {
-        return false
-      } else {
-        prefixes.forEach((prefix) => {
+    prefixes.forEach((prefix) => {
+      Object.keys(colors).forEach((color) => {
+        if (
+          color == "transparent" ||
+          color == "current" ||
+          color == "white" ||
+          color == "black"
+        ) {
+          return false
+        } else {
           weights.forEach((weight) => {
             let base = prefix + "-" + color + "-" + weight
             colorClasses.push(base)
@@ -80,8 +80,8 @@ const nightwind = plugin(
               colorClasses.push(baseVar)
             })
           })
-        })
-      }
+        }
+      })
     })
 
     if (theme("transitionDuration.nightwind") !== false) {
