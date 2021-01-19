@@ -1,12 +1,29 @@
-# Nightwind
+![Nightwind cover image](https://github.com/jjranalli/nightwind-demo/raw/master/public/nightwind-logotext.png)
 
-A plugin that gives you an **out-of-the-box, customisable, overridable dark mode** for tailwindcss.
+A Tailwind CSS plugin that gives you an **out-of-the-box, customisable, overridable dark mode.**
+
+---
 
 Nightwind uses the existing Tailwind color palette and your own custom colors to automatically generate the dark mode version of the Tailwind color classes you use.
 
 For example, whenever you use a class like **bg-red-600** it gets automatically switched to **bg-red-300** in dark mode.
 
 You can see it in action on https://nightwindcss.com
+
+1. [Installation](#installation)
+2. [Helper functions](#helper-functions)
+3. [Getting started](#getting-started)
+4. [Configuration](#configuration)
+   - [Colors](#colors)
+   - [Variants](#variants)
+   - [The 'nightwind-prevent' class](#the-nightwind-prevent-class)
+   - [Transition duration](#transition-duration)
+   - [Custom color scale](#custom-color-scale)
+5. [Color mappings](#color-mappings)
+   - [Individual colors](#individual-colors)
+   - [Color classes](#color-classes)
+   - [Hybrid mapping](#hybrid-mapping)
+6. [Overrides](#overrides)
 
 ## Installation
 
@@ -184,7 +201,7 @@ module.exports = {
 }
 ```
 
-### Transition Duration
+### Transition duration
 
 Nightwind by default applies a '300ms' transition to all color classes. You can customize this value in your tailwind.config.js file.
 
