@@ -318,7 +318,7 @@ Nightwind is responsive by default. If you add custom breakpoints they get autom
 
 ## Color mappings
 
-Color mapping allows you to change colors in batch, as well as fine-tune your dark theme and how Nightwind behaves in dark mode. You set them up like this:
+Color mappings allow you to fine-tune your dark theme, change colors in batch and control how Nightwind behaves in dark mode. You set them up like this:
 
 ```js
 // tailwind.config.js
@@ -414,7 +414,7 @@ module.exports = {
       colors: {
         rose: {
           default: "blue",
-          100: "yellow.300",
+          200: "yellow.300",
         },
       },
     },
