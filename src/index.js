@@ -87,7 +87,9 @@ const nightwind = plugin(
     if (theme("transitionDuration.nightwind") !== false) {
       Object.keys(colors).forEach((color) => {
         prefixes.forEach((prefix) => {
-          if (
+          if (prefix === "from" || prefix === "via" || prefix === "to") {
+            return null
+          } else if (
             color == "transparent" ||
             color == "current" ||
             color == "white" ||
