@@ -61,7 +61,7 @@ module.exports = {
 
 Nightwind relies on a fixed **'nightwind' class** to manage transitions, and a toggled **'dark' class** applied on a top level element in the DOM, typically the root element.
 
-You can define your own functions to manage the dark mode, or use the helper functions included in 'nightwind/helper.js' to get started right away.
+You can define your own functions to manage the dark mode (or check the [examples](#examples) below), or use the helper functions included in 'nightwind/helper.js' to get started right away.
 
 By default, the helper functions prevent [the dreaded flicker of light mode](https://www.joshwcomeau.com/react/dark-mode/#our-first-hurdle) and allow the chosen color mode to persist on update.
 
@@ -102,11 +102,92 @@ export default function Navbar() {
 }
 ```
 
-## Getting started
-
 ### Examples
 
-This is an example of what nightwind does by default:
+See examples of implementation (click to expand):
+
+<details>
+  <summary>Next.js (using the <a href="https://github.com/pacocoursey/next-themes">next-themes</a> library)</summary>
+  
+  #### _app.js
+
+Add ThemeProvider using the following configuration
+
+```js
+import { ThemeProvider } from "next-themes"
+
+function MyApp({ Component, pageProps }) {
+  return (
+    <ThemeProvider
+      attribute="class"
+      storageKey="nightwind-mode"
+      defaultTheme="system" // default "light"
+    >
+      <Component {...pageProps} />
+    </ThemeProvider>
+  )
+}
+
+export default MyApp
+```
+
+<!-- prettier-ignore -->
+#### _document.js
+
+Add the 'nightwind' class in your root element
+
+```js
+import Document, { Html, Head, Main, NextScript } from "next/document"
+
+class MyDocument extends Document {
+  static async getInitialProps(ctx) {
+    const initialProps = await Document.getInitialProps(ctx)
+    return { ...initialProps }
+  }
+
+  render() {
+    return (
+      <Html className="nightwind">
+        <Head />
+        <body>
+          <Main />
+          <NextScript />
+        </body>
+      </Html>
+    )
+  }
+}
+
+export default MyDocument
+```
+
+#### Toggle
+
+Set it up using the useTheme hook
+
+```js
+import { useTheme } from "next-themes"
+
+export default function Toggle(props) {
+  const { theme, setTheme } = useTheme()
+
+  const toggle = () => {
+    if (!document.documentElement.classList.contains("dark")) {
+      setTheme("dark")
+    } else {
+      setTheme("light")
+    }
+  }
+
+  return <button onClick={toggle}>Toggle</button>
+}
+```
+
+</details>
+
+## Getting started
+
+This is some examples of what Nightwind does by default:
 
 - 'bg-white' in dark mode becomes 'bg-black'
 - 'bg-red-50' in dark mode becomes 'bg-red-900'
