@@ -12,11 +12,18 @@ const nightwind = plugin(
     const prefixes = ["text", "bg", "border"]
     const weights = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
 
-    if (variants("nightwind.variants")) {
+    if (Array.isArray(variants("nightwind"))) {
+      colorVariants.push(...variants("nightwind"))
+    } else if (variants("nightwind.variants")) {
       colorVariants.push(...variants("nightwind.variants"))
     }
 
-    if (variants("nightwind.colorClasses")) {
+    if (theme("nightwind.colorClasses")) {
+      prefixes.push(...theme("nightwind.colorClasses"))
+      if (theme("nightwind.colorClasses").includes("gradient")) {
+        prefixes.push(...["from", "via", "to"])
+      }
+    } else if (variants("nightwind.colorClasses")) {
       prefixes.push(...variants("nightwind.colorClasses"))
       if (variants("nightwind.colorClasses").includes("gradient")) {
         prefixes.push(...["from", "via", "to"])
