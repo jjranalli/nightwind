@@ -15,7 +15,7 @@ You can see it in action on https://nightwindcss.com
 3. [Getting started](#getting-started)
 4. [Configuration](#configuration)
    - [Colors](#colors)
-   - [Variants](#variants)
+   - [Variants and color classes](#variants-and-color-classes)
    - [The 'nightwind-prevent' class](#the-nightwind-prevent-class)
    - [Transition duration](#transition-duration)
    - [Custom color scale](#custom-color-scale)
@@ -203,8 +203,8 @@ Due to file size considerations, Nightwind is enabled by default only on the **'
 
 You can also extend Nightwind to other classes and variants:
 
-- color classes: 'placeholder', 'ring', 'ring-offset', 'divide', 'gradient'
-- variants: all Tailwind variants are supported
+- **Color classes**: 'placeholder', 'ring', 'ring-offset', 'divide', 'gradient'
+- **Variants**: all Tailwind variants are supported
 
 ## Configuration
 
@@ -237,7 +237,7 @@ module.exports = {
 
 You can also use [**color mappings**](#color-mappings) to further customise your dark theme.
 
-### Variants
+### Variants and color classes
 
 Variants and other color classes can be enabled for Nightwind like so:
 
@@ -245,9 +245,8 @@ Variants and other color classes can be enabled for Nightwind like so:
 // tailwind.config.js
 module.exports = {
   // ...
-  variants: {
+  theme: {
     nightwind: {
-      variants: ["focus"], // Add any Tailwind variant
       colorClasses: [
         "gradient",
         "ring",
@@ -256,6 +255,9 @@ module.exports = {
         "placeholder",
       ],
     },
+  },
+  variants: {
+    nightwind: ["focus"], // Add any Tailwind variant
   },
   // ...
 }
@@ -290,10 +292,8 @@ Nightwind by default applies a '300ms' transition to all color classes. You can 
 // tailwind.config.js
 module.exports = {
   theme: {
-    extend: {
-      transitionDuration: {
-        nightwind: "500ms", // default '300ms'
-      },
+    nightwind: {
+      transitionDuration: "500ms", // default '300ms'
     },
   },
   // ...
@@ -308,10 +308,8 @@ If you wish to disable transitions for all nightwind classes, you can do so by s
 // tailwind.config.js
 module.exports = {
   theme: {
-    extend: {
-      transitionDuration: {
-        nightwind: false, // default '300ms'
-      },
+    nightwind: {
+      transitionDuration: false, // default '300ms'
     },
   },
   // ...
