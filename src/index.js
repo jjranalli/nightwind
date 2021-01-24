@@ -84,7 +84,19 @@ const nightwind = plugin(
       })
     })
 
-    if (theme("transitionDuration.nightwind") !== false) {
+    let transitionDurationValue = "300ms"
+    if (
+      theme("nightwind.transitionDuration") === false ||
+      theme("transitionDuration.nightwind") === false
+    ) {
+      transitionDurationValue = ""
+    } else if (typeof theme("nightwind.transitionDuration") === "string") {
+      transitionDurationValue = theme("nightwind.transitionDuration")
+    } else if (typeof theme("transitionDuration.nightwind") === "string") {
+      transitionDurationValue = theme("transitionDuration.nightwind")
+    }
+
+    if (transitionDurationValue) {
       Object.keys(colors).forEach((color) => {
         prefixes.forEach((prefix) => {
           if (prefix === "from" || prefix === "via" || prefix === "to") {
@@ -97,11 +109,11 @@ const nightwind = plugin(
           ) {
             const transitionClass = {
               [`.nightwind .${prefix}-${color}`]: {
-                transitionDuration: theme("transitionDuration.nightwind"),
+                transitionDuration: transitionDurationValue,
                 transitionProperty: theme("transitionProperty.colors"),
               },
               [`.nightwind .dark\\:${prefix}-${color}`]: {
-                transitionDuration: theme("transitionDuration.nightwind"),
+                transitionDuration: transitionDurationValue,
                 transitionProperty: theme("transitionProperty.colors"),
               },
             }
@@ -110,11 +122,11 @@ const nightwind = plugin(
             weights.forEach((weight) => {
               const transitionClass = {
                 [`.nightwind .${prefix}-${color}-${weight}`]: {
-                  transitionDuration: theme("transitionDuration.nightwind"),
+                  transitionDuration: transitionDurationValue,
                   transitionProperty: theme("transitionProperty.colors"),
                 },
                 [`.nightwind .dark\\:${prefix}-${color}-${weight}`]: {
-                  transitionDuration: theme("transitionDuration.nightwind"),
+                  transitionDuration: transitionDurationValue,
                   transitionProperty: theme("transitionProperty.colors"),
                 },
               }
@@ -331,7 +343,6 @@ const nightwind = plugin(
       extend: {
         transitionDuration: {
           0: "0ms",
-          nightwind: "300ms",
         },
       },
     },
