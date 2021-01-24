@@ -151,6 +151,8 @@ const nightwind = plugin(
             pseudoVariant = ":nth-child(odd)"
           } else if (variant == "even") {
             pseudoVariant = ":nth-child(2n)"
+          } else if (variant == "group-hover") {
+            pseudoVariant = ""
           } else {
             pseudoVariant = ":" + variant
           }
@@ -242,6 +244,14 @@ const nightwind = plugin(
             ),
           },
         }
+      }
+
+      if (
+        colorVariants.includes("group-hover") &&
+        colorClass.includes("group-hover\\:")
+      ) {
+        const originalColorClass = colorClass
+        colorClass = "group:hover ." + originalColorClass
       }
 
       if (colorClass.includes("text-")) {
