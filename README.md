@@ -24,6 +24,7 @@ You can see it in action on https://nightwindcss.com
    - [Color classes](#color-classes)
    - [Hybrid mapping](#hybrid-mapping)
 6. [Overrides](#overrides)
+7. [Typography](#typography)
 
 ## Installation
 
@@ -418,7 +419,7 @@ There are two main ways to map colors in Nightwind: using **individual colors** 
 
 You can use the following syntax to specify colors:
 
-- Individual colors: in hex '#fff' or Tailwind-inspired color codes 'red.100'
+- Individual colors: in hex '#fff' or Tailwind-based color codes 'red.100'
 - Color classes: such as 'red' or 'gray'
 
 ### Individual colors
@@ -514,3 +515,45 @@ The 'dark' variant can be used to override the automatic Nightwind classes.
 > Note: The 'dark' variant can also be concatenated with both screens and other variants, so you can write classes like 'sm:dark:hover:text-yellow-200'.
 
 Please refer to the [Tailwind official documentation](https://tailwindcss.com/docs/dark-mode) to learn more about the 'dark' variant.
+
+## Typography
+
+If you're using the [Typography plugin](https://github.com/tailwindlabs/tailwindcss-typography), you can let Nightwind build an automatic dark mode of all typography color styles.
+
+> Note: It will respect all customizations and [color mappings](#color-mappings) specified in your nightwind configuration.
+
+Simply add the following line in your Nightwind theme configuration:
+
+```js
+// tailwind.config.js
+module.exports = {
+  theme: {
+    nightwind: {
+      typography: true,
+    },
+  },
+}
+```
+
+To fine-tune your typography dark mode, you can define the single classes by using the [individual color syntax](#individual-colors) (either hex or tailwind-based color codes).
+
+```js
+// tailwind.config.js
+module.exports = {
+  theme: {
+    nightwind: {
+      typography: {
+        color: "blue.400",
+        h1: {
+          color: "#90e0ef",
+        },
+        indigo: {
+          a: {
+            color: "purple.300",
+          },
+        },
+      },
+    },
+  },
+}
+```

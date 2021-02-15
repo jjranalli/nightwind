@@ -7,6 +7,8 @@ const nightwind = plugin(
 
     const colorClasses = []
     const transitionClasses = []
+    const typographyValues = {}
+    const typographyClasses = []
     const colors = theme("colors")
     const colorVariants = ["hover"]
     const prefixes = ["text", "bg", "border"]
@@ -52,44 +54,130 @@ const nightwind = plugin(
       }
     }
 
-    prefixes.forEach((prefix) => {
-      Object.keys(colors).forEach((color) => {
-        if (color == "white" || color == "black") {
-          let base = prefix + "-" + color
-          colorClasses.push(base)
-
-          colorVariants.forEach((variant) => {
-            let baseVar = variant + "\\:" + prefix + "-" + color
-            colorClasses.push(baseVar)
+    const hexToTailwind = (hex) => {
+      let colorCode = ""
+      Object.keys(colors).forEach((col) => {
+        if (typeof theme(`colors.${col}`) === "string") {
+          if (hex === theme(`colors.${col}`)) {
+            colorCode = col
+          }
+        } else if (typeof theme(`colors.${col}`) === "object") {
+          Object.keys(theme(`colors.${col}`)).forEach((wei) => {
+            if (hex === theme(`colors.${col}.${wei}`)) {
+              colorCode = col + "-" + wei
+            }
           })
-        } else {
-          return false
         }
       })
-    })
+      return colorCode
+    }
 
-    prefixes.forEach((prefix) => {
-      Object.keys(colors).forEach((color) => {
-        if (
-          color == "transparent" ||
-          color == "current" ||
-          color == "white" ||
-          color == "black"
+    // Invert color logic
+
+    let whiteSelector = "#000"
+    let blackSelector = "#fff"
+    if (theme(`nightwind.colors.white`)) {
+      const colorMap = theme(`nightwind.colors.white`)
+      whiteSelector = theme(`colors.${colorMap}`)
+        ? theme(`colors.${colorMap}`)
+        : colorMap
+    }
+    if (theme(`nightwind.colors.black`)) {
+      const colorMap = theme(`nightwind.colors.black`)
+      blackSelector = theme(`colors.${colorMap}`)
+        ? theme(`colors.${colorMap}`)
+        : colorMap
+    }
+
+    const invertColor = (colorClass) => {
+      if (colorClass.includes("white") || colorClass.includes("black")) {
+        return {
+          colorValue: colorClass.includes("white")
+            ? whiteSelector
+            : blackSelector,
+          defaultColorValue: colorClass.includes("white")
+            ? theme("colors.white")
+            : theme("colors.black"),
+        }
+      } else {
+        const colorValues = colorClass.split("-")
+        const weight = colorValues.pop()
+        const color = colorValues.pop()
+        const defaultValue = theme(`colors.${color}.${weight}`)
+
+        let invertWeightIndex = 9 - weights.indexOf(Number(weight))
+        let invertWeight = String(weights[invertWeightIndex])
+
+        if (theme("nightwind.colorScale.preset")) {
+          switch (theme("nightwind.colorScale.preset")) {
+            case "reduced":
+              let reducedInvertWeightIndex =
+                10 - weights.indexOf(Number(weight))
+              reducedInvertWeightIndex > 9
+                ? (reducedInvertWeightIndex = 9)
+                : reducedInvertWeightIndex
+              invertWeight = String(weights[reducedInvertWeightIndex])
+              break
+          }
+        } else if (theme("nightwind.colorScale")) {
+          if (theme(`nightwind.colorScale.${weight}`)) {
+            invertWeight = String(theme(`nightwind.colorScale.${weight}`))
+          }
+        }
+
+        if (theme(`nightwind.colors.${color}.${weight}`)) {
+          const colorMap = theme(`nightwind.colors.${color}.${weight}`)
+          return {
+            colorValue: theme(`colors.${colorMap}`)
+              ? theme(`colors.${colorMap}`)
+              : colorMap,
+            defaultColorValue: defaultValue,
+          }
+        } else if (
+          theme(`nightwind.colors.${color}`) &&
+          typeof theme(`nightwind.colors.${color}`) === "string"
         ) {
-          return false
+          const colorMap = theme(`nightwind.colors.${color}`)
+          if (theme(`colors.${colorMap}.${invertWeight}`)) {
+            return {
+              colorValue: theme(`colors.${colorMap}.${invertWeight}`),
+              defaultColorValue: defaultValue,
+            }
+          } else if (colorMap.split(".").length === 2) {
+            return {
+              colorValue: theme(`colors.${colorMap}`),
+              defaultColorValue: defaultValue,
+            }
+          } else if (
+            theme(`colors.${colorMap}`) &&
+            theme(`colors.${color}.${invertWeight}`)
+          ) {
+            return {
+              colorValue: theme(`colors.${color}.${invertWeight}`),
+              defaultColorValue: defaultValue,
+            }
+          } else {
+            return {
+              colorValue: colorMap,
+              defaultColorValue: defaultValue,
+            }
+          }
+        } else if (theme(`nightwind.colors.${color}.default`)) {
+          const colorMap = theme(`nightwind.colors.${color}.default`)
+          return {
+            colorValue: theme(`colors.${colorMap}.${invertWeight}`),
+            defaultColorValue: defaultValue,
+          }
         } else {
-          weights.forEach((weight) => {
-            let base = prefix + "-" + color + "-" + weight
-            colorClasses.push(base)
-            colorVariants.forEach((variant) => {
-              let baseVar =
-                variant + "\\:" + prefix + "-" + color + "-" + weight
-              colorClasses.push(baseVar)
-            })
-          })
+          return {
+            colorValue: theme(`colors.${color}.${invertWeight}`),
+            defaultColorValue: defaultValue,
+          }
         }
-      })
-    })
+      }
+    }
+
+    // Generate transition classes
 
     let transitionDurationValue = "300ms"
     if (
@@ -144,20 +232,230 @@ const nightwind = plugin(
       })
     }
 
-    let whiteSelector = "#000"
-    let blackSelector = "#fff"
-    if (theme(`nightwind.colors.white`)) {
-      const colorMap = theme(`nightwind.colors.white`)
-      whiteSelector = theme(`colors.${colorMap}`)
-        ? theme(`colors.${colorMap}`)
-        : colorMap
+    // Invert typography
+
+    if (theme("nightwind.typography")) {
+      Object.keys(theme("typography")).forEach((modifier) => {
+        Object.keys(theme(`typography.${modifier}.css`)).forEach((n) => {
+          Object.keys(theme(`typography.${modifier}.css[${n}]`)).forEach(
+            (classname) => {
+              const themeClass = `typography.${modifier}.css[${n}].${classname}`
+              if (
+                typeof theme(themeClass) === "string" &&
+                (classname.includes("color") || classname.includes("Color"))
+              ) {
+                const colorValue = hexToTailwind(theme(themeClass))
+                if (
+                  colorValue !== "transparent" &&
+                  colorValue !== "current" &&
+                  colorValue !== ""
+                ) {
+                  if (!typographyValues[`${modifier}`]) {
+                    typographyValues[`${modifier}`] = {}
+                  }
+                  if (!typographyValues[`${modifier}`]["prose"]) {
+                    typographyValues[`${modifier}`]["prose"] = {}
+                  }
+                  typographyValues[`${modifier}`]["prose"][
+                    classname
+                  ] = colorValue
+                }
+              } else if (typeof theme(themeClass) === "object") {
+                Object.keys(theme(themeClass)).forEach((property) => {
+                  const themeProperty = `${themeClass}.${property}`
+                  if (
+                    (typeof theme(themeProperty) === "string" &&
+                      property.includes("color")) ||
+                    property.includes("Color")
+                  ) {
+                    const colorValue = hexToTailwind(theme(themeProperty))
+                    if (
+                      colorValue !== "transparent" &&
+                      colorValue !== "current" &&
+                      colorValue !== ""
+                    ) {
+                      if (!typographyValues[`${modifier}`]) {
+                        typographyValues[`${modifier}`] = {}
+                      }
+                      if (!typographyValues[`${modifier}`][`${classname}`]) {
+                        typographyValues[`${modifier}`][`${classname}`] = {}
+                      }
+                      typographyValues[`${modifier}`][`${classname}`][
+                        property
+                      ] = colorValue
+                    }
+                  }
+                })
+              }
+            }
+          )
+        })
+      })
+
+      Object.keys(typographyValues).forEach((modifier) => {
+        Object.keys(typographyValues[modifier]).forEach((classname) => {
+          if (classname === "prose") {
+            Object.keys(typographyValues[modifier]["prose"]).forEach(
+              (property) => {
+                let themeValue = ""
+                let nightwindValue = ""
+                if (modifier === "DEFAULT") {
+                  nightwindValue = theme(`nightwind.typography.${property}`)
+                } else {
+                  nightwindValue = theme(
+                    `nightwind.typography.${modifier}.${property}`
+                  )
+                }
+                theme(`colors.${nightwindValue}`)
+                  ? (themeValue = theme(`colors.${nightwindValue}`))
+                  : (themeValue = nightwindValue)
+
+                const colorValue = themeValue
+                  ? themeValue
+                  : invertColor(typographyValues[modifier]["prose"][property])
+                      .colorValue
+                const defaultColorValue = invertColor(
+                  typographyValues[modifier]["prose"][property]
+                ).defaultColorValue
+
+                const typographyClass = {
+                  [`.${darkSelector} .prose${
+                    modifier !== "DEFAULT" ? `-${modifier}` : ""
+                  }`]: {
+                    [`${property}`]: colorValue,
+                  },
+                  [`.${darkSelector} .${fixedClass}.prose${
+                    modifier !== "DEFAULT" ? `-${modifier}` : ""
+                  }`]: {
+                    [`${property}`]: defaultColorValue,
+                  },
+                }
+                typographyClasses.push(typographyClass)
+
+                if (transitionDurationValue) {
+                  const typographyTransitionClass = {
+                    [`.nightwind .prose${
+                      modifier !== "DEFAULT" ? `-${modifier}` : ""
+                    }`]: {
+                      transitionDuration: transitionDurationValue,
+                      transitionProperty: theme("transitionProperty.colors"),
+                    },
+                    [`.nightwind .dark\\:prose${
+                      modifier !== "DEFAULT" ? `-${modifier}` : ""
+                    }`]: {
+                      transitionDuration: transitionDurationValue,
+                      transitionProperty: theme("transitionProperty.colors"),
+                    },
+                  }
+                  transitionClasses.push(typographyTransitionClass)
+                }
+              }
+            )
+          } else {
+            Object.keys(typographyValues[modifier][classname]).forEach(
+              (property) => {
+                let themeValue = ""
+                let nightwindValue = ""
+                if (modifier === "DEFAULT") {
+                  nightwindValue = theme(
+                    `nightwind.typography.${classname}.${property}`
+                  )
+                } else {
+                  nightwindValue = theme(
+                    `nightwind.typography.${modifier}.${classname}.${property}`
+                  )
+                }
+                theme(`colors.${nightwindValue}`)
+                  ? (themeValue = theme(`colors.${nightwindValue}`))
+                  : (themeValue = nightwindValue)
+
+                const colorValue = themeValue
+                  ? themeValue
+                  : invertColor(typographyValues[modifier][classname][property])
+                      .colorValue
+                const defaultColorValue = invertColor(
+                  typographyValues[modifier][classname][property]
+                ).defaultColorValue
+
+                const typographyClass = {
+                  [`.${darkSelector} .prose${
+                    modifier !== "DEFAULT" ? `-${modifier}` : ""
+                  } ${classname}`]: {
+                    [`${property}`]: colorValue,
+                  },
+                  [`.${darkSelector} .prose${
+                    modifier !== "DEFAULT" ? `-${modifier}` : ""
+                  } ${classname}.${fixedClass}`]: {
+                    [`${property}`]: defaultColorValue,
+                  },
+                }
+                typographyClasses.push(typographyClass)
+                if (transitionDurationValue) {
+                  const typographyTransitionClass = {
+                    [`.nightwind .prose${
+                      modifier !== "DEFAULT" ? `-${modifier}` : ""
+                    } ${classname}`]: {
+                      transitionDuration: transitionDurationValue,
+                      transitionProperty: theme("transitionProperty.colors"),
+                    },
+                    [`.nightwind .dark\\:prose${
+                      modifier !== "DEFAULT" ? `-${modifier}` : ""
+                    } ${classname}`]: {
+                      transitionDuration: transitionDurationValue,
+                      transitionProperty: theme("transitionProperty.colors"),
+                    },
+                  }
+                  transitionClasses.push(typographyTransitionClass)
+                }
+              }
+            )
+          }
+        })
+      })
     }
-    if (theme(`nightwind.colors.black`)) {
-      const colorMap = theme(`nightwind.colors.black`)
-      blackSelector = theme(`colors.${colorMap}`)
-        ? theme(`colors.${colorMap}`)
-        : colorMap
-    }
+
+    // Compose color classes
+
+    prefixes.forEach((prefix) => {
+      Object.keys(colors).forEach((color) => {
+        if (color == "white" || color == "black") {
+          let base = prefix + "-" + color
+          colorClasses.push(base)
+
+          colorVariants.forEach((variant) => {
+            let baseVar = variant + "\\:" + prefix + "-" + color
+            colorClasses.push(baseVar)
+          })
+        } else {
+          return false
+        }
+      })
+    })
+
+    prefixes.forEach((prefix) => {
+      Object.keys(colors).forEach((color) => {
+        if (
+          color == "transparent" ||
+          color == "current" ||
+          color == "white" ||
+          color == "black"
+        ) {
+          return false
+        } else {
+          weights.forEach((weight) => {
+            let base = prefix + "-" + color + "-" + weight
+            colorClasses.push(base)
+            colorVariants.forEach((variant) => {
+              let baseVar =
+                variant + "\\:" + prefix + "-" + color + "-" + weight
+              colorClasses.push(baseVar)
+            })
+          })
+        }
+      })
+    })
+
+    // Generate dark classes
 
     const nightwindClasses = colorClasses.map((colorClass) => {
       let pseudoVariant = ""
@@ -178,71 +476,8 @@ const nightwind = plugin(
         }
       })
 
-      let colorValue = ""
-      let defaultColorValue = ""
-      if (colorClass.includes("white") || colorClass.includes("black")) {
-        colorValue = colorClass.includes("white")
-          ? whiteSelector
-          : blackSelector
-
-        defaultColorValue = colorClass.includes("white")
-          ? theme("colors.white")
-          : theme("colors.black")
-      } else {
-        const colorValues = colorClass.split("-")
-        const weight = colorValues.pop()
-        const color = colorValues.pop()
-
-        defaultColorValue = theme(`colors.${color}.${weight}`)
-        let invertWeightIndex = 9 - weights.indexOf(Number(weight))
-        let invertWeight = String(weights[invertWeightIndex])
-
-        if (theme("nightwind.colorScale.preset")) {
-          switch (theme("nightwind.colorScale.preset")) {
-            case "reduced":
-              let reducedInvertWeightIndex =
-                10 - weights.indexOf(Number(weight))
-              reducedInvertWeightIndex > 9
-                ? (reducedInvertWeightIndex = 9)
-                : reducedInvertWeightIndex
-              invertWeight = String(weights[reducedInvertWeightIndex])
-              break
-          }
-        } else if (theme("nightwind.colorScale")) {
-          if (theme(`nightwind.colorScale.${weight}`)) {
-            invertWeight = String(theme(`nightwind.colorScale.${weight}`))
-          }
-        }
-
-        if (theme(`nightwind.colors.${color}.${weight}`)) {
-          const colorMap = theme(`nightwind.colors.${color}.${weight}`)
-          colorValue = theme(`colors.${colorMap}`)
-            ? theme(`colors.${colorMap}`)
-            : colorMap
-        } else if (
-          theme(`nightwind.colors.${color}`) &&
-          typeof theme(`nightwind.colors.${color}`) === "string"
-        ) {
-          const colorMap = theme(`nightwind.colors.${color}`)
-          if (theme(`colors.${colorMap}.${invertWeight}`)) {
-            colorValue = theme(`colors.${colorMap}.${invertWeight}`)
-          } else if (colorMap.split(".").length === 2) {
-            colorValue = theme(`colors.${colorMap}`)
-          } else if (
-            theme(`colors.${colorMap}`) &&
-            theme(`colors.${color}.${invertWeight}`)
-          ) {
-            colorValue = theme(`colors.${color}.${invertWeight}`)
-          } else {
-            colorValue = colorMap
-          }
-        } else if (theme(`nightwind.colors.${color}.default`)) {
-          const colorMap = theme(`nightwind.colors.${color}.default`)
-          colorValue = theme(`colors.${colorMap}.${invertWeight}`)
-        } else {
-          colorValue = theme(`colors.${color}.${invertWeight}`)
-        }
-      }
+      let colorValue = invertColor(colorClass).colorValue
+      let defaultColorValue = invertColor(colorClass).defaultColorValue
 
       const generateClass = (
         prefix,
@@ -271,6 +506,14 @@ const nightwind = plugin(
       ) {
         const originalColorClass = colorClass
         colorClass = "group:hover ." + originalColorClass
+      }
+
+      if (
+        colorVariants.includes("group-focus") &&
+        colorClass.includes("group-focus\\:")
+      ) {
+        const originalColorClass = colorClass
+        colorClass = "group:focus ." + originalColorClass
       }
 
       if (colorClass.includes("text-")) {
@@ -343,6 +586,7 @@ const nightwind = plugin(
     })
 
     addComponents(nightwindClasses, { variants: ["responsive"] })
+    addComponents(typographyClasses)
     addUtilities(transitionClasses, { variants: ["responsive"] })
   },
   {

@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.5] - 2021-02-15
+
+### Added
+
+- Support for [Typography](https://github.com/tailwindlabs/tailwindcss-typography) official TailwindCSS plugin
+
+### Fixed
+
+- Support for 'group-focus' variant
+
 ## [1.1.4] - 2021-01-24
 
 ### Changed
