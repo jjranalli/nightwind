@@ -1,4 +1,4 @@
-![Nightwind cover image](https://github.com/jjranalli/nightwind-demo/raw/master/public/nightwind-logotext.png)
+![Nightwind cover image](https://github.com/jjranalli/nightwind-demo/raw/master/nightwindcss.com/public/nightwind-logotext.png)
 
 A Tailwind CSS plugin that gives you an **out-of-the-box, customisable, overridable dark mode.**
 
