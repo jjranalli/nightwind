@@ -56,19 +56,23 @@ const nightwind = plugin(
 
     const hexToTailwind = (hex) => {
       let colorCode = ""
-      Object.keys(colors).forEach((col) => {
-        if (typeof theme(`colors.${col}`) === "string") {
-          if (hex === theme(`colors.${col}`)) {
-            colorCode = col
-          }
-        } else if (typeof theme(`colors.${col}`) === "object") {
-          Object.keys(theme(`colors.${col}`)).forEach((wei) => {
-            if (hex === theme(`colors.${col}.${wei}`)) {
-              colorCode = col + "-" + wei
+      if (hex != "inherit" && hex != "current" && hex != "transparent") {
+        Object.keys(colors).forEach((col) => {
+          if (typeof theme(`colors.${col}`) === "string") {
+            if (hex === theme(`colors.${col}`)) {
+              colorCode = col
             }
-          })
-        }
-      })
+          } else if (typeof theme(`colors.${col}`) === "object") {
+            Object.keys(theme(`colors.${col}`)).forEach((wei) => {
+              if (hex === theme(`colors.${col}.${wei}`)) {
+                colorCode = col + "-" + wei
+              }
+            })
+          }
+        })
+      } else {
+        colorCode = hex
+      }
       return colorCode
     }
 
@@ -98,6 +102,15 @@ const nightwind = plugin(
           defaultColorValue: colorClass.includes("white")
             ? theme("colors.white")
             : theme("colors.black"),
+        }
+      } else if (
+        colorClass === "inherit" ||
+        colorClass === "transparent" ||
+        colorClass === "current"
+      ) {
+        return {
+          colorValue: colorClass,
+          defaultColorValue: colorClass,
         }
       } else {
         const colorValues = colorClass.split("-")
@@ -245,21 +258,13 @@ const nightwind = plugin(
                 (classname.includes("color") || classname.includes("Color"))
               ) {
                 const colorValue = hexToTailwind(theme(themeClass))
-                if (
-                  colorValue !== "transparent" &&
-                  colorValue !== "current" &&
-                  colorValue !== ""
-                ) {
-                  if (!typographyValues[`${modifier}`]) {
-                    typographyValues[`${modifier}`] = {}
-                  }
-                  if (!typographyValues[`${modifier}`]["prose"]) {
-                    typographyValues[`${modifier}`]["prose"] = {}
-                  }
-                  typographyValues[`${modifier}`]["prose"][
-                    classname
-                  ] = colorValue
+                if (!typographyValues[`${modifier}`]) {
+                  typographyValues[`${modifier}`] = {}
                 }
+                if (!typographyValues[`${modifier}`]["prose"]) {
+                  typographyValues[`${modifier}`]["prose"] = {}
+                }
+                typographyValues[`${modifier}`]["prose"][classname] = colorValue
               } else if (typeof theme(themeClass) === "object") {
                 Object.keys(theme(themeClass)).forEach((property) => {
                   const themeProperty = `${themeClass}.${property}`
@@ -269,21 +274,15 @@ const nightwind = plugin(
                     property.includes("Color")
                   ) {
                     const colorValue = hexToTailwind(theme(themeProperty))
-                    if (
-                      colorValue !== "transparent" &&
-                      colorValue !== "current" &&
-                      colorValue !== ""
-                    ) {
-                      if (!typographyValues[`${modifier}`]) {
-                        typographyValues[`${modifier}`] = {}
-                      }
-                      if (!typographyValues[`${modifier}`][`${classname}`]) {
-                        typographyValues[`${modifier}`][`${classname}`] = {}
-                      }
-                      typographyValues[`${modifier}`][`${classname}`][
-                        property
-                      ] = colorValue
+                    if (!typographyValues[`${modifier}`]) {
+                      typographyValues[`${modifier}`] = {}
                     }
+                    if (!typographyValues[`${modifier}`][`${classname}`]) {
+                      typographyValues[`${modifier}`][`${classname}`] = {}
+                    }
+                    typographyValues[`${modifier}`][`${classname}`][
+                      property
+                    ] = colorValue
                   }
                 })
               }

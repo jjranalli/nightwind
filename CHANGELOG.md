@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.6] - 2021-02-17
+
+### Fixed
+
+- Bug where sometimes color classes with 'inherit' or 'transparent' were not rendered correctly in dark mode
+
 ## [1.1.5] - 2021-02-15
 
 ### Added
