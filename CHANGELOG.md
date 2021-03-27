@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.7] - 2021-03-27
+
+### Added
+
+- Support for [tailwindcss-jit](https://github.com/tailwindlabs/tailwindcss-jit)
+
+### Fixed
+
+- Bug where tailwindcss-typography nightwind classes were not correctly generated, when using tailwindcss-jit
+
 ## [1.1.6] - 2021-02-17
 
 ### Fixed
@@ -17,7 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Support for [Typography](https://github.com/tailwindlabs/tailwindcss-typography) official TailwindCSS plugin
+- Support for [tailwindcss-typography](https://github.com/tailwindlabs/tailwindcss-typography) official TailwindCSS plugin
 
 ### Fixed
 

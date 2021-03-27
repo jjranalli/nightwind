@@ -220,7 +220,7 @@ const nightwind = plugin(
                 transitionDuration: transitionDurationValue,
                 transitionProperty: theme("transitionProperty.colors"),
               },
-              [`.nightwind .dark\\:${prefix}-${color}`]: {
+              [`.nightwind .${darkSelector}\\:${prefix}-${color}`]: {
                 transitionDuration: transitionDurationValue,
                 transitionProperty: theme("transitionProperty.colors"),
               },
@@ -233,7 +233,7 @@ const nightwind = plugin(
                   transitionDuration: transitionDurationValue,
                   transitionProperty: theme("transitionProperty.colors"),
                 },
-                [`.nightwind .dark\\:${prefix}-${color}-${weight}`]: {
+                [`.nightwind .${darkSelector}\\:${prefix}-${color}-${weight}`]: {
                   transitionDuration: transitionDurationValue,
                   transitionProperty: theme("transitionProperty.colors"),
                 },
@@ -250,44 +250,45 @@ const nightwind = plugin(
     if (theme("nightwind.typography")) {
       Object.keys(theme("typography")).forEach((modifier) => {
         Object.keys(theme(`typography.${modifier}.css`)).forEach((n) => {
-          Object.keys(theme(`typography.${modifier}.css[${n}]`)).forEach(
-            (classname) => {
-              const themeClass = `typography.${modifier}.css[${n}].${classname}`
-              if (
-                typeof theme(themeClass) === "string" &&
-                (classname.includes("color") || classname.includes("Color"))
-              ) {
-                const colorValue = hexToTailwind(theme(themeClass))
-                if (!typographyValues[`${modifier}`]) {
-                  typographyValues[`${modifier}`] = {}
-                }
-                if (!typographyValues[`${modifier}`]["prose"]) {
-                  typographyValues[`${modifier}`]["prose"] = {}
-                }
-                typographyValues[`${modifier}`]["prose"][classname] = colorValue
-              } else if (typeof theme(themeClass) === "object") {
-                Object.keys(theme(themeClass)).forEach((property) => {
-                  const themeProperty = `${themeClass}.${property}`
-                  if (
-                    (typeof theme(themeProperty) === "string" &&
-                      property.includes("color")) ||
-                    property.includes("Color")
-                  ) {
-                    const colorValue = hexToTailwind(theme(themeProperty))
-                    if (!typographyValues[`${modifier}`]) {
-                      typographyValues[`${modifier}`] = {}
-                    }
-                    if (!typographyValues[`${modifier}`][`${classname}`]) {
-                      typographyValues[`${modifier}`][`${classname}`] = {}
-                    }
-                    typographyValues[`${modifier}`][`${classname}`][
-                      property
-                    ] = colorValue
-                  }
-                })
-              }
-            }
+          const themeParser = JSON.parse(
+            JSON.stringify(theme(`typography.${modifier}.css[${n}]`))
           )
+          Object.keys(themeParser).forEach((classname) => {
+            const themeClass = themeParser[classname]
+            if (
+              typeof themeClass === "string" &&
+              (classname.includes("color") || classname.includes("Color"))
+            ) {
+              const colorValue = hexToTailwind(themeClass)
+              if (!typographyValues[`${modifier}`]) {
+                typographyValues[`${modifier}`] = {}
+              }
+              if (!typographyValues[`${modifier}`]["prose"]) {
+                typographyValues[`${modifier}`]["prose"] = {}
+              }
+              typographyValues[`${modifier}`]["prose"][classname] = colorValue
+            } else if (typeof themeClass === "object") {
+              Object.keys(themeClass).forEach((property) => {
+                const themeProperty = themeClass[property]
+                if (
+                  (typeof themeProperty === "string" &&
+                    property.includes("color")) ||
+                  property.includes("Color")
+                ) {
+                  const colorValue = hexToTailwind(themeProperty)
+                  if (!typographyValues[`${modifier}`]) {
+                    typographyValues[`${modifier}`] = {}
+                  }
+                  if (!typographyValues[`${modifier}`][`${classname}`]) {
+                    typographyValues[`${modifier}`][`${classname}`] = {}
+                  }
+                  typographyValues[`${modifier}`][`${classname}`][
+                    property
+                  ] = colorValue
+                }
+              })
+            }
+          })
         })
       })
 
@@ -339,7 +340,7 @@ const nightwind = plugin(
                       transitionDuration: transitionDurationValue,
                       transitionProperty: theme("transitionProperty.colors"),
                     },
-                    [`.nightwind .dark\\:prose${
+                    [`.nightwind .${darkSelector}\\:prose${
                       modifier !== "DEFAULT" ? `-${modifier}` : ""
                     }`]: {
                       transitionDuration: transitionDurationValue,
@@ -397,7 +398,7 @@ const nightwind = plugin(
                       transitionDuration: transitionDurationValue,
                       transitionProperty: theme("transitionProperty.colors"),
                     },
-                    [`.nightwind .dark\\:prose${
+                    [`.nightwind .${darkSelector}\\:prose${
                       modifier !== "DEFAULT" ? `-${modifier}` : ""
                     } ${classname}`]: {
                       transitionDuration: transitionDurationValue,
