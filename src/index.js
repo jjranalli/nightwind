@@ -11,6 +11,7 @@ const nightwind = plugin(
       "nightwind.fixedBlockClass",
       "nightwind-prevent-block"
     )}`
+    const transitionConfig = theme("nightwind.transitionClasses", "default")
     const colorClasses = []
     const transitionClasses = []
     const typographyValues = {}
@@ -31,11 +32,13 @@ const nightwind = plugin(
     if (theme("nightwind.colorClasses")) {
       prefixes.push(...theme("nightwind.colorClasses"))
       if (theme("nightwind.colorClasses").includes("gradient")) {
+        prefixes.splice(prefixes.indexOf("gradient"), 1)
         prefixes.push(...["from", "via", "to"])
       }
     } else if (variants("nightwind.colorClasses")) {
       prefixes.push(...variants("nightwind.colorClasses"))
       if (variants("nightwind.colorClasses").includes("gradient")) {
+        prefixes.splice(prefixes.indexOf("gradient"), 1)
         prefixes.push(...["from", "via", "to"])
       }
     }
@@ -224,11 +227,27 @@ const nightwind = plugin(
     }
 
     if (transitionDurationValue) {
+      const transitionPrefixes = []
+      if (transitionConfig === "full") {
+        transitionPrefixes.push(...prefixes)
+      } else if (
+        typeof transitionConfig === "object" ||
+        (typeof transitionConfig === "string" &&
+          prefixes.includes(transitionConfig))
+      ) {
+        typeof transitionConfig === "object"
+          ? transitionPrefixes.push(...transitionConfig)
+          : transitionPrefixes.push(transitionConfig)
+      } else {
+        transitionPrefixes.push("text", "bg", "border")
+      }
+
       Object.keys(colors).forEach((color) => {
-        prefixes.forEach((prefix) => {
+        transitionPrefixes.forEach((prefix) => {
           if (prefix === "from" || prefix === "via" || prefix === "to") {
             return null
-          } else if (
+          }
+          if (
             color == "transparent" ||
             color == "current" ||
             color == "white" ||
