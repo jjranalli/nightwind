@@ -23,20 +23,28 @@ const nightwind = plugin(
     let importantSelector = ""
     let importantProperty = ""
 
-    if (Array.isArray(variants("nightwind"))) {
-      colorVariants.push(...variants("nightwind"))
+    if (variants("nightwind")) {
+      typeof variants("nightwind") === "object"
+        ? colorVariants.push(...variants("nightwind"))
+        : colorVariants.push(variants("nightwind"))
     } else if (variants("nightwind.variants")) {
-      colorVariants.push(...variants("nightwind.variants"))
+      typeof variants("nightwind.variants") === "object"
+        ? colorVariants.push(...variants("nightwind.variants"))
+        : colorVariants.push(variants("nightwind.variants"))
     }
 
     if (theme("nightwind.colorClasses")) {
-      prefixes.push(...theme("nightwind.colorClasses"))
+      typeof theme("nightwind.colorClasses") === "object"
+        ? prefixes.push(...theme("nightwind.colorClasses"))
+        : prefixes.push(theme("nightwind.colorClasses"))
       if (theme("nightwind.colorClasses").includes("gradient")) {
         prefixes.splice(prefixes.indexOf("gradient"), 1)
         prefixes.push(...["from", "via", "to"])
       }
     } else if (variants("nightwind.colorClasses")) {
-      prefixes.push(...variants("nightwind.colorClasses"))
+      typeof variants("nightwind.colorClasses") === "object"
+        ? prefixes.push(...variants("nightwind.colorClasses"))
+        : prefixes.push(variants("nightwind.colorClasses"))
       if (variants("nightwind.colorClasses").includes("gradient")) {
         prefixes.splice(prefixes.indexOf("gradient"), 1)
         prefixes.push(...["from", "via", "to"])
