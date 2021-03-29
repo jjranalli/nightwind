@@ -451,6 +451,11 @@ const nightwind = plugin(
                   } ${classname}${fixedElementClass}`]: {
                     [`${property}`]: defaultColorValue,
                   },
+                  [`${importantSelector}${darkSelector} ${fixedBlockClass} .prose${
+                    modifier !== "DEFAULT" ? `-${modifier}` : ""
+                  } ${classname}`]: {
+                    [`${property}`]: defaultColorValue,
+                  },
                   [`${importantSelector}${darkSelector} .prose${
                     modifier !== "DEFAULT" ? `-${modifier}` : ""
                   } ${fixedBlockClass} ${classname}`]: {
