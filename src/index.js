@@ -36,7 +36,7 @@ const nightwind = plugin(
     if (config("important")) {
       if (typeof config("important") === "string") {
         importantSelector = `${config("important")}${
-          theme("nightwind.importantSibling") ? "" : " "
+          theme("nightwind.importantNode") ? "" : " "
         }`
       }
       if (config("important") === true) {
@@ -620,7 +620,7 @@ const nightwind = plugin(
 
     addComponents(nightwindClasses, { variants: ["responsive"] })
     addComponents(typographyClasses)
-    theme("nightwind.importantSibling")
+    theme("nightwind.importantNode")
       ? addComponents(transitionClasses, { variants: ["responsive"] })
       : addUtilities(transitionClasses, { variants: ["responsive"] })
   },

@@ -401,7 +401,7 @@ If you're applying the 'important ID selector' to the same element that contains
 module.exports = {
   theme: {
     nightwind: {
-      importantSibling: true,
+      importantNode: true,
     },
   },
 }
