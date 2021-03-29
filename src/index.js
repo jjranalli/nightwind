@@ -2,8 +2,15 @@ const plugin = require("tailwindcss/plugin")
 
 const nightwind = plugin(
   function ({ addComponents, addUtilities, theme, variants, config }) {
-    const darkSelector = "dark"
-    const fixedClass = theme("nightwind.fixedClass", "nightwind-prevent")
+    const darkSelector = ".dark"
+    const fixedElementClass = `.${theme(
+      "nightwind.fixedClass",
+      "nightwind-prevent"
+    )}`
+    const fixedBlockClass = `.${theme(
+      "nightwind.fixedBlockClass",
+      "nightwind-prevent-block"
+    )}`
     const colorClasses = []
     const transitionClasses = []
     const typographyValues = {}
@@ -339,12 +346,14 @@ const nightwind = plugin(
                 ).defaultColorValue
 
                 const typographyClass = {
-                  [`${importantSelector}.${darkSelector} .prose${
+                  [`${importantSelector}${darkSelector} .prose${
                     modifier !== "DEFAULT" ? `-${modifier}` : ""
                   }`]: {
                     [`${property}`]: colorValue,
                   },
-                  [`${importantSelector}.${darkSelector} .${fixedClass}.prose${
+                  [`${importantSelector}${darkSelector} ${fixedElementClass}.prose${
+                    modifier !== "DEFAULT" ? `-${modifier}` : ""
+                  }, ${importantSelector}${darkSelector} ${fixedBlockClass} .prose${
                     modifier !== "DEFAULT" ? `-${modifier}` : ""
                   }`]: {
                     [`${property}`]: defaultColorValue,
@@ -402,14 +411,16 @@ const nightwind = plugin(
                 ).defaultColorValue
 
                 const typographyClass = {
-                  [`${importantSelector}.${darkSelector} .prose${
+                  [`${importantSelector}${darkSelector} .prose${
                     modifier !== "DEFAULT" ? `-${modifier}` : ""
                   } ${classname}`]: {
                     [`${property}`]: colorValue,
                   },
-                  [`${importantSelector}.${darkSelector} .prose${
+                  [`${importantSelector}${darkSelector} .prose${
                     modifier !== "DEFAULT" ? `-${modifier}` : ""
-                  } ${classname}.${fixedClass}`]: {
+                  } ${classname}${fixedElementClass}, ${importantSelector}${darkSelector} .prose${
+                    modifier !== "DEFAULT" ? `-${modifier}` : ""
+                  } ${fixedBlockClass} ${classname}`]: {
                     [`${property}`]: defaultColorValue,
                   },
                 }
@@ -563,16 +574,16 @@ const nightwind = plugin(
         return generateClass("ring-opacity", "--tw-ring-color")
       } else if (colorClass.includes("ring-offset-")) {
         return {
-          [`${importantSelector}.${darkSelector} .${colorClass}${pseudoVariant}`]: {
+          [`${importantSelector}${darkSelector} .${colorClass}${pseudoVariant}`]: {
             "--tw-ring-offset-color": colorValue + importantProperty,
           },
-          [`${importantSelector}.${darkSelector} .${fixedClass}.${colorClass}${pseudoVariant}`]: {
+          [`${importantSelector}${darkSelector} .${colorClass}${pseudoVariant}${fixedElementClass}, ${importantSelector}${darkSelector} ${fixedBlockClass} .${colorClass}${pseudoVariant}`]: {
             "--tw-ring-offset-color": defaultColorValue + importantProperty,
           },
         }
       } else if (colorClass.includes("from-")) {
         return {
-          [`${importantSelector}.${darkSelector} .${colorClass}${pseudoVariant}`]: {
+          [`${importantSelector}${darkSelector} .${colorClass}${pseudoVariant}`]: {
             "--tw-gradient-from": colorValue + importantProperty,
             "--tw-gradient-stops":
               `var(--tw-gradient-from), var(--tw-gradient-to, ${hexToRGB(
@@ -580,7 +591,7 @@ const nightwind = plugin(
                 "0"
               )})` + importantProperty,
           },
-          [`${importantSelector}.${darkSelector} .${fixedClass}.${colorClass}${pseudoVariant}`]: {
+          [`${importantSelector}${darkSelector} .${colorClass}${pseudoVariant}${fixedElementClass}, ${importantSelector}${darkSelector} ${fixedBlockClass} .${colorClass}${pseudoVariant}`]: {
             "--tw-gradient-from": defaultColorValue + importantProperty,
             "--tw-gradient-stops":
               `var(--tw-gradient-from), var(--tw-gradient-to, ${hexToRGB(
@@ -591,14 +602,14 @@ const nightwind = plugin(
         }
       } else if (colorClass.includes("via-")) {
         return {
-          [`${importantSelector}.${darkSelector} .${colorClass}${pseudoVariant}`]: {
+          [`${importantSelector}${darkSelector} .${colorClass}${pseudoVariant}`]: {
             "--tw-gradient-stops":
               `var(--tw-gradient-from), ${colorValue}, var(--tw-gradient-to, ${hexToRGB(
                 `${colorValue}`,
                 "0"
               )})` + importantProperty,
           },
-          [`${importantSelector}.${darkSelector} .${fixedClass}.${colorClass}${pseudoVariant}`]: {
+          [`${importantSelector}${darkSelector} .${colorClass}${pseudoVariant}${fixedElementClass}, ${importantSelector}${darkSelector} ${fixedBlockClass} .${colorClass}${pseudoVariant}`]: {
             "--tw-gradient-stops":
               `var(--tw-gradient-from), ${defaultColorValue}, var(--tw-gradient-to, ${hexToRGB(
                 `${defaultColorValue}`,
@@ -608,10 +619,10 @@ const nightwind = plugin(
         }
       } else if (colorClass.includes("to-")) {
         return {
-          [`${importantSelector}.${darkSelector} .${colorClass}${pseudoVariant}`]: {
+          [`${importantSelector}${darkSelector} .${colorClass}${pseudoVariant}`]: {
             "--tw-gradient-to": colorValue + importantProperty,
           },
-          [`${importantSelector}.${darkSelector} .${fixedClass}.${colorClass}${pseudoVariant}`]: {
+          [`${importantSelector}${darkSelector} .${colorClass}${pseudoVariant}${fixedElementClass}, ${importantSelector}${darkSelector} ${fixedBlockClass} .${colorClass}${pseudoVariant}`]: {
             "--tw-gradient-to": defaultColorValue + importantProperty,
           },
         }
