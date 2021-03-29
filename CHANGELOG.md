@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.10] - 2021-03-29
+
+### Added
+
+- 'nightwind-prevent-block' class
+- fixedBlockClass Nightwind configuration option
+- transitionClasses Nightwind configuration option
+
+### Changed
+
+- Nightwind by default now generates transition classes only for 'text', 'bg' and 'border' color classes.
+
 ## [1.1.9] - 2021-03-29
 
 ### Changed
