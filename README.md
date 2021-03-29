@@ -269,18 +269,21 @@ The 'gradient' color class enables Nightwind for the 'from', 'via' and 'to' clas
 
 ### The 'nightwind-prevent' class
 
-Sometimes you want an element to remain exactly the same in both light and dark modes. You can achieve this in Nightwind by adding a 'nightwind-prevent' class to the element.
+If you want an element to remain exactly the same in both light and dark modes, you can achieve this in Nightwind by adding a **'nightwind-prevent'** class to the element.
 
 > Note: if you only want some of the colors to remain unchanged, consider using [overrides](#overrides).
 
-You can customize the name of the class in your tailwind.config.js file
+To prevent all children of an element to remain unchanged in dark mode, you can add the **'nightwind-prevent-block'** class to the element. All descandant nodes of the element will be prevented from switching.
+
+You can customize the name of both classes in your tailwind.config.js file
 
 ```js
 // tailwind.config.js
 module.exports = {
   theme: {
     nightwind: {
-      fixedClass: "nightwind-no-switch", // default 'nightwind-prevent'
+      fixedClass: "prevent-switch", // default 'nightwind-prevent'
+      fixedBlockClass: "prevent-switch-block", // default 'nightwind-prevent-block'
     },
   },
 }
