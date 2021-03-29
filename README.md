@@ -19,6 +19,7 @@ You can see it in action on https://nightwindcss.com
    - [The 'nightwind-prevent' class](#the-nightwind-prevent-class)
    - [Transition duration](#transition-duration)
    - [Custom color scale](#custom-color-scale)
+   - [Important selector](#important-selector)
 5. [Color mappings](#color-mappings)
    - [Individual colors](#individual-colors)
    - [Color classes](#color-classes)
@@ -380,21 +381,33 @@ colorScale: {
 
 > Note: When using a preset, specific weights will be ignored.
 
-### Custom classes
+### Important selector
 
-Thanks to the support for complex classes added in Tailwind 2.0, no additional setup is needed for custom classes. That means you can write things like
+If you're using the [important ID selector strategy](https://tailwindcss.com/docs/configuration#selector-strategy) in your config, such as
 
-```css
-.custom {
-  @apply text-indigo-700 hover:text-indigo-600;
+```js
+// tailwind.config.js
+module.exports = {
+  important: "#app",
 }
 ```
 
-and Nightwind still works as expected when you switch into dark mode.
+Please note that Nightwind assumes that the #app element is a parent of the element which contains the toggled 'dark' and 'nightwind' classes.
 
-### Screens
+If you're applying the 'important ID selector' to the same element that contains both the 'nightwind' and the toggled 'dark' classes (typically the root element), enable the following setting:
 
-Nightwind is responsive by default. If you add custom breakpoints they get automatically applied to Nightwind classes.
+```js
+// tailwind.config.js
+module.exports = {
+  theme: {
+    nightwind: {
+      importantSibling: true,
+    },
+  },
+}
+```
+
+> Note: [Overrides](#overrides) will stop working as they always assume a parent-child relationship between elements.
 
 ## Color mappings
 

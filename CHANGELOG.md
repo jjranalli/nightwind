@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.8] - 2021-03-29
+
+### Added
+
+- Support for [important TailwindCSS configuration](https://tailwindcss.com/docs/configuration#important)
+- Configuration option 'importantSibling' in nightwind config
+
 ## [1.1.7] - 2021-03-27
 
 ### Added
