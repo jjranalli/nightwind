@@ -17,7 +17,7 @@ You can see it in action on https://nightwindcss.com
    - [Colors](#colors)
    - [Variants and color classes](#variants-and-color-classes)
    - [The 'nightwind-prevent' class](#the-nightwind-prevent-class)
-   - [Transition duration](#transition-duration)
+   - [Transitions](#transitions)
    - [Custom color scale](#custom-color-scale)
    - [Important selector](#important-selector)
 5. [Color mappings](#color-mappings)
@@ -289,9 +289,9 @@ module.exports = {
 }
 ```
 
-### Transition duration
+### Transitions
 
-Nightwind by default applies a '300ms' transition to all color classes. You can customize this value in your tailwind.config.js file.
+Nightwind by default applies a '300ms' transition to all color classes. You can customize this value in your tailwind.config.js file, through the **transitionDuration** property.
 
 ```js
 // tailwind.config.js
@@ -301,13 +301,12 @@ module.exports = {
       transitionDuration: "500ms", // default '300ms'
     },
   },
-  // ...
 }
 ```
 
 If you wish to disable transition for a single class, you can add the 'duration-0' class to the element (it's already included in Nightwind).
 
-If you wish to disable transitions for all nightwind classes, you can do so by setting the same value to false.
+If you wish to disable the generation of all transition classes, you can do so by setting the same value to false.
 
 ```js
 // tailwind.config.js
@@ -317,7 +316,36 @@ module.exports = {
       transitionDuration: false, // default '300ms'
     },
   },
-  // ...
+}
+```
+
+#### Transition Classes
+
+Nightwind by default generates transition classes for 'text', 'bg' and 'border' color classes. This should make most elements transition smoothly without affecting performances.
+
+In your configuration file you can also set the **transitionClasses** property to 'full' to enable generation of transition classes for all color classes used throughout your website (i.e. rings, divide and placeholder).
+
+```js
+// tailwind.config.js
+module.exports = {
+  theme: {
+    nightwind: {
+      transitionClasses: "full", // default ['text, 'bg', 'border']
+    },
+  },
+}
+```
+
+Alternatively, you can also specify which color classes you'd like to generate transition classes for.
+
+```js
+// tailwind.config.js
+module.exports = {
+  theme: {
+    nightwind: {
+      transitionClasses: ["bg", "ring"], // default ['text, 'bg', 'border']
+    },
+  },
 }
 ```
 
