@@ -518,20 +518,15 @@ const nightwind = plugin(
       let colorValue = invertColor(colorClass).colorValue
       let defaultColorValue = invertColor(colorClass).defaultColorValue
 
-      const generateClass = (
-        prefix,
-        property,
-        additional = "",
-        variant = pseudoVariant
-      ) => {
+      const generateClass = (prefix, property) => {
         return {
-          [`${importantSelector}.${darkSelector} .${colorClass}${variant}${additional}`]: {
+          [`${importantSelector}${darkSelector} .${colorClass}${pseudoVariant}`]: {
             [`${property}`]: colorValue + importantProperty,
             [`${property}`]:
               hexToRGB(`${colorValue}`, `var(--tw-${prefix})`) +
               importantProperty,
           },
-          [`${importantSelector}.${darkSelector} .${fixedClass}.${colorClass}${variant}${additional}`]: {
+          [`${importantSelector}${darkSelector} .${colorClass}${pseudoVariant}${fixedElementClass}, ${importantSelector}${darkSelector} ${fixedBlockClass} .${colorClass}${pseudoVariant}`]: {
             [`${property}`]: defaultColorValue + importantProperty,
             [`${property}`]:
               hexToRGB(`${defaultColorValue}`, `var(--tw-${prefix})`) +
@@ -562,16 +557,38 @@ const nightwind = plugin(
         return generateClass("bg-opacity", "backgroundColor")
       } else if (colorClass.includes("border-")) {
         return generateClass("border-opacity", "borderColor")
-      } else if (colorClass.includes("divide-")) {
-        return generateClass(
-          "divide-opacity",
-          "borderColor",
-          " > :not([hidden]) ~ :not([hidden])"
-        )
-      } else if (colorClass.includes("placeholder-")) {
-        return generateClass("text-opacity", "color", "::placeholder", "")
       } else if (colorClass.includes("ring-")) {
         return generateClass("ring-opacity", "--tw-ring-color")
+      } else if (colorClass.includes("divide-")) {
+        return {
+          [`${importantSelector}${darkSelector} .${colorClass}${pseudoVariant} > :not([hidden]) ~ :not([hidden])`]: {
+            borderColor: colorValue + importantProperty,
+            borderColor:
+              hexToRGB(`${colorValue}`, `var(--tw-divide-opacity)`) +
+              importantProperty,
+          },
+          [`${importantSelector}${darkSelector} ${fixedElementClass}.${colorClass}${pseudoVariant} > :not([hidden]) ~ :not([hidden]), ${importantSelector}${darkSelector} ${fixedBlockClass} .${colorClass}${pseudoVariant} > :not([hidden]) ~ :not([hidden])`]: {
+            borderColor: defaultColorValue + importantProperty,
+            borderColor:
+              hexToRGB(`${defaultColorValue}`, `var(--tw-divide-opacity)`) +
+              importantProperty,
+          },
+        }
+      } else if (colorClass.includes("placeholder-")) {
+        return {
+          [`${importantSelector}${darkSelector} .${colorClass}::placeholder`]: {
+            color: colorValue + importantProperty,
+            color:
+              hexToRGB(`${colorValue}`, `var(--tw-text-opacity)`) +
+              importantProperty,
+          },
+          [`${importantSelector}${darkSelector} ${fixedElementClass}.${colorClass}::placeholder, ${importantSelector}${darkSelector} ${fixedBlockClass} .${colorClass}::placeholder`]: {
+            color: defaultColorValue + importantProperty,
+            color:
+              hexToRGB(`${defaultColorValue}`, `var(--tw-text-opacity)`) +
+              importantProperty,
+          },
+        }
       } else if (colorClass.includes("ring-offset-")) {
         return {
           [`${importantSelector}${darkSelector} .${colorClass}${pseudoVariant}`]: {
