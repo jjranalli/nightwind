@@ -63,6 +63,9 @@ const nightwind = plugin(
     }
 
     function hexToRGB(h, alpha) {
+      if (h.includes("var(--")) {
+        return h
+      }
       if (h.length == 4) {
         let rh = h[1] + h[1]
         let gh = h[2] + h[2]

@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.11] - 2021-04-01
+
+### Added
+
+- Support for CSS variables
+
 ## [1.1.10] - 2021-03-29
 
 ### Added
