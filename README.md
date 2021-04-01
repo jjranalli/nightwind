@@ -233,11 +233,10 @@ module.exports = {
       },
     },
   },
-  // ...
 }
 ```
 
-You can also use [**color mappings**](#color-mappings) to further customise your dark theme.
+Check out [**color mappings**](#color-mappings) to see how to further customize your dark theme.
 
 ### Variants and color classes
 
@@ -288,6 +287,8 @@ module.exports = {
   },
 }
 ```
+
+> Note: The 'nightwind-prevent' class doesn't work with @apply, so always add it in the html.
 
 ### Transitions
 
@@ -463,7 +464,7 @@ There are two main ways to map colors in Nightwind: using **individual colors** 
 
 You can use the following syntax to specify colors:
 
-- Individual colors: in hex '#fff' or Tailwind-based color codes 'red.100'
+- Individual colors: in hex '#fff', Tailwind-based color codes 'red.100', or using CSS variables 'var(--primary)'
 - Color classes: such as 'red' or 'gray'
 
 ### Individual colors
@@ -483,6 +484,8 @@ module.exports = {
           500: "#3B82F6", // or 'blue.500'
           900: "#DBEAFE", // or 'blue.100'
         },
+        primary: "var(--secondary)",
+        secondary: "var(--primary)",
       },
     },
   },
