@@ -17,7 +17,7 @@
     "css",
     "javascript"
   ],
-  "dependencies": {
+  "peerDependencies": {
     "tailwindcss": "^2.0.0"
   },
   "author": "Jacopo Ranalli",
