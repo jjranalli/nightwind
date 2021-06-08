@@ -31,6 +31,16 @@ module.exports = {
         window.localStorage.setItem('nightwind-mode', 'light');
     }
   },
+  
+  setDarkMode: () => {
+    document.documentElement.classList.add('dark');
+    window.localStorage.setItem('nightwind-mode', 'dark');
+  },
+
+  setLightMode: () => {
+    document.documentElement.classList.remove('dark');
+    window.localStorage.setItem('nightwind-mode', 'light');
+  },
 
   // Old
 
