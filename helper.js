@@ -16,13 +16,20 @@ module.exports = {
                 return 'light';
         }
         getInitialColorMode() == 'light' ? document.documentElement.classList.remove('dark') : document.documentElement.classList.add('dark');
-        document.documentElement.classList.add('nightwind');
       })()
     `;
     return codeToRunOnClient;
   },
 
   toggle: () => {
+    if (!document.documentElement.classList.contains('nightwind')) {
+      const handler = () => {
+        document.documentElement.classList.remove('nightwind');
+        document.documentElement.removeEventListener('transitionend', handler)
+      }
+      document.documentElement.addEventListener('transitionend', handler)
+      document.documentElement.classList.add('nightwind');
+    }
     if (!document.documentElement.classList.contains('dark')) {
       document.documentElement.classList.add('dark');
       window.localStorage.setItem('nightwind-mode', 'dark');
