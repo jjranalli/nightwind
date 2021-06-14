@@ -20,16 +20,21 @@ module.exports = {
     `;
     return codeToRunOnClient;
   },
+  
+  beforeTransition: () => {
+    const doc = document.documentElement;
+    const onTransitionDone = () => {
+      doc.classList.remove('nightwind');
+      doc.removeEventListener('transitionend', onTransitionDone);
+    }
+    doc.addEventListener('transitionend', onTransitionDone);
+    if (!doc.classList.contains('nightwind')) {
+      doc.classList.add('nightwind');
+    }
+  },
 
   toggle: () => {
-    if (!document.documentElement.classList.contains('nightwind')) {
-      const handler = () => {
-        document.documentElement.classList.remove('nightwind');
-        document.documentElement.removeEventListener('transitionend', handler)
-      }
-      document.documentElement.addEventListener('transitionend', handler)
-      document.documentElement.classList.add('nightwind');
-    }
+    module.exports.beforeTransition();
     if (!document.documentElement.classList.contains('dark')) {
       document.documentElement.classList.add('dark');
       window.localStorage.setItem('nightwind-mode', 'dark');
