@@ -32,14 +32,15 @@ module.exports = {
     }
   },
   
-  setDarkMode: () => {
-    document.documentElement.classList.add('dark');
-    window.localStorage.setItem('nightwind-mode', 'dark');
-  },
+  enable: (dark) => {
+    const mode = dark ? "dark" : "light";
+    const opposite = dark ? "light" : "dark";
 
-  setLightMode: () => {
-    document.documentElement.classList.remove('dark');
-    window.localStorage.setItem('nightwind-mode', 'light');
+    if (document.documentElement.classList.contains(opposite)) {
+      document.documentElement.classList.remove(opposite);
+    }
+    document.documentElement.classList.add(mode);
+    window.localStorage.setItem('nightwind-mode', mode);
   },
 
   // Old
