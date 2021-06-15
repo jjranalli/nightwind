@@ -43,6 +43,19 @@ module.exports = {
         window.localStorage.setItem('nightwind-mode', 'light');
     }
   },
+  
+  enable: (dark) => {
+    const mode = dark ? "dark" : "light";
+    const opposite = dark ? "light" : "dark";
+
+    module.exports.beforeTransition();
+
+    if (document.documentElement.classList.contains(opposite)) {
+      document.documentElement.classList.remove(opposite);
+    }
+    document.documentElement.classList.add(mode);
+    window.localStorage.setItem('nightwind-mode', mode);
+  },
 
   // Old
 
