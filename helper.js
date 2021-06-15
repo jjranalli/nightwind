@@ -36,6 +36,8 @@ module.exports = {
     const mode = dark ? "dark" : "light";
     const opposite = dark ? "light" : "dark";
 
+    module.exports.beforeTransition();
+
     if (document.documentElement.classList.contains(opposite)) {
       document.documentElement.classList.remove(opposite);
     }
