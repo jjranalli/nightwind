@@ -206,7 +206,7 @@ import "./index.css";
 ReactDOM.render(
   <React.StrictMode>
     <Helmet>
-      <script dangerouslySetInnerHTML={{ __html: nightwind.init() }} />
+      <script>{nightwind.init()}</script>
     </Helmet>
     <App />
   </React.StrictMode>,
