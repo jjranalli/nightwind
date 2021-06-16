@@ -187,6 +187,52 @@ export default function Toggle(props) {
 
 </details>
 
+<details>
+  <summary>Create React App (using the <a href="https://github.com/nfl/react-helmet">react-helmet</a> library)</summary>
+  
+  #### index.jsx
+
+Add Helmet using the following configuration
+
+```js
+import React from "react";
+import ReactDOM from "react-dom";
+import { Helmet } from "react-helmet";
+import nightwind from "nightwind/helper";
+
+import App from "./App";
+import "./index.css";
+
+ReactDOM.render(
+  <React.StrictMode>
+    <Helmet>
+      <script>{nightwind.init()}</script>
+    </Helmet>
+    <App />
+  </React.StrictMode>,
+  document.getElementById("root")
+);
+
+```
+
+#### Toggle
+
+Set it up using the default example
+   
+```js
+import nightwind from "nightwind/helper"
+
+export default function Navbar() {
+  return (
+    // ...
+    <button onClick={() => nightwind.toggle()}></button>
+    // ...
+  )
+}
+```
+
+</details>
+
 ## Getting started
 
 This is some examples of what Nightwind does by default:
