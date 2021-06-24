@@ -89,7 +89,7 @@ export default function Layout() {
 
 ### Toggle
 
-Similarly, you can use the toggle function to switch between dark and light mode.
+Similarly, you can use the `toggle` function to switch between dark and light mode.
 
 ```js
 // React Example
@@ -103,6 +103,29 @@ export default function Navbar() {
   )
 }
 ```
+
+### Enable mode
+
+If you need to selectively choose between light/dark mode, you can use the `enable` function. It accepts a boolean argument to enable/disable dark mode.
+
+```js
+// React Example
+import nightwind from "nightwind/helper"
+
+export default function Navbar() {
+  return (
+    // ...
+    <button onClick={() => nightwind.enable(true)}></button>
+    // ...
+  )
+}
+```
+
+### BeforeTransition
+
+Nightwind also exports a `beforeTransition` function that you can leverage in case you prefer to build your own toogle functions. It prevents unwanted transitions as a side-effect of having nightwind class in the html tag.
+
+Check out the `toggle` function in the [Nextjs example below](#examples) for an example of how this could be implemented.
 
 ### Examples
 
@@ -133,48 +156,20 @@ function MyApp({ Component, pageProps }) {
 export default MyApp
 ```
 
-<!-- prettier-ignore -->
-#### _document.js
-
-Add the 'nightwind' class in your root element
-
-```js
-import Document, { Html, Head, Main, NextScript } from "next/document"
-
-class MyDocument extends Document {
-  static async getInitialProps(ctx) {
-    const initialProps = await Document.getInitialProps(ctx)
-    return { ...initialProps }
-  }
-
-  render() {
-    return (
-      <Html className="nightwind">
-        <Head />
-        <body>
-          <Main />
-          <NextScript />
-        </body>
-      </Html>
-    )
-  }
-}
-
-export default MyDocument
-```
-
 #### Toggle
 
 Set it up using the useTheme hook
 
 ```js
 import { useTheme } from "next-themes"
+import nightwind from "nightwind/helper"
 
 export default function Toggle(props) {
   const { theme, setTheme } = useTheme()
 
   const toggle = () => {
-    if (!document.documentElement.classList.contains("dark")) {
+    nightwind.beforeTransition()
+    if (theme !== "dark") {
       setTheme("dark")
     } else {
       setTheme("light")
@@ -195,13 +190,13 @@ export default function Toggle(props) {
 Add Helmet using the following configuration
 
 ```js
-import React from "react";
-import ReactDOM from "react-dom";
-import { Helmet } from "react-helmet";
-import nightwind from "nightwind/helper";
+import React from "react"
+import ReactDOM from "react-dom"
+import { Helmet } from "react-helmet"
+import nightwind from "nightwind/helper"
 
-import App from "./App";
-import "./index.css";
+import App from "./App"
+import "./index.css"
 
 ReactDOM.render(
   <React.StrictMode>
@@ -211,14 +206,13 @@ ReactDOM.render(
     <App />
   </React.StrictMode>,
   document.getElementById("root")
-);
-
+)
 ```
 
 #### Toggle
 
 Set it up using the default example
-   
+
 ```js
 import nightwind from "nightwind/helper"
 
