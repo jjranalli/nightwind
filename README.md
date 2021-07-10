@@ -87,6 +87,8 @@ export default function Layout() {
 }
 ```
 
+We know some people want to convert their dark mode apps to work with light mode as well, so instead of using `<script dangerouslySetInnerHTML={{ __html: nightwind.init() }} />` you'll use `<script dangerouslySetInnerHTML={{ __html: nightwind.init(true) }} />`.
+
 ### Toggle
 
 Similarly, you can use the `toggle` function to switch between dark and light mode.
