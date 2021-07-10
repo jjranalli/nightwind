@@ -1,5 +1,5 @@
 module.exports = {
-  init: () => {
+  init: (defualtDark) => {
     const codeToRunOnClient = `
       (function() {
         function getInitialColorMode() {
@@ -11,9 +11,17 @@ module.exports = {
                 const mql = window.matchMedia('(prefers-color-scheme: dark)');
                 const hasMediaQueryPreference = typeof mql.matches === 'boolean';
                 if (hasMediaQueryPreference) {
-                  return mql.matches ? 'dark' : 'light';
+                  if (defualtDark) {
+                    return mql.matches ? 'light' : 'dark';
+                  } else {
+                    return mql.matches ? 'dark' : 'light';
+                  }
                 }
-                return 'light';
+                if (defualtDark) {
+                  return 'dark';
+                } else {
+                  return 'light';
+                }
         }
         getInitialColorMode() == 'light' ? document.documentElement.classList.remove('dark') : document.documentElement.classList.add('dark');
       })()
