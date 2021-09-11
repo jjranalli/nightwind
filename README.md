@@ -69,7 +69,7 @@ By default, the helper functions prevent [the dreaded flicker of light mode](htt
 
 ### Initialization
 
-To initialize nightwind, **add the following script tag to the head element of your pages**.
+To initialize nightwind on react, **add the following script tag to the head element of your pages**.
 
 ```js
 // React Example
@@ -86,6 +86,73 @@ export default function Layout() {
   )
 }
 ```
+To initialize nightwind on vue, **find in following script your configuration and add it to your code**.
+```vue
+/// Vue Examples
+
+// Pug
+<template lang="pug">
+#app(:v-html="nightwind.init()")
+  button(@click="nightwind.toggle()") Toggle
+</template>
+
+// Html
+<template>
+<div id="app" :v-html="nightwind.init()">
+  <button @click="nightwind.toggle()">Toggle</button>
+</div>
+</template>
+
+// Vue3+Typescript Composition API
+<script lang="ts">
+import { defineComponent } from "vue";
+// Use ts ignore for now in typescript as no types support
+// @ts-ignore
+import nightwind from "nightwind/helper"
+
+export default defineComponent({
+  setup() {
+    return {
+      nightwind
+    }
+  }
+})
+</script>
+
+// Vue3+Typescript with setup tag (experimental)
+<script lang="ts" setup>
+// Use ts ignore for now in typescript as no types support
+// @ts-ignore
+import nightwind from "nightwind/helper"
+</script>
+
+// Vue3 Composition API  (or Vue2 with Composition API plugin)
+<script>
+import nightwind from "nightwind/helper"
+
+export default {
+  setup() {
+    return {
+      nightwind
+    }
+  }
+}
+</script>
+
+// Vue2/Vue3 Options API
+<script>
+import nightwind from "nightwind/helper"
+
+export default {
+  data() {
+    return {
+      nightwind
+    }
+  }
+}
+</script>
+```
+
 
 ### Toggle
 
