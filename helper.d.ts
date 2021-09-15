@@ -32,3 +32,18 @@
   * ```
   */
  export declare function toggle(): void;
+ /**
+  * You can use the enable function to specifically switch between dark and light mode.
+  * ```
+  * import nightwind from "nightwind/helper"
+  *
+  * export default function Navbar() {
+  *   return (
+  *     // ...
+  *     <button onClick={() => nightwind.enable(true)}></button>
+  *     // ...
+  *   )
+  * }
+  * ```
+  */
+ export declare function enable(dark: boolean): void;
