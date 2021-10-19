@@ -227,6 +227,75 @@ export default function Navbar() {
 
 </details>
 
+
+<details>
+  <summary>Pure JavaScript or Alpine.js</summary>
+  
+The whole idea is to deconstruct helper.js, converting it from a module to a var. And unpacking the 'init' function from within helper to be its own script body to execut at DOM render. Here is the code for that at the time of writing (Oct 14th 2021). As long as the classes made it to tailwind.css (did you configure the plugins right?) then this will enable `nightwind.toggle()` and `nightwind.enable()`
+   
+```js
+<script>
+var nightwind = {
+  beforeTransition: () => {
+    const doc = document.documentElement;
+    const onTransitionDone = () => {
+      doc.classList.remove('nightwind');
+      doc.removeEventListener('transitionend', onTransitionDone);
+    }
+    doc.addEventListener('transitionend', onTransitionDone);
+    if (!doc.classList.contains('nightwind')) {
+      doc.classList.add('nightwind');
+    }
+  },
+
+  toggle: () => {
+    nightwind.beforeTransition();
+    if (!document.documentElement.classList.contains('dark')) {
+      document.documentElement.classList.add('dark');
+      window.localStorage.setItem('nightwind-mode', 'dark');
+    } else {
+        document.documentElement.classList.remove('dark');
+        window.localStorage.setItem('nightwind-mode', 'light');
+    }
+  },
+
+  enable: (dark) => {
+    const mode = dark ? "dark" : "light";
+    const opposite = dark ? "light" : "dark";
+
+    nightwind.beforeTransition();
+
+    if (document.documentElement.classList.contains(opposite)) {
+      document.documentElement.classList.remove(opposite);
+    }
+    document.documentElement.classList.add(mode);
+    window.localStorage.setItem('nightwind-mode', mode);
+  },
+ }
+</script>
+<script>
+(function() {
+  function getInitialColorMode() {
+          const persistedColorPreference = window.localStorage.getItem('nightwind-mode');
+          const hasPersistedPreference = typeof persistedColorPreference === 'string';
+          if (hasPersistedPreference) {
+            return persistedColorPreference;
+          }
+          const mql = window.matchMedia('(prefers-color-scheme: dark)');
+          const hasMediaQueryPreference = typeof mql.matches === 'boolean';
+          if (hasMediaQueryPreference) {
+            return mql.matches ? 'dark' : 'light';
+          }
+          return 'light';
+  }
+  getInitialColorMode() == 'light' ? document.documentElement.classList.remove('dark') : document.documentElement.classList.add('dark');
+})()
+</script>
+```
+
+</details>
+
+
 ## Getting started
 
 This is some examples of what Nightwind does by default:
