@@ -22,6 +22,11 @@ You can see it in action on https://nightwindcss.com
     - [Toggle](#toggle-1)
     - [index.jsx](#indexjsx)
     - [Toggle](#toggle-2)
+- [Getting started](#getting-started)
+  - [Supported classes](#supported-classes)
+- [Configuration](#configuration)
+  - [Colors](#colors)
+  - [Variants and color classes](#variants-and-color-classes)
   - [The 'nightwind-prevent' class](#the-nightwind-prevent-class)
   - [Transitions](#transitions)
     - [Transition Classes](#transition-classes)
@@ -95,31 +100,21 @@ export default function Layout() {
   )
 }
 ```
-
 To initialize nightwind on Vue 3, **use code below (other versions in examples)**.
-
 ```vue
-<template>
-  <div id="app" :v-html="nightwind.init()">
-    <button @click="nightwind.toggle()">Toggle</button>
-  </div>
-</template>
-
-<script lang="ts">
-import { defineComponent } from "vue"
+// Vue example
+<script lang="ts" setup>
 // Use ts ignore for now in typescript as no types support
 // @ts-ignore
 import nightwind from "nightwind/helper"
-
-export default defineComponent({
-  setup() {
-    return {
-      nightwind,
-    }
-  },
-})
 </script>
+
+<template>
+<div id="app" :v-html="nightwind.init()">
+</div>
+</template>
 ```
+
 
 ### Toggle
 
@@ -138,6 +133,21 @@ export default function Navbar() {
 }
 ```
 
+```vue
+// Vue example
+<script lang="ts" setup>
+// Use ts ignore for now in typescript as no types support
+// @ts-ignore
+import nightwind from "nightwind/helper"
+</script>
+
+<template>
+<div id="app" :v-html="nightwind.init()">
+  <button @click="nightwind.toggle()">Toggle</button>
+</div>
+</template>
+```
+
 ### Enable mode
 
 If you need to selectively choose between light/dark mode, you can use the `enable` function. It accepts a boolean argument to enable/disable dark mode.
@@ -153,6 +163,21 @@ export default function Navbar() {
     // ...
   )
 }
+```
+
+```vue
+// Vue example
+<script lang="ts" setup>
+// Use ts ignore for now in typescript as no types support
+// @ts-ignore
+import nightwind from "nightwind/helper"
+</script>
+
+<template>
+<div id="app" :v-html="nightwind.init()">
+  <button @click="nightwind.enable(true)">Enable</button>
+</div>
+</template>
 ```
 
 ### BeforeTransition
@@ -266,22 +291,19 @@ export default function Navbar() {
   Here are various examples for different Vue versions
 
 ```vue
-/// Vue Examples /// Vue 3 // Pug
-<template lang="pug">
-#app(:v-html="nightwind.init()")
-  button(@click="nightwind.toggle()") Toggle
-</template>
+/// Vue Examples
 
-// Html
+
+/// Vue 3
 <template>
-  <div id="app" :v-html="nightwind.init()">
-    <button @click="nightwind.toggle()">Toggle</button>
-  </div>
+<div id="app" :v-html="nightwind.init()">
+  <button @click="nightwind.toggle()">Toggle</button>
+</div>
 </template>
 
 // Vue3+Typescript Composition API
 <script lang="ts">
-import { defineComponent } from "vue"
+import { defineComponent } from "vue";
 // Use ts ignore for now in typescript as no types support
 // @ts-ignore
 import nightwind from "nightwind/helper"
@@ -289,9 +311,9 @@ import nightwind from "nightwind/helper"
 export default defineComponent({
   setup() {
     return {
-      nightwind,
+      nightwind
     }
-  },
+  }
 })
 </script>
 
@@ -302,31 +324,36 @@ export default defineComponent({
 import nightwind from "nightwind/helper"
 </script>
 
-// Vue3 Composition API (or Vue2 with Composition API plugin)
+// Vue3 Composition API  (or Vue2 with Composition API plugin)
 <script>
 import nightwind from "nightwind/helper"
 
 export default {
   setup() {
     return {
-      nightwind,
+      nightwind
     }
-  },
+  }
 }
 </script>
-/// /// Vue 2
+///
 
+
+/// Vue 2 
 <script>
-import nightwind from "nightwind/helper"
+import nightwind from 'nightwind/helper'
 
 export default {
-  name: "App",
+  name: 'App',
   mounted() {
     nightwind.init()
-  },
+
+  }
 }
 </script>
+/// 
 ```
+
 
 </details>
 
@@ -350,20 +377,20 @@ var nightwind = {
     }
   },
 
-toggle: () => {
-nightwind.beforeTransition();
-if (!document.documentElement.classList.contains('dark')) {
-document.documentElement.classList.add('dark');
-window.localStorage.setItem('nightwind-mode', 'dark');
-} else {
-document.documentElement.classList.remove('dark');
-window.localStorage.setItem('nightwind-mode', 'light');
-}
-},
+  toggle: () => {
+    nightwind.beforeTransition();
+    if (!document.documentElement.classList.contains('dark')) {
+      document.documentElement.classList.add('dark');
+      window.localStorage.setItem('nightwind-mode', 'dark');
+    } else {
+        document.documentElement.classList.remove('dark');
+        window.localStorage.setItem('nightwind-mode', 'light');
+    }
+  },
 
-enable: (dark) => {
-const mode = dark ? "dark" : "light";
-const opposite = dark ? "light" : "dark";
+  enable: (dark) => {
+    const mode = dark ? "dark" : "light";
+    const opposite = dark ? "light" : "dark";
 
     nightwind.beforeTransition();
 
@@ -372,11 +399,9 @@ const opposite = dark ? "light" : "dark";
     }
     document.documentElement.classList.add(mode);
     window.localStorage.setItem('nightwind-mode', mode);
-
-},
-}
+  },
+ }
 </script>
-
 <script>
 (function() {
   function getInitialColorMode() {
@@ -395,8 +420,7 @@ const opposite = dark ? "light" : "dark";
   getInitialColorMode() == 'light' ? document.documentElement.classList.remove('dark') : document.documentElement.classList.add('dark');
 })()
 </script>
-
-````
+```
 
 </details>
 
@@ -448,7 +472,7 @@ module.exports = {
     },
   },
 }
-````
+```
 
 Check out [**color mappings**](#color-mappings) to see how to further customize your dark theme.
 
