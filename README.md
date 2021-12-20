@@ -36,7 +36,7 @@ npm install nightwind
 Enable the Dark class variant in your tailwind.config.js file.
 
 ```js
-// tailwind.config.js - Tailwind ^2.0
+// tailwind.config.js - Tailwind ^3.0.7
 module.exports = {
   darkMode: "class",
   // ...
@@ -123,7 +123,7 @@ export default function Navbar() {
 
 ### BeforeTransition
 
-Nightwind also exports a `beforeTransition` function that you can leverage in case you prefer to build your own toogle functions. It prevents unwanted transitions as a side-effect of having nightwind class in the html tag.
+Nightwind also exports a `beforeTransition` function that you can leverage in case you prefer to build your own toggle functions. It prevents unwanted transitions as a side-effect of having nightwind class in the html tag.
 
 Check out the `toggle` function in the [Nextjs example below](#examples) for an example of how this could be implemented.
 
