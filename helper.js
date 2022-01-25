@@ -15,7 +15,11 @@ module.exports = {
                 }
                 return 'light';
         }
-        getInitialColorMode() == 'light' ? document.documentElement.classList.remove('dark') : document.documentElement.classList.add('dark');
+        function setTheme () {
+          getInitialColorMode() == 'light' ? document.documentElement.classList.remove('dark') : document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', setTheme);
+        setTheme(); 
       })()
     `;
     return codeToRunOnClient;
