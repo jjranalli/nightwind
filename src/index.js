@@ -19,7 +19,7 @@ const nightwind = plugin(
     const colors = theme("colors")
     const colorVariants = ["hover"]
     const prefixes = ["text", "bg", "border"]
-    const weights = theme("weights") || [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
+    const weights = theme("nightwind.weights") || [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
     let importantSelector = ""
     let importantProperty = ""
 
