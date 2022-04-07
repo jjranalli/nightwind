@@ -15,6 +15,7 @@ You can see it in action on https://nightwindcss.com
 3. [Getting started](#getting-started)
 4. [Configuration](#configuration)
    - [Colors](#colors)
+   - [Weights](#weights)
    - [Variants and color classes](#variants-and-color-classes)
    - [The 'nightwind-prevent' class](#the-nightwind-prevent-class)
    - [Transitions](#transitions)
@@ -346,6 +347,33 @@ module.exports = {
 ```
 
 Check out [**color mappings**](#color-mappings) to see how to further customize your dark theme.
+
+### Weights
+
+The default set of weights supported by Nightwind is `[50, 100, 200, 300, 400, 500, 600, 700, 800, 900]`.
+
+If you use other weights, you can provide a list in your config.
+
+```js
+// tailwind.config.js
+module.exports = {
+  theme: {
+    nightwind: {
+      weights: [25, 50, 100, 150, 200, 300, 400, 500, 600, 700, 750, 800, 900]
+    },
+  },
+}
+```
+
+The default algorithm for inverting weights is:
+
+- If the weight is less than 100 (eg 25 or 50), the inverted weight is 900.
+- Otherwise, the inverted weight is `900 - weight`.
+
+If using the [reduced preset](#reduced-preset), the algorithm for inverting weights is:
+
+- If the weight is less than or equal to 100 (eg 25, 50, or 100), the inverted weight is 900.
+- Otherwise, the inverted weight is `1000 - weight`.
 
 ### Variants and color classes
 
