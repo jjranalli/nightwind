@@ -359,7 +359,7 @@ If you use other weights, you can provide a list in your config.
 module.exports = {
   theme: {
     nightwind: {
-      weights: [25, 50, 100, 150, 200, 300, 400, 500, 600, 700, 750, 800, 900]
+      weights: [25, 50, 100, 150, 200, 300, 400, 500, 600, 700, 750, 800, 900, 950]
     },
   },
 }
@@ -368,11 +368,13 @@ module.exports = {
 The default algorithm for inverting weights is:
 
 - If the weight is less than 100 (eg 25 or 50), the inverted weight is 900.
+- If the weight is > 900, the inverted weight is `weights[0]` (eg 25).
 - Otherwise, the inverted weight is `900 - weight`.
 
 If using the [reduced preset](#reduced-preset), the algorithm for inverting weights is:
 
 - If the weight is less than or equal to 100 (eg 25, 50, or 100), the inverted weight is 900.
+- If the weight is > 1000, the inverted weight is 100.
 - Otherwise, the inverted weight is `1000 - weight`.
 
 ### Variants and color classes
