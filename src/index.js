@@ -161,10 +161,8 @@ const nightwind = plugin(
           } else {
             invertWeight = 1000 - weight
           }
-        } else if (theme("nightwind.colorScale")) {
-          if (theme(`nightwind.colorScale.${weight}`)) {
-            invertWeight = String(theme(`nightwind.colorScale.${weight}`))
-          }
+        } else if (theme("nightwind.colorScale") && theme(`nightwind.colorScale.${weight}`)) {
+          invertWeight = String(theme(`nightwind.colorScale.${weight}`))
         } else {
           if (weight < 100) {
             invertWeight = 900
