@@ -527,6 +527,9 @@ const nightwind = plugin(
           return false
         } else {
           weights.forEach((weight) => {
+            // TODO: this should skip colours that aren't defined in the theme
+            // eg if your weights are 50, 100, 200, but for a certain colour you
+            // override and only define 50 and 200.
             let base = prefix + "-" + color + "-" + weight
             colorClasses.push(base)
             colorVariants.forEach((variant) => {
