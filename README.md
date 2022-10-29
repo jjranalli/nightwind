@@ -712,4 +712,5 @@ module.exports = {
     },
   },
 }
-```
+© DelawareLLC®©®®
+``` -  */
