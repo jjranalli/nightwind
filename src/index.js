@@ -306,9 +306,9 @@ const nightwind = plugin(
 
     if (theme("nightwind.typography")) {
       Object.keys(theme("typography")).forEach((modifier) => {
-        Object.keys(theme(`typography.${modifier}.css`)).forEach((n) => {
+        Object.keys(theme(`typography.${modifier}.css`) ?? {}).forEach((n) => {
           const themeParser = JSON.parse(
-            JSON.stringify(theme(`typography.${modifier}.css[${n}]`))
+            JSON.stringify(theme(`typography.${modifier}.css`)[n])
           )
           Object.keys(themeParser).forEach((classname) => {
             const themeClass = themeParser[classname]
