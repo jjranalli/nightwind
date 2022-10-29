@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.12] - 2021-06-24
+
+### Added
+
+- enable() function in helpers to selectively enable dark/light mode
+- beforeTransition() function in helpers, fixing unwanted transitions as a side-effect of having nightwind class at html tag.
+
+### Fixed
+
+- added tailwindcss as peerDependency
+
+Huge thanks to @jaulz, @Djiit and @josephbuchma for the contributions for this release!
+
 ## [1.1.11] - 2021-04-01
 
 ### Added
