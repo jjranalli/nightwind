@@ -18,7 +18,7 @@
     "javascript"
   ],
   "peerDependencies": {
-    "tailwindcss": "^2.0.0"
+    "tailwindcss": "^2.0.0 || ^3.0.0"
   },
   "author": "Jacopo Ranalli",
   "license": "MIT",
