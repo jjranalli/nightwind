@@ -13,8 +13,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - support for tailwind v3
 
-Thanks to @jaulz, @Djiit and @josephbuchma for the contributions for this release
-
 ## [1.1.12] - 2021-06-24
 
 ### Added
