@@ -19,7 +19,7 @@ const nightwind = plugin(
     const colors = theme("colors")
     const colorVariants = ["hover"]
     const prefixes = ["text", "bg", "border"]
-    const weights = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
+    const weights = theme("nightwind.weights") || [50, 100, 200, 300, 400, 500, 600, 700, 800, 900]
     let importantSelector = ""
     let importantProperty = ""
 
@@ -151,23 +151,25 @@ const nightwind = plugin(
         const color = colorValues.pop()
         const defaultValue = theme(`colors.${color}.${weight}`)
 
-        let invertWeightIndex = 9 - weights.indexOf(Number(weight))
-        let invertWeight = String(weights[invertWeightIndex])
+        let invertWeight;
 
-        if (theme("nightwind.colorScale.preset")) {
-          switch (theme("nightwind.colorScale.preset")) {
-            case "reduced":
-              let reducedInvertWeightIndex =
-                10 - weights.indexOf(Number(weight))
-              reducedInvertWeightIndex > 9
-                ? (reducedInvertWeightIndex = 9)
-                : reducedInvertWeightIndex
-              invertWeight = String(weights[reducedInvertWeightIndex])
-              break
+        if (theme("nightwind.colorScale.preset") === "reduced") {
+          if (weight <= 100) {
+            invertWeight = 900
+          } else if (weight >= 1000) {
+            invertWeight = 100
+          } else {
+            invertWeight = 1000 - weight
           }
-        } else if (theme("nightwind.colorScale")) {
-          if (theme(`nightwind.colorScale.${weight}`)) {
-            invertWeight = String(theme(`nightwind.colorScale.${weight}`))
+        } else if (theme("nightwind.colorScale") && theme(`nightwind.colorScale.${weight}`)) {
+          invertWeight = String(theme(`nightwind.colorScale.${weight}`))
+        } else {
+          if (weight < 100) {
+            invertWeight = 900
+          } else if (weight >= 900) {
+            invertWeight = weights[0]
+          } else {
+            invertWeight = 900 - weight
           }
         }
 
@@ -523,6 +525,9 @@ const nightwind = plugin(
           return false
         } else {
           weights.forEach((weight) => {
+            // TODO: this should skip colours that aren't defined in the theme
+            // eg if your weights are 50, 100, 200, but for a certain colour you
+            // override and only define 50 and 200.
             let base = prefix + "-" + color + "-" + weight
             colorClasses.push(base)
             colorVariants.forEach((variant) => {
