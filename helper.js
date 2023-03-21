@@ -2,6 +2,7 @@ module.exports = {
   init: () => {
     const codeToRunOnClient = `
       (function() {
+        window.__onThemeChange = function() {};
         function getInitialColorMode() {
                 const persistedColorPreference = window.localStorage.getItem('nightwind-mode');
                 const hasPersistedPreference = typeof persistedColorPreference === 'string';
@@ -15,12 +16,13 @@ module.exports = {
                 }
                 return 'light';
         }
+        window.__theme = getInitialColorMode();
         getInitialColorMode() == 'light' ? document.documentElement.classList.remove('dark') : document.documentElement.classList.add('dark');
       })()
     `;
     return codeToRunOnClient;
   },
-  
+
   beforeTransition: () => {
     const doc = document.documentElement;
     const onTransitionDone = () => {
@@ -38,12 +40,16 @@ module.exports = {
     if (!document.documentElement.classList.contains('dark')) {
       document.documentElement.classList.add('dark');
       window.localStorage.setItem('nightwind-mode', 'dark');
+      window.__theme = 'dark';
+      window.__onThemeChange();
     } else {
         document.documentElement.classList.remove('dark');
         window.localStorage.setItem('nightwind-mode', 'light');
+        window.__theme = 'light';
+        window.__onThemeChange();
     }
   },
-  
+
   enable: (dark) => {
     const mode = dark ? "dark" : "light";
     const opposite = dark ? "light" : "dark";
@@ -55,6 +61,8 @@ module.exports = {
     }
     document.documentElement.classList.add(mode);
     window.localStorage.setItem('nightwind-mode', mode);
+    window.__theme = mode;
+    window.__onThemeChange();
   },
 
   // Old

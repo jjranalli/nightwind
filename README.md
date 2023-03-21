@@ -295,6 +295,29 @@ var nightwind = {
 
 </details>
 
+<details>
+   <summary>Gatsby (similar to <a href="https://overreacted.io/">overreacted.io</a>)</summary>
+
+* The library adds a `window.__theme` which keeps track of current theme (i.e., `light` or `dark`).
+* You can override the `window.__onThemeChange` function to be notified when the theme changes
+
+#### Layout.js
+
+```js
+class Layout extends React.Component {
+  state = {
+    theme: null,
+  };
+  componentDidMount() {
+    this.setState({ theme: window.__theme });
+    window.__onThemeChange = () => {
+      this.setState({ theme: window.__theme });
+    };
+  }
+}
+```
+</details>
+
 
 ## Getting started
 
